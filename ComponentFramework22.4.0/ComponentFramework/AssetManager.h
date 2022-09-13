@@ -5,11 +5,15 @@
 #include "Component.h"
 #include "Actor.h"
 #include "Debug.h"
+#include "tinyxml2.h"
 
 class AssetManager {
 private:
-	std::unordered_map <std::string, Ref<Component>> componentGraph;
+	//std::unordered_map <std::string, Ref<Component>> componentGraph;
+
+	void AddShapeComponent(tinyxml2::XMLElement* AddShapeComponent);
 public:
+	std::unordered_map <std::string, Ref<Component>> componentGraph;
 	AssetManager();
 	~AssetManager();
 	bool OnCreate();

@@ -4,9 +4,10 @@
 #include "MeshComponent.h"
 #include "ShaderComponent.h"
 #include "MaterialComponent.h"
+#include "ShapeComponent.h"
 #include "CameraActor.h"
 #include "LightActor.h"
-#include "tinyxml2.h"
+#include "QMath.h"
 
 AssetManager::AssetManager() {}
 
@@ -44,8 +45,9 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 	AddComponent<CameraActor>(currentElement->Attribute("name"), nullptr); //create the camera actor
 	tinyxml2::XMLElement* transformElement = currentElement->FirstChildElement("Transform"); //i did this for you to read, it is unnecessary
 	GetComponent<CameraActor>(currentElement->Attribute("name"))->AddComponent<TransformComponent>(nullptr, //make transform component
-	Vec3(transformElement->FloatAttribute("posx"), transformElement->FloatAttribute("posy"), transformElement->FloatAttribute("posz")), //position
-	Quaternion(transformElement->FloatAttribute("qw"), transformElement->FloatAttribute("qx"), transformElement->FloatAttribute("qy"), transformElement->FloatAttribute("qz"))); //quaternion
+		Vec3(transformElement->FloatAttribute("posx"), transformElement->FloatAttribute("posy"), transformElement->FloatAttribute("posz")), //position
+		//Quaternion(transformElement->FloatAttribute("qw"), transformElement->FloatAttribute("qx"), transformElement->FloatAttribute("qy"), transformElement->FloatAttribute("qz"))); //quaternion
+		QMath::angleAxisRotation(transformElement->FloatAttribute("angleDeg"), Vec3(transformElement->FloatAttribute("axisx"), transformElement->FloatAttribute("axisy"), transformElement->FloatAttribute("axisz"))));
 	//Light Loop - in Scene Scope
 	currentElement = sceneRoot->FirstChildElement("Light"); //loading first component from Scene Scope
 	bool lightLoop = true;
@@ -84,6 +86,9 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 			else if (componentType == "Shader") { //create shader component
 				AddComponent<ShaderComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
 			}
+			else if (componentType == "Shape") { //create shader component
+				AddShapeComponent(currentElement);
+			}
 			if (currentElement == sceneRoot->LastChildElement("Component")) { //stopping looping when the current element is the last element in Scene Scope - sceneRoot->LastChild() will also work, but stopping at the last component should be faster
 				componentLoop = false;
 			}
@@ -97,7 +102,11 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 	while (actorLoop) {
 		std::string actorCheck = currentElement->Name();
 		if (actorCheck == "Actor") { //check if the element is a actor
-			AddComponent<Actor>(currentElement->Attribute("name"), nullptr); //make the actor
+			Component* parentActor = nullptr;
+			if (currentElement->FirstChildElement("parent") != nullptr) { //check if the actor has a parent
+				parentActor = GetComponent<Component>(currentElement->Attribute("parent")).get(); //set the parent of the actor
+			}
+			AddComponent<Actor>(currentElement->Attribute("name"), parentActor); //make the actor
 			currentComponent = currentElement->FirstChildElement("Mesh"); //get the FirstChildElement component in currentElement
 			GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<MeshComponent>(GetComponent<MeshComponent>(currentComponent->Attribute("name"))); //set the mesh to a component made in the first loop
 			currentComponent = currentElement->FirstChildElement("Material");
@@ -106,9 +115,14 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 				tinyxml2::XMLElement* transformElement = currentElement->FirstChildElement("Transform"); //i did this for you to read, it is unnecessary
 				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<TransformComponent>(nullptr, //make transform component
 					Vec3(transformElement->FloatAttribute("posx"), transformElement->FloatAttribute("posy"), transformElement->FloatAttribute("posz")), //position
-					Quaternion(transformElement->FloatAttribute("qw"), transformElement->FloatAttribute("qx"), transformElement->FloatAttribute("qy"), transformElement->FloatAttribute("qz")), 
+					QMath::angleAxisRotation(transformElement->FloatAttribute("angleDeg"), Vec3(transformElement->FloatAttribute("axisx"), transformElement->FloatAttribute("axisy"), transformElement->FloatAttribute("axisz"))),
+					//Quaternion(transformElement->FloatAttribute("qw"), transformElement->FloatAttribute("qx"), transformElement->FloatAttribute("qy"), transformElement->FloatAttribute("qz")),  //quaternions
 					Vec3(transformElement->FloatAttribute("scalex"), transformElement->FloatAttribute("scaley"), transformElement->FloatAttribute("scalez"))); //scale
 			} //think about prehab idea?
+			if (currentElement->FirstChildElement("Shape") != nullptr) {
+				currentComponent = currentElement->FirstChildElement("Shape");
+				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<ShapeComponent>(GetComponent<ShapeComponent>(currentComponent->Attribute("name")));
+			}
 			if (currentElement == sceneRoot->LastChildElement("Actor")) { //exit when component is = to the LastChildElement in currentComponent
 				actorLoop = false;
 			}
@@ -117,4 +131,12 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 	}
 	//set everything to null
 	sceneRoot = nullptr; sceneRoot = nullptr; currentElement = nullptr; transformElement = nullptr;
+}
+
+void AssetManager::AddShapeComponent(tinyxml2::XMLElement* AddShapeComponent) {
+	if (AddShapeComponent->FirstChildElement("Sphere") != nullptr) {
+		tinyxml2::XMLElement* Sphere = AddShapeComponent->FirstChildElement("Sphere");
+		AddComponent<ShapeComponent>(AddShapeComponent->Attribute("name"), nullptr, GEOMETRY::Sphere(Sphere->FloatAttribute("centreX"), Sphere->FloatAttribute("centreY"), Sphere->FloatAttribute("centreZ"), Sphere->FloatAttribute("radius")));
+		Sphere = nullptr;
+	}
 }
