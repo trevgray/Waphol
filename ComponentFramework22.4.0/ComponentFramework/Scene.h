@@ -12,14 +12,8 @@ class Scene {
 private:
 	Ref<AssetManager> assetManager;
 	std::unordered_map <std::string, Ref<Actor>> actorGraph;
-	std::vector<Actor*> emptyActors;
 public:
-	virtual ~Scene() {
-		for (Actor* actor : emptyActors) {
-			delete actor;
-		}
-		emptyActors.clear();
-	}
+	virtual ~Scene() {};
 	virtual bool OnCreate() = 0;
 	virtual void OnDestroy() = 0;
 	virtual void Update(const float deltaTime) = 0;
@@ -39,7 +33,7 @@ public:
 	}
 
 	void RemovePointer(Actor* removeActor) {
-		emptyActors.push_back(removeActor);
+		delete removeActor;
 		//std::cout << "  " << removeActor << std::endl;
 	}
 
