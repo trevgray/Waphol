@@ -1,7 +1,9 @@
 #include "Actor.h"
 #include "Debug.h"
 #include "MeshComponent.h"
-Actor::Actor(Component* parent_):Component(parent_) {}
+Actor::Actor(Component* parent_):Component(parent_) {
+	prehab = true;
+}
 
 Actor::~Actor() {
 	OnDestroy();

@@ -8,7 +8,6 @@
 
 struct Scene0 : public Scene
 {
-	Ref<AssetManager> assetManager;
 
 	bool renderMeshes = true;
 	bool renderCollisionShapes = true;

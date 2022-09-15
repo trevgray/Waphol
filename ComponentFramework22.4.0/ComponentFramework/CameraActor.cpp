@@ -7,6 +7,7 @@
 #include "UBO_Padding.h"
 
 CameraActor::CameraActor(Component* parent_):Actor(parent_) {
+	prehab = false;
 	uboMatricesID = NULL;
 }
 

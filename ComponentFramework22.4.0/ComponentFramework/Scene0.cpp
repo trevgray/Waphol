@@ -14,30 +14,21 @@
 
 bool Scene0::OnCreate()
 {
-	assetManager = std::make_shared<AssetManager>();
-	assetManager->BuildSceneAssets("OpenGLAssets.xml", "Scene0");
-	assetManager->OnCreate();
-	//camera
-	AddActor<CameraActor>("camera", new CameraActor(nullptr));
-	GetActor<CameraActor>()->InheritActor(assetManager->GetComponent<Actor>("camera"));
-	GetActor<CameraActor>()->OnCreate();
-	//light
-	AddActor<LightActor>("light", new LightActor(nullptr));
-	GetActor<LightActor>()->InheritActor(assetManager->GetComponent<Actor>("light"));
-	GetActor<LightActor>()->OnCreate();
+	LoadAssetManager("OpenGLAssets.xml", "Scene0");
+	LoadNonPrehabActors();
 
-	std::vector<std::string> names{
-		"CheckerBoardActor", "ActorChecker1", "ActorChecker2",
-		"ActorDefaultChecker", "ActorTinyChecker", "ActorSkull",
-		"ActorCube", "ActorCube2",
-		"ActorMario"
-	};
-	for (const auto& name : names) {
-		auto asset = assetManager->componentGraph.find(name);
-		AddActor<Actor>(name, new Actor(nullptr));
-		GetActor<Actor>(name)->InheritActor(assetManager->GetComponent<Actor>(name.c_str()));
-		GetActor<Actor>(name)->OnCreate();
-	}
+	//std::vector<std::string> names{
+	//	"CheckerBoardActor", "ActorChecker1", "ActorChecker2",
+	//	"ActorDefaultChecker", "ActorTinyChecker", "ActorSkull",
+	//	"ActorCube", "ActorCube2",
+	//	"ActorMario"
+	//};
+	//for (const auto& name : names) {
+	//	auto asset = assetManager->componentGraph.find(name);
+	//	AddActor<Actor>(name, new Actor(nullptr));
+	//	GetActor<Actor>(name)->InheritActor(assetManager->GetComponent<Actor>(name.c_str()));
+	//	GetActor<Actor>(name)->OnCreate();
+	//}
 
 	return true;
 }

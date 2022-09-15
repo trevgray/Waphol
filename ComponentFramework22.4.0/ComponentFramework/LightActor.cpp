@@ -4,9 +4,11 @@
 
 LightActor::LightActor(Component* parent_, LightStyle lightStyle_, Vec3 location_, Vec4 colour_, float intensity_, Vec3 fallOff_) : Actor(parent_), 
 lightStyle(lightStyle_), pos(location_), intensity(intensity_), colour(colour_), uboLightDataID(NULL) {
+	prehab = false;
 }
 
 LightActor::LightActor(Component* parent_, std::string lightStyle_, Vec3 location_, Vec4 colour_, float intensity_, Vec3 fallOff_) : Actor(parent_), pos(location_), intensity(intensity_), colour(colour_), uboLightDataID(NULL) {
+	prehab = false;
 	if (lightStyle_ == "PointLight") {
 		lightStyle = LightStyle::PointLight;
 	}
@@ -22,6 +24,7 @@ LightActor::LightActor(Component* parent_, std::string lightStyle_, Vec3 locatio
 }
 
 LightActor::LightActor(Component* parent_) : Actor(parent_) {
+	prehab = false;
 	pos = Vec3(0.0f, 10.0f, 0.0f);
 	colour = Vec4(0.8f, 0.8f, 0.8f, 0.0f);
 	intensity = 1.0f;
@@ -39,7 +42,7 @@ bool LightActor::OnCreate() {
 	glGenBuffers(1, &uboLightDataID); //look in cameraActor for all the comments about glBuffers (i'm lazy) - shoot me later
 	glBindBuffer(GL_UNIFORM_BUFFER, uboLightDataID);
 	glBufferData(GL_UNIFORM_BUFFER, bufferSize, nullptr, GL_STATIC_DRAW);
-	size_t offset = 0; //the artist is what i think everytime - useful comments
+	size_t offset = 0;
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(Vec3), pos);
 	offset = UBO_PADDING::VEC3; //not even bindings like before, so have to use the UBO_Padding instead of sizeof()
 	glBufferSubData(GL_UNIFORM_BUFFER, offset, sizeof(Vec4), colour);

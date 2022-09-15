@@ -18,7 +18,7 @@
 #define new DEBUG_NEW
 #endif
 
-Scene4::Scene4(): RowX(0), RowY(0), nextRow(0), assetManager(nullptr) {
+Scene4::Scene4(): RowX(0), RowY(0), nextRow(0) {
 	Debug::Info("Created Scene4: ", __FILE__, __LINE__);
 }
 
@@ -29,31 +29,17 @@ Scene4::~Scene4() {
 
 bool Scene4::OnCreate() {
 	Debug::Info("Loading assets Scene4: ", __FILE__, __LINE__);
-	//assetManager
-	assetManager = std::make_shared<AssetManager>();
-	assetManager->BuildSceneAssets("OpenGLAssets.xml", "Scene4");
-	assetManager->OnCreate();
-	//camera
-	AddActor<CameraActor>("camera", new CameraActor(nullptr));
-	GetActor<CameraActor>()->InheritActor(assetManager->GetComponent<Actor>("camera"));
-	GetActor<CameraActor>()->OnCreate();
-	//light
-	AddActor<LightActor>("light", new LightActor(nullptr));
-	GetActor<LightActor>()->InheritActor(assetManager->GetComponent<Actor>("light"));
-	GetActor<LightActor>()->OnCreate();
-	//checkerboard
-	AddActor<Actor>("checkerBoard", new Actor(nullptr));
-	GetActor<Actor>("checkerBoard")->InheritActor(assetManager->GetComponent<Actor>("CheckerBoardActor"));
-	GetActor<Actor>("checkerBoard")->OnCreate(); //The checkerboard is the 3rd Actor in the Scene
+	LoadAssetManager("OpenGLAssets.xml", "Scene4");
+	LoadNonPrehabActors();
 
 	//Red Checker creation loop
 	RowX = RowY = nextRow = 0.0f;
 	std::string checkerName;
 	for (int x = 0; x <= 11; x++) {
 		checkerName = "RedChecker" + std::to_string(x);;
-		AddActor<Actor>(checkerName, new Actor(GetActor<Actor>("checkerBoard").get()));
+		AddActor<Actor>(checkerName, new Actor(GetActor<Actor>("CheckerBoardActor").get()));
 		GetActor<Actor>(checkerName)->InheritActor(assetManager->GetComponent<Actor>("RedCheckerActor"));
-		GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-4.5 + RowX, -4.3 + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
+		GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-4.5f + RowX, -4.3f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
 		GetActor<Actor>(checkerName)->OnCreate();
 		RowX += 2.55f;
 		nextRow++;
@@ -69,9 +55,9 @@ bool Scene4::OnCreate() {
 	RowX = RowY = nextRow = 0.0f;
 	for (int x = 0; x <= 11; x++) {
 		checkerName = "BlackChecker" + std::to_string(x);
-		AddActor<Actor>(checkerName, new Actor (GetActor<Actor>("checkerBoard").get()));
+		AddActor<Actor>(checkerName, new Actor (GetActor<Actor>("CheckerBoardActor").get()));
 		GetActor<Actor>(checkerName)->InheritActor(assetManager->GetComponent<Actor>("BlackCheckerActor"));
-		GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-3.225 + RowX, 4.4 + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
+		GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-3.225f + RowX, 4.4f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
 		GetActor<Actor>(checkerName)->OnCreate();
 		RowX += 2.55f;
 		nextRow++;
@@ -110,10 +96,10 @@ void Scene4::HandleEvents(const SDL_Event &sdlEvent) {
 			GetActor<CameraActor>()->UpdateViewMatrix();
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
-			GetActor<Actor>("checkerBoard")->GetComponent<TransformComponent>()->SetTransform(GetActor<Actor>("checkerBoard")->GetComponent<TransformComponent>()->GetPosition(), GetActor<Actor>("checkerBoard")->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+			GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->SetTransform(GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetPosition(), GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Q) {
-			GetActor<Actor>("checkerBoard")->GetComponent<TransformComponent>()->SetTransform(GetActor<Actor>("checkerBoard")->GetComponent<TransformComponent>()->GetPosition(), GetActor<Actor>("checkerBoard")->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+			GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->SetTransform(GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetPosition(), GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
 		}
 		break;
 

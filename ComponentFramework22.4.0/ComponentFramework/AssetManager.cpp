@@ -1,5 +1,7 @@
 #include <memory>
 #include "AssetManager.h"
+#include "QMath.h"
+
 #include "TransformComponent.h"
 #include "MeshComponent.h"
 #include "ShaderComponent.h"
@@ -7,7 +9,6 @@
 #include "ShapeComponent.h"
 #include "CameraActor.h"
 #include "LightActor.h"
-#include "QMath.h"
 
 AssetManager::AssetManager() {}
 
@@ -119,7 +120,8 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 					QMath::angleAxisRotation(transformElement->FloatAttribute("angleDeg"), Vec3(transformElement->FloatAttribute("axisx"), transformElement->FloatAttribute("axisy"), transformElement->FloatAttribute("axisz"))),
 					//Quaternion(transformElement->FloatAttribute("qw"), transformElement->FloatAttribute("qx"), transformElement->FloatAttribute("qy"), transformElement->FloatAttribute("qz")),  //quaternions
 					Vec3(transformElement->FloatAttribute("scalex"), transformElement->FloatAttribute("scaley"), transformElement->FloatAttribute("scalez"))); //scale
-			} //think about prehab idea?
+				GetComponent<Actor>(currentElement->Attribute("name"))->setPrehab(false); //set the object to not be a prehab because it has a custom transform
+			}
 			if (currentElement->FirstChildElement("Shape") != nullptr) {
 				currentComponent = currentElement->FirstChildElement("Shape");
 				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<ShapeComponent>(GetComponent<ShapeComponent>(currentComponent->Attribute("name")));

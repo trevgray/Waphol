@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Actor.h"
+#include "AssetManager.h"
+#include "CameraActor.h"
 #include "LightActor.h"
 #include <unordered_map>
 
@@ -13,6 +15,7 @@ private:
 	//std::vector<Actor*> emptyActors;
 	//AssetManager* assetManager;
 public:
+	Ref<AssetManager> assetManager;
 	std::unordered_map <std::string, Ref<Actor>> actorGraph;
 	std::vector<Actor*> emptyActors;
 	virtual ~Scene() {
@@ -64,6 +67,37 @@ public:
 #endif
 		return std::dynamic_pointer_cast<ActorTemplate>(id->second);
 	}
+
+	void LoadNonPrehabActors() {
+		for (auto& component : assetManager->componentGraph) {
+			Actor* actor = dynamic_cast<Actor*>(component.second.get());
+			if (actor != nullptr && actor->getPrehab() == false) {
+				AddActor<Actor>(component.first, new Actor(nullptr));
+				GetActor<Actor>(component.first)->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<Actor>(component.first)->OnCreate(); 
+			}
+			actor = dynamic_cast<CameraActor*>(component.second.get());
+			if (actor != nullptr && actor->getPrehab() == false) {
+				AddActor<CameraActor>(component.first, new CameraActor(nullptr));
+				GetActor<CameraActor>()->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<CameraActor>()->OnCreate();
+			}
+			actor = dynamic_cast<LightActor*>(component.second.get());
+			if (actor != nullptr && actor->getPrehab() == false) {
+				AddActor<LightActor>(component.first, new CameraActor(nullptr));
+				GetActor<LightActor>()->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<LightActor>()->OnCreate();
+			}
+		}
+	}
+
+	void LoadAssetManager(std::string XMLFile_, std::string SceneName_) {
+		assetManager = std::make_shared<AssetManager>();
+		assetManager->BuildSceneAssets(XMLFile_, SceneName_);
+		assetManager->OnCreate();
+	}
+
+
 
 	//template<typename ComponentTemplate> Ref<ComponentTemplate> GetComponent(int objectNum) const { //old version that used array indices to get specific actors
 	//	if (dynamic_cast<ComponentTemplate*>(actorGraph[objectNum].get())) { //check if it is the type we want
