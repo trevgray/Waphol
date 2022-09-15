@@ -38,7 +38,7 @@ bool Scene4::OnCreate() {
 	for (int x = 0; x <= 11; x++) {
 		checkerName = "RedChecker" + std::to_string(x);;
 		AddActor<Actor>(checkerName, new Actor(GetActor<Actor>("CheckerBoardActor").get()));
-		GetActor<Actor>(checkerName)->InheritActor(assetManager->GetComponent<Actor>("RedCheckerActor"));
+		GetActor<Actor>(checkerName)->InheritActor(GetAssetManager()->GetComponent<Actor>("RedCheckerActor"));
 		GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-4.5f + RowX, -4.3f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
 		GetActor<Actor>(checkerName)->OnCreate();
 		RowX += 2.55f;
@@ -56,7 +56,7 @@ bool Scene4::OnCreate() {
 	for (int x = 0; x <= 11; x++) {
 		checkerName = "BlackChecker" + std::to_string(x);
 		AddActor<Actor>(checkerName, new Actor (GetActor<Actor>("CheckerBoardActor").get()));
-		GetActor<Actor>(checkerName)->InheritActor(assetManager->GetComponent<Actor>("BlackCheckerActor"));
+		GetActor<Actor>(checkerName)->InheritActor(GetAssetManager()->GetComponent<Actor>("BlackCheckerActor"));
 		GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-3.225f + RowX, 4.4f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
 		GetActor<Actor>(checkerName)->OnCreate();
 		RowX += 2.55f;
@@ -130,10 +130,10 @@ void Scene4::Render() const {
 	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<CameraActor>()->GetMatriciesID());
 	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<LightActor>()->GetLightID());
 
-	glUseProgram(assetManager->GetComponent<ShaderComponent>("TextureShader")->GetProgram());
+	glUseProgram(GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetProgram());
 
 	for (auto actor : GetActorGraph()) {
-		glUniformMatrix4fv(assetManager->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
+		glUniformMatrix4fv(GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
 		if (actor.second->GetComponent<MaterialComponent>() != nullptr) { //everything is an actor, so i just check if it has a texture
 			glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); //this is also amazing because we can add as many actors as we want, and the render does not need to change
 			actor.second->GetComponent<MeshComponent>()->Render(GL_TRIANGLES);

@@ -8,16 +8,12 @@
 
 union SDL_Event;
 
-class Scene{
+class Scene {
 private:
-	//std::vector<Ref<Component>> actors; //make an unordered map
-	//std::unordered_map <std::string, Ref<Actor>> actorGraph;
-	//std::vector<Actor*> emptyActors;
-	//AssetManager* assetManager;
-public:
 	Ref<AssetManager> assetManager;
 	std::unordered_map <std::string, Ref<Actor>> actorGraph;
 	std::vector<Actor*> emptyActors;
+public:
 	virtual ~Scene() {
 		for (Actor* actor : emptyActors) {
 			delete actor;
@@ -69,7 +65,7 @@ public:
 	}
 
 	void LoadNonPrehabActors() {
-		for (auto& component : assetManager->componentGraph) {
+		for (auto& component : assetManager->GetComponentGraph()) {
 			Actor* actor = dynamic_cast<Actor*>(component.second.get());
 			if (actor != nullptr && actor->getPrehab() == false) {
 				AddActor<Actor>(component.first, new Actor(nullptr));
@@ -96,6 +92,8 @@ public:
 		assetManager->BuildSceneAssets(XMLFile_, SceneName_);
 		assetManager->OnCreate();
 	}
+
+	Ref<AssetManager> GetAssetManager() const { return assetManager; }
 
 
 
