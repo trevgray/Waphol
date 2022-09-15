@@ -62,9 +62,9 @@ void Actor::ListComponents() const {
 }
 
 void Actor::InheritActor(Ref<Actor> inheritActor) {
-	/*if (parent) {
+	if (parent) {
 		parent = inheritActor.get()->parent;
-	}*/
+	}
 	for (auto component : inheritActor->GetComponentVector()) {
 		components.push_back(component);
 	}

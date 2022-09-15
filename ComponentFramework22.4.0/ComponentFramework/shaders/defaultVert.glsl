@@ -6,11 +6,13 @@ layout(location = 0) in vec3 inVertex;
 layout(location = 1) in vec3 inNormal;
 layout(location = 2) in vec2 inUVCoord;
 
-layout(location = 0) uniform mat4 projectionMatrix;
-layout(location = 1) uniform mat4 viewMatrix;
+layout (std140, binding = 0) uniform CameraMatrices { //binding was = 0 & we are using std140
+    mat4 projection;
+    mat4 view;
+};
 layout(location = 2) uniform mat4 modelMatrix;
 
 
 void main() {
-    gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(inVertex, 1.0);
+    gl_Position = projection * view * modelMatrix * vec4(inVertex, 1.0);
 }

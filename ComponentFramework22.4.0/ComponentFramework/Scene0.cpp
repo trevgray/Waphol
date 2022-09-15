@@ -39,10 +39,6 @@ bool Scene0::OnCreate()
 		GetActor<Actor>(name)->OnCreate();
 	}
 
-	//AddActor<Actor>("Actor1", new Actor(GetActor<Actor>("CheckerBoardActor").get()));
-	//GetActor<Actor>("Actor1")->InheritActor(assetManager->GetComponent<Actor>("ActorChecker1"));
-	//GetActor<Actor>("Actor1")->OnCreate();
-
 	return true;
 }
 

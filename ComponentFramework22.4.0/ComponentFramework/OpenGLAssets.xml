@@ -7,6 +7,11 @@
 		  <Sphere radius ="1.0" centreX="0.0" centreY="0.0" centreZ="0.0"/>
 	  </Component>
 
+	  <Component name = "CheckerCylinderShape">
+		  <Type type = "Shape"/>
+		  <Cylinder radius ="3.7" topX="0.15" topY="-0.15" topZ="2.7" bottomX="0.15" bottomY="-0.15" bottomZ="0.0" />
+	  </Component>
+
 	  <Component name = "MarioMesh">
 		  <Type type = "Mesh"/>
 		  <Mesh filename = "meshes/Mario.obj"/>
@@ -74,7 +79,7 @@
 	  <Actor name = "ActorChecker1" parent="CheckerBoardActor">
 		  <Mesh name = "CheckerPieceMesh"/>
 		  <Material name = "RedCheckerTexture"/>
-		  <Shape name ="SkullSphereShape"/>
+		  <Shape name ="CheckerCylinderShape"/>
 		  <Transform posx="-4.5" posy="-4.5" posz="0.0"
 			 angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0"
 			 scalex="0.15" scaley="0.15" scalez="0.15"/>
@@ -83,7 +88,7 @@
 	  <Actor name = "ActorChecker2" parent="CheckerBoardActor">
 		  <Mesh name = "CheckerPieceMesh"/>
 		  <Material name = "BlackCheckerTexture"/>
-		  <Shape name ="SkullSphereShape"/>
+		  <Shape name ="CheckerCylinderShape"/>
 		  <Transform posx="4.5" posy="4.5" posz="0.0"
 					 angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0"
 					 scalex="0.15" scaley="0.15" scalez="0.15"/>
@@ -92,7 +97,7 @@
 	  <Actor name = "ActorDefaultChecker" parent="null">
 		  <Mesh name = "CheckerPieceMesh"/>
 		  <Material name = "BlackCheckerTexture"/>
-		  <Shape name ="SkullSphereShape"/>
+		  <Shape name ="CheckerCylinderShape"/>
 		  <Transform posx="-8.0" posy="0.0" posz="-4.0"
 					 angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0"
 					 scalex="0.1" scaley="0.1" scalez="0.1"/>
@@ -101,7 +106,7 @@
 	  <Actor name = "ActorTinyChecker" parent="null">
 		  <Mesh name = "CheckerPieceMesh"/>
 		  <Material name = "WhiteCheckerTexture"/>
-		  <Shape name ="SkullSphereShape"/>
+		  <Shape name ="CheckerCylinderShape"/>
 		  <Transform posx="-3.0" posy="0.0" posz="-16"
 					 angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0"
 					 scalex="0.05" scaley="0.05" scalez="0.05"/>

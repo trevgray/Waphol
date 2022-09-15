@@ -16,8 +16,9 @@ void Sphere::generateVerticesAndNormals()
 			MATH::Matrix3 rotationMatrix;
 			rotationMatrix = MATH::MMath::rotate(deltaPhi, Vec3(0.0f, 1.0f, 0.0f));
 			circle = rotationMatrix * circle;
-			vertices.push_back(circle);
-			normals.push_back(circle - Vec3(x, y, z));
+
+			vertices.push_back(circle + Vec3(x,y,z));
+			normals.push_back(circle);
 		}
 	}
 }

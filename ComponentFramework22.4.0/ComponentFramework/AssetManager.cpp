@@ -86,7 +86,7 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 			else if (componentType == "Shader") { //create shader component
 				AddComponent<ShaderComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
 			}
-			else if (componentType == "Shape") { //create shader component
+			else if (componentType == "Shape") { //create shape component
 				AddShapeComponent(currentElement);
 			}
 			if (currentElement == sceneRoot->LastChildElement("Component")) { //stopping looping when the current element is the last element in Scene Scope - sceneRoot->LastChild() will also work, but stopping at the last component should be faster
@@ -103,7 +103,8 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 		std::string actorCheck = currentElement->Name();
 		if (actorCheck == "Actor") { //check if the element is a actor
 			Component* parentActor = nullptr;
-			if (currentElement->FirstChildElement("parent") != nullptr) { //check if the actor has a parent
+			std::string parentCheck = currentElement->Attribute("parent");
+			if (parentCheck != "null") { //check if the actor has a parent
 				parentActor = GetComponent<Component>(currentElement->Attribute("parent")).get(); //set the parent of the actor
 			}
 			AddComponent<Actor>(currentElement->Attribute("name"), parentActor); //make the actor
@@ -136,7 +137,14 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 void AssetManager::AddShapeComponent(tinyxml2::XMLElement* AddShapeComponent) {
 	if (AddShapeComponent->FirstChildElement("Sphere") != nullptr) {
 		tinyxml2::XMLElement* Sphere = AddShapeComponent->FirstChildElement("Sphere");
-		AddComponent<ShapeComponent>(AddShapeComponent->Attribute("name"), nullptr, GEOMETRY::Sphere(Sphere->FloatAttribute("centreX"), Sphere->FloatAttribute("centreY"), Sphere->FloatAttribute("centreZ"), Sphere->FloatAttribute("radius")));
-		Sphere = nullptr;
+		AddComponent<ShapeComponent>(AddShapeComponent->Attribute("name"), nullptr, GEOMETRY::Sphere(Sphere->FloatAttribute("centreX"), 
+			Sphere->FloatAttribute("centreY"), Sphere->FloatAttribute("centreZ"), Sphere->FloatAttribute("radius")));
+		//Sphere = nullptr;
+	}
+	else if (AddShapeComponent->FirstChildElement("Cylinder") != nullptr) {
+		tinyxml2::XMLElement* Cylinder = AddShapeComponent->FirstChildElement("Cylinder");
+		AddComponent<ShapeComponent>(AddShapeComponent->Attribute("name"), nullptr, GEOMETRY::Cylinder(Cylinder->FloatAttribute("radius"), 
+			Vec3(Cylinder->FloatAttribute("topX"), Cylinder->FloatAttribute("topY"), Cylinder->FloatAttribute("topZ")), 
+			Vec3(Cylinder->FloatAttribute("bottomX"), Cylinder->FloatAttribute("bottomY"), Cylinder->FloatAttribute("bottomZ"))));
 	}
 }

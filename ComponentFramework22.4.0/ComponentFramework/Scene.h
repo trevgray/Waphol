@@ -1,5 +1,4 @@
-#ifndef SCENE_H
-#define SCENE_H
+#pragma once
 
 #include "Actor.h"
 #include "LightActor.h"
@@ -10,11 +9,12 @@ union SDL_Event;
 class Scene{
 private:
 	//std::vector<Ref<Component>> actors; //make an unordered map
-	std::unordered_map <std::string, Ref<Actor>> actorGraph;
-	std::vector<Actor*> emptyActors;
+	//std::unordered_map <std::string, Ref<Actor>> actorGraph;
+	//std::vector<Actor*> emptyActors;
 	//AssetManager* assetManager;
 public:
-	//std::unordered_map <std::string, Ref<Actor>> actorGraph;
+	std::unordered_map <std::string, Ref<Actor>> actorGraph;
+	std::vector<Actor*> emptyActors;
 	virtual ~Scene() {
 		for (Actor* actor : emptyActors) {
 			delete actor;
@@ -37,7 +37,6 @@ public:
 		Ref<ActorTemplate> t = std::make_shared<ActorTemplate>(std::forward<Args>(args_)...);
 		actorGraph[name] = t;
 		RemovePointer(std::forward<Args>(args_)...);
-		//write a function that removes the pointer
 	}
 
 	void RemovePointer(Actor* removeActor) {
@@ -73,4 +72,3 @@ public:
 	//	return nullptr;
 	//}
 };
-#endif

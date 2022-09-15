@@ -4,6 +4,7 @@
 #include "Component.h"
 #include "Shape.h"
 #include "Sphere.h"
+#include "Cylinder.h"
 
 enum class ShapeType {
 	sphere,
@@ -20,8 +21,8 @@ class ShapeComponent: public Component{
 	ShapeComponent& operator = (ShapeComponent&&) = delete;
 
 public:
-	ShapeComponent(Component* parent_, GEOMETRY::Sphere);
-	//ShapeComponent(Component*, GEOMETRY::Cylinder); (TODO)
+	ShapeComponent(Component* parent_, GEOMETRY::Sphere sphere_);
+	ShapeComponent(Component* parent_, GEOMETRY::Cylinder cylinder_);
 	//ShapeComponent(Component*, GEOMETRY::Capsule);  (TODO)
 	//ShapeComponent(Component*, GEOMETRY::Box); (TODO)
 
