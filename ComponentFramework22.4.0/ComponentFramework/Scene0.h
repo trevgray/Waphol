@@ -8,7 +8,6 @@
 
 struct Scene0 : public Scene
 {
-
 	bool renderMeshes = true;
 	bool renderCollisionShapes = true;
 	explicit Scene0() {};

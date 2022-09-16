@@ -1,0 +1,59 @@
+#include "Capsule.h"
+#include "Matrix.h"
+#include "MMath.h"
+
+using namespace MATH;
+using namespace GEOMETRY;
+
+float GEOMETRY::Capsule::calculateHeight() { //using Pythagoras Theorem to find the height of the capsule
+	//abs(capCentrePosB.z - capCentrePosA.z);
+	float xSquared = abs(sphereCentrePosA.x - sphereCentrePosB.x) * (abs(sphereCentrePosA.x - sphereCentrePosB.x));
+	float ySquared = abs(sphereCentrePosA.y - sphereCentrePosB.y) * (abs(sphereCentrePosA.y - sphereCentrePosB.y));
+	float zSquared = abs(sphereCentrePosA.z - sphereCentrePosB.z) * (abs(sphereCentrePosA.z - sphereCentrePosB.z));
+	return (sqrt(xSquared + ySquared + zSquared) + (r * 2));
+}
+
+MATH::Vec3 GEOMETRY::Capsule::getNormalizedVector() { //returns the normalized vector that represents the axis
+	MATH::Vec3 normalizedVector;
+	normalizedVector.x = abs(sphereCentrePosA.x - sphereCentrePosB.x);
+	normalizedVector.y = abs(sphereCentrePosA.y - sphereCentrePosB.y);
+	normalizedVector.z = abs(sphereCentrePosA.z - sphereCentrePosB.z);
+	normalizedVector = VMath::normalize(normalizedVector);
+	return normalizedVector;
+}
+
+void GEOMETRY::Capsule::generateVerticesAndNormals() {
+	const float height = calculateHeight(); //get the height
+	//every variable with delta determines how often vertices are placed to make the "mesh" of the primitive
+	const float deltaTheta = 360.0f / 180.0f; //(360.0f / 180.0f) places a vertex every 2 degrees of the circle
+	const float deltaHeight = height / 10; //(height / 10) places ten sets of circles to represent the cylinder in the z axis
+
+	Vec3 circle(0.0f, 0.0f, 0.0f); //make a vector to represent the circles in the visuals
+
+	//put a vertex in the center of the top and the bottom of the cylinder
+	vertices.push_back(sphereCentrePosA);
+	normals.push_back(sphereCentrePosA);
+	vertices.push_back(sphereCentrePosB);
+	normals.push_back(sphereCentrePosB);
+
+	Vec3 normal = getNormalizedVector(); //get the normalized vector
+	//cylinder top & bottom
+	for (int cylinderCap = 0; cylinderCap != 2; cylinderCap++) { //this runs the loop twice
+		
+	}
+
+	circle = Vec3(r, 0.0f, 0.0f); //set the circle to have the radius as the y value
+
+
+	//cylinder wall 
+	for (float currentLayer = 0.0f; currentLayer <= height; currentLayer += deltaHeight) { //run 10 times and move the circles z by the deltaHeight
+		for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) { //this can changed to any loop that loops 180 times
+			MATH::Matrix3 rotationMatrix;
+			rotationMatrix = MATH::MMath::rotate(deltaTheta, normal); //rotate the vertex by deltaTheta along the normal of the cylinder
+			circle = rotationMatrix * circle; //update the circle with the rotation
+			vertices.push_back(circle + (sphereCentrePosA + sphereCentrePosB)); //move the vertex point based on the position of the shape
+			normals.push_back(circle);
+		}
+		circle.y = -currentLayer; //update the layer in the circle
+	}
+}

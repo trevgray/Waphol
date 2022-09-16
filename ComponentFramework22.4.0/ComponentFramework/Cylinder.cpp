@@ -58,7 +58,7 @@ void Cylinder::generateVerticesAndNormals()
 		}
 	}
 
-	circle = Vec3(0.0f, r, 0.0f); //set the circle to have the radius as the y value
+	circle = Vec3(normal.z * r, normal.x * r, normal.y * r); //set the circle to have the radius as the y value
 
 
 	//cylinder wall 
@@ -70,6 +70,7 @@ void Cylinder::generateVerticesAndNormals()
 			vertices.push_back(circle + (capCentrePosA + capCentrePosB)); //move the vertex point based on the position of the shape
 			normals.push_back(circle);
 		}
+
 		circle.z = -currentLayer; //update the layer in the circle
 	}
 }

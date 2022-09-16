@@ -5,6 +5,7 @@
 #include "Shape.h"
 #include "Sphere.h"
 #include "Cylinder.h"
+#include "Capsule.h"
 
 enum class ShapeType {
 	sphere,
@@ -23,7 +24,7 @@ class ShapeComponent: public Component{
 public:
 	ShapeComponent(Component* parent_, GEOMETRY::Sphere sphere_);
 	ShapeComponent(Component* parent_, GEOMETRY::Cylinder cylinder_);
-	//ShapeComponent(Component*, GEOMETRY::Capsule);  (TODO)
+	ShapeComponent(Component* parent_, GEOMETRY::Capsule capsule_);
 	//ShapeComponent(Component*, GEOMETRY::Box); (TODO)
 
 	Ref<GEOMETRY::Shape> shape;

@@ -149,4 +149,10 @@ void AssetManager::AddShapeComponent(tinyxml2::XMLElement* AddShapeComponent) {
 			Vec3(Cylinder->FloatAttribute("topX"), Cylinder->FloatAttribute("topY"), Cylinder->FloatAttribute("topZ")), 
 			Vec3(Cylinder->FloatAttribute("bottomX"), Cylinder->FloatAttribute("bottomY"), Cylinder->FloatAttribute("bottomZ"))));
 	}
+	else if (AddShapeComponent->FirstChildElement("Capsule") != nullptr) {
+		tinyxml2::XMLElement* Capsule = AddShapeComponent->FirstChildElement("Capsule");
+		AddComponent<ShapeComponent>(AddShapeComponent->Attribute("name"), nullptr, GEOMETRY::Capsule(Capsule->FloatAttribute("radius"),
+			Vec3(Capsule->FloatAttribute("topSphereX"), Capsule->FloatAttribute("topSphereY"), Capsule->FloatAttribute("topSphereZ")),
+			Vec3(Capsule->FloatAttribute("bottomSphereX"), Capsule->FloatAttribute("bottomSphereY"), Capsule->FloatAttribute("bottomSphereZ"))));
+	}
 }

@@ -26,7 +26,7 @@ public:
 
 	std::unordered_map <std::string, Ref<Actor>> GetActorGraph() const{ return actorGraph; }
 
-	template<typename ActorTemplate, typename ... Args> void AddActor(std::string name, Args&& ... args_) { //rename to AddActor - also use actortemplate
+	template<typename ActorTemplate, typename ... Args> void AddActor(std::string name, Args&& ... args_) {
 		Ref<ActorTemplate> t = std::make_shared<ActorTemplate>(std::forward<Args>(args_)...);
 		actorGraph[name] = t;
 		RemovePointer(std::forward<Args>(args_)...);

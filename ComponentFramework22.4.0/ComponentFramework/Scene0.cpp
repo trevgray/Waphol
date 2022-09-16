@@ -77,18 +77,18 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 
 			// Loop through all the actors and check if the ray has collided with them
 			// Pick the one with the smallest positive t value
-			//for (auto it = actors.begin(); it != actors.end(); ++it) {
-			//	Ref<Actor> actor = std::dynamic_pointer_cast<Actor>(it->second);
-			//	Ref<TransformComponent> transformComponent = actor->GetComponent <TransformComponent>();
-			//	Ref<ShapeComponent> shapeComponent = actor->GetComponent <ShapeComponent>();
-			//	if (shapeComponent->shapeType == ShapeType::sphere
-			//		//|| shapeComponent->shapeType == ShapeType::cylinder (TODO)
-			//		//|| shapeComponent->shapeType == ShapeType::capsule (TODO)
-			//		//|| shapeComponent->shapeType == ShapeType::box (TODO)
-			//		) {
-			//		// TODO: Transform the ray into the local space of the object and check if a collision occured
-			//	}
-			//}
+			/*for (auto it = actors.begin(); it != actors.end(); ++it) {
+				Ref<Actor> actor = std::dynamic_pointer_cast<Actor>(it->second);
+				Ref<TransformComponent> transformComponent = actor->GetComponent <TransformComponent>();
+				Ref<ShapeComponent> shapeComponent = actor->GetComponent <ShapeComponent>();
+				if (shapeComponent->shapeType == ShapeType::sphere
+					//|| shapeComponent->shapeType == ShapeType::cylinder (TODO)
+					//|| shapeComponent->shapeType == ShapeType::capsule (TODO)
+					//|| shapeComponent->shapeType == ShapeType::box (TODO)
+					) {
+					// TODO: Transform the ray into the local space of the object and check if a collision occurred
+				}
+			}*/
 		}
 		break;
 
@@ -98,8 +98,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 
 }
 
-void Scene0::Update(const float deltaTime)
-{
+void Scene0::Update(const float deltaTime) {
 }
 
 void Scene0::Render() const

@@ -149,6 +149,7 @@
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="CameraActor.cpp" />
+    <ClCompile Include="Capsule.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EMath.cpp" />
@@ -177,6 +178,7 @@
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AxisAngle.h" />
     <ClInclude Include="CameraActor.h" />
+    <ClInclude Include="Capsule.h" />
     <ClInclude Include="Component.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Debug.h" />

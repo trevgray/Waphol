@@ -1,8 +1,8 @@
-Thu Sep 15 14:56:43 2022
+Fri Sep 16 13:54:27 2022
 [INFO]: Starting the SceneManager
-[INFO]: OpenGL version: 4.6.0 NVIDIA 472.12
+[INFO]: OpenGL version: 4.6.0 NVIDIA 516.94
 [INFO]: Graphics card vendor NVIDIA Corporation
-[INFO]: Graphics card name NVIDIA GeForce GTX 970M/PCIe/SSE2
+[INFO]: Graphics card name NVIDIA GeForce RTX 2070 SUPER/PCIe/SSE2
 [INFO]: GLSL Version 4.60 NVIDIA
 [INFO]: Creating values for CameraActor: 
 [INFO]: Uniforms:
