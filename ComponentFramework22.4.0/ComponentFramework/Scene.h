@@ -1,26 +1,19 @@
-#ifndef SCENE_H
-#define SCENE_H
+#pragma once
 
 #include "Actor.h"
+#include "AssetManager.h"
+#include "CameraActor.h"
 #include "LightActor.h"
 #include <unordered_map>
 
 union SDL_Event;
 
-class Scene{
+class Scene {
 private:
-	//std::vector<Ref<Component>> actors; //make an unordered map
+	Ref<AssetManager> assetManager;
 	std::unordered_map <std::string, Ref<Actor>> actorGraph;
-	std::vector<Actor*> emptyActors;
-	//AssetManager* assetManager;
 public:
-	//std::unordered_map <std::string, Ref<Actor>> actorGraph;
-	virtual ~Scene() {
-		for (Actor* actor : emptyActors) {
-			delete actor;
-		}
-		emptyActors.clear();
-	}
+	virtual ~Scene() {};
 	virtual bool OnCreate() = 0;
 	virtual void OnDestroy() = 0;
 	virtual void Update(const float deltaTime) = 0;
@@ -33,15 +26,14 @@ public:
 
 	std::unordered_map <std::string, Ref<Actor>> GetActorGraph() const{ return actorGraph; }
 
-	template<typename ActorTemplate, typename ... Args> void AddActor(std::string name, Args&& ... args_) { //rename to AddActor - also use actortemplate
+	template<typename ActorTemplate, typename ... Args> void AddActor(std::string name, Args&& ... args_) {
 		Ref<ActorTemplate> t = std::make_shared<ActorTemplate>(std::forward<Args>(args_)...);
 		actorGraph[name] = t;
 		RemovePointer(std::forward<Args>(args_)...);
-		//write a function that removes the pointer
 	}
 
 	void RemovePointer(Actor* removeActor) {
-		emptyActors.push_back(removeActor);
+		delete removeActor;
 		//std::cout << "  " << removeActor << std::endl;
 	}
 
@@ -66,6 +58,39 @@ public:
 		return std::dynamic_pointer_cast<ActorTemplate>(id->second);
 	}
 
+	void LoadNonPrehabActors() {
+		for (auto& component : assetManager->GetComponentGraph()) {
+			Actor* actor = dynamic_cast<Actor*>(component.second.get());
+			if (actor != nullptr && actor->getPrehab() == false) {
+				AddActor<Actor>(component.first, new Actor(nullptr));
+				GetActor<Actor>(component.first)->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<Actor>(component.first)->OnCreate(); 
+			}
+			actor = dynamic_cast<CameraActor*>(component.second.get());
+			if (actor != nullptr && actor->getPrehab() == false) {
+				AddActor<CameraActor>(component.first, new CameraActor(nullptr));
+				GetActor<CameraActor>()->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<CameraActor>()->OnCreate();
+			}
+			actor = dynamic_cast<LightActor*>(component.second.get());
+			if (actor != nullptr && actor->getPrehab() == false) {
+				AddActor<LightActor>(component.first, new CameraActor(nullptr));
+				GetActor<LightActor>()->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<LightActor>()->OnCreate();
+			}
+		}
+	}
+
+	void LoadAssetManager(std::string XMLFile_, std::string SceneName_) {
+		assetManager = std::make_shared<AssetManager>();
+		assetManager->BuildSceneAssets(XMLFile_, SceneName_);
+		assetManager->OnCreate();
+	}
+
+	Ref<AssetManager> GetAssetManager() const { return assetManager; }
+
+
+
 	//template<typename ComponentTemplate> Ref<ComponentTemplate> GetComponent(int objectNum) const { //old version that used array indices to get specific actors
 	//	if (dynamic_cast<ComponentTemplate*>(actorGraph[objectNum].get())) { //check if it is the type we want
 	//		return std::dynamic_pointer_cast<ComponentTemplate>(actorGraph[objectNum]);
@@ -73,4 +98,3 @@ public:
 	//	return nullptr;
 	//}
 };
-#endif

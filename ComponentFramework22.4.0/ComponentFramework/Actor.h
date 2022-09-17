@@ -14,6 +14,8 @@ class Actor: public Component {
 private:
 	std::vector<Ref<Component>> components;
 	Matrix4 modelMatrix;
+protected:
+	bool prehab;
 public:
 	Actor(Component* parent_);
 	~Actor();
@@ -85,4 +87,6 @@ public:
 	void InheritActor(Ref<Actor> inheritActor);
 	Matrix4 GetModelMatrix();
 	void setModelMatrix(Matrix4 modelMatrix_) { modelMatrix = modelMatrix_; }
+	void setPrehab(bool setPrehab) { prehab = setPrehab; }
+	bool getPrehab() { return prehab; }
 };

@@ -6,123 +6,125 @@
 #include "MMath.h"
 #include "Debug.h"
 #include "TransformComponent.h"
-#include "MeshComponent.h"
-#include "ShaderComponent.h"
 #include "MaterialComponent.h"
 #include "QMath.h"
+#include "ShaderComponent.h"
+#include "MeshComponent.h"
+#include "ShapeComponent.h"
 
-Scene0::Scene0(): camera(nullptr), dryBowser(nullptr), light(nullptr) {
-	Debug::Info("Created Scene0: ", __FILE__, __LINE__);
-	tinkCounter = 0.0f;
-}
+bool Scene0::OnCreate()
+{
+	LoadAssetManager("OpenGLAssets.xml", "Scene0");
+	LoadNonPrehabActors();
 
-Scene0::~Scene0() {
-	Debug::Info("Deleted Scene0: ", __FILE__, __LINE__);
-	
-}
-
-bool Scene0::OnCreate() {
-	Debug::Info("Loading assets Scene0: ", __FILE__, __LINE__);
-	camera = new CameraActor(nullptr);
-	camera->AddComponent<TransformComponent>(nullptr,Vec3(0.0f,0.0f,-5.0f), Quaternion());
-	camera->OnCreate();
-
-	light = new LightActor(nullptr, LightStyle::DirectionLight, Vec3(0.0f,0.0f,0.0f), Vec4(0.8f,0.8f,0.8f,0.0f));
-	light->OnCreate();
-
-	dryBowser = new Actor(nullptr);
-	dryBowser->AddComponent<TransformComponent>(nullptr, Vec3(0.0f, -1.0f, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.1f,0.1f,0.1f));
-	dryBowser->AddComponent<MeshComponent>(nullptr, "meshes/dryBowser.obj");
-	dryBowser->AddComponent<ShaderComponent>(nullptr, "shaders/textureVert.glsl", "shaders/textureFrag.glsl");
-	dryBowser->AddComponent<MaterialComponent>(nullptr, "textures/DryKoopaAll.png");
-	dryBowser->OnCreate();
-
-	hammer = new Actor(dryBowser);
-	hammer->AddComponent<TransformComponent>(nullptr, Vec3(10.0f, 4.0f, 0.0f), Quaternion(0.50f, 0.50f, 0.71f, 0.0f), Vec3(10.0f, 10.0f, 10.0f));
-	hammer->AddComponent<MeshComponent>(nullptr, "meshes/Hammer.obj");
-	hammer->AddComponent<MaterialComponent>(nullptr, "textures/hammer_BaseColor.png");
-	hammer->OnCreate();
+	//std::vector<std::string> names{
+	//	"CheckerBoardActor", "ActorChecker1", "ActorChecker2",
+	//	"ActorDefaultChecker", "ActorTinyChecker", "ActorSkull",
+	//	"ActorCube", "ActorCube2",
+	//	"ActorMario"
+	//};
+	//for (const auto& name : names) {
+	//	auto asset = assetManager->componentGraph.find(name);
+	//	AddActor<Actor>(name, new Actor(nullptr));
+	//	GetActor<Actor>(name)->InheritActor(assetManager->GetComponent<Actor>(name.c_str()));
+	//	GetActor<Actor>(name)->OnCreate();
+	//}
 
 	return true;
 }
 
-void Scene0::OnDestroy() {
-	Debug::Info("Deleting assets Scene0: ", __FILE__, __LINE__);
-	if (camera) delete camera;
-	if (dryBowser) delete dryBowser;
-	if (light) delete light;
+void Scene0::OnDestroy()
+{
+	
 }
 
-void Scene0::HandleEvents(const SDL_Event &sdlEvent) {
-	switch( sdlEvent.type ) {
-    case SDL_KEYDOWN:
-		//if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LEFT) {
-		//	camera->GetComponent<TransformComponent>()->SetPosition(camera->GetComponent<TransformComponent>()->GetPosition() + Vec3(1.0, 0.0, 0.0));
-		//	camera->UpdateViewMatrix();
-		//}
-		//else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
-		//	camera->GetComponent<TransformComponent>()->SetPosition(camera->GetComponent<TransformComponent>()->GetPosition() + Vec3(-1.0, 0.0, 0.0));
-		//	camera->UpdateViewMatrix();
-		//}
-		//else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_UP) {
-		//	camera->GetComponent<TransformComponent>()->SetPosition(camera->GetComponent<TransformComponent>()->GetPosition() + Vec3(0.0, 0.0, 1.0));
-		//	camera->UpdateViewMatrix();
-		//}
-		//else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_DOWN) {
-		//	camera->GetComponent<TransformComponent>()->SetPosition(camera->GetComponent<TransformComponent>()->GetPosition() + Vec3(0.0, 0.0, -1.0));
-		//	camera->UpdateViewMatrix();
-		//}
-		//else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
-		//	dryBowser->GetComponent<TransformComponent>()->SetTransform(dryBowser->GetComponent<TransformComponent>()->GetPosition(), dryBowser->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)), Vec3(0.1f, 0.1f, 0.1f));
-		//}
-		//else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Q) {
-		//	dryBowser->GetComponent<TransformComponent>()->SetTransform(dryBowser->GetComponent<TransformComponent>()->GetPosition(), dryBowser->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)), Vec3(0.1f, 0.1f, 0.1f));
-		//}
+
+void Scene0::HandleEvents(const SDL_Event& sdlEvent)
+{
+	switch (sdlEvent.type) {
+	case SDL_KEYDOWN:
+		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LEFT) {
+			GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(1.0, 0.0, 0.0));
+			GetActor<CameraActor>()->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
+			GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(-1.0, 0.0, 0.0));
+			GetActor<CameraActor>()->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_UP) {
+			GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(0.0, 0.0, 1.0));
+			GetActor<CameraActor>()->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_DOWN) {
+			GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(0.0, 0.0, -1.0));
+			GetActor<CameraActor>()->UpdateViewMatrix();
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_M) {
+			renderMeshes = !renderMeshes;
+		}
+		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_C) {
+			renderCollisionShapes = !renderCollisionShapes;
+		}
+
 		break;
+		
+	case SDL_MOUSEBUTTONDOWN:
+		if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+			Vec3 mouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y), 0.0f);
+			// TODO: get a ray pointing into the world
+			// We have the x, y pixel coordinates
+			// Need to convert this into world space to build our ray
 
-	case SDL_MOUSEMOTION:          
+			// Loop through all the actors and check if the ray has collided with them
+			// Pick the one with the smallest positive t value
+			/*for (auto it = actors.begin(); it != actors.end(); ++it) {
+				Ref<Actor> actor = std::dynamic_pointer_cast<Actor>(it->second);
+				Ref<TransformComponent> transformComponent = actor->GetComponent <TransformComponent>();
+				Ref<ShapeComponent> shapeComponent = actor->GetComponent <ShapeComponent>();
+				if (shapeComponent->shapeType == ShapeType::sphere
+					//|| shapeComponent->shapeType == ShapeType::cylinder (TODO)
+					//|| shapeComponent->shapeType == ShapeType::capsule (TODO)
+					//|| shapeComponent->shapeType == ShapeType::box (TODO)
+					) {
+					// TODO: Transform the ray into the local space of the object and check if a collision occurred
+				}
+			}*/
+		}
 		break;
-
-	case SDL_MOUSEBUTTONDOWN:              
-		break; 
-
-	case SDL_MOUSEBUTTONUP:            
-	break;
 
 	default:
 		break;
-    }
+	}
+
 }
 
 void Scene0::Update(const float deltaTime) {
-	//tinkCounter += deltaTime; //used for angle - because sin(365 degrees) == sin(5 degrees) 
-	//dryBowser->GetComponent<TransformComponent>()->setRotation(QMath::angleAxisRotation(tinkCounter * 50, Vec3(0, 1, 0))); //used https://eater.net/quaternions to visualize Quaternions
 }
 
-void Scene0::Render() const {
+void Scene0::Render() const
+{
 	glEnable(GL_DEPTH_TEST);
-	/// Clear the screen
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	Ref<ShaderComponent> shader = dryBowser->GetComponent<ShaderComponent>();
-	Ref<MeshComponent> mesh = dryBowser->GetComponent<MeshComponent>();
-	Ref <MaterialComponent> texture = dryBowser->GetComponent<MaterialComponent>();
-	if (shader == nullptr || mesh == nullptr) {
-		return;
-	}
-	glUseProgram(shader->GetProgram());
-	glUniformMatrix4fv(shader->GetUniformID("modelMatrix"), 1, GL_FALSE, dryBowser->GetModelMatrix());
-	glBindBuffer(GL_UNIFORM_BUFFER, camera->GetMatriciesID());
-	glBindBuffer(GL_UNIFORM_BUFFER, light->GetLightID());
-	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
-	mesh->Render(GL_TRIANGLES);
+	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<CameraActor>()->GetMatriciesID());
+	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<LightActor>()->GetLightID());
 
-	mesh = hammer->GetComponent<MeshComponent>();
-	texture = hammer->GetComponent<MaterialComponent>();
-	glUniformMatrix4fv(shader->GetUniformID("modelMatrix"), 1, GL_FALSE, hammer->GetModelMatrix());
-	glBindTexture(GL_TEXTURE_2D, texture->getTextureID());
-	mesh->Render(GL_TRIANGLES);
+	glUseProgram(GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetProgram());
+
+	for (auto actor : GetActorGraph()) {
+		glUniformMatrix4fv(GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
+		if (actor.second->GetComponent<MaterialComponent>() != nullptr) { //everything is an actor, so i just check if it has a texture
+			glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); //this is also amazing because we can add as many actors as we want, and the render does not need to change
+			if (renderMeshes) {
+				actor.second->GetComponent<MeshComponent>()->Render(GL_TRIANGLES);
+			}
+			if (renderCollisionShapes) {
+				actor.second->GetComponent<ShapeComponent>()->Render();
+			}
+		}
+	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
 }
+

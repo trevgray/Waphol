@@ -1,14 +1,29 @@
-﻿  Scene4.cpp
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(51,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(51,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(57,98): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(57,85): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(62,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(62,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(70,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(70,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(75,99): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(75,87): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(80,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(80,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  ComponentFramework.vcxproj -> D:\GitHub\OpenGLComponentFramework\ComponentFramework22.4.0\Debug\ComponentFramework.exe
+﻿  Actor.cpp
+  AssetManager.cpp
+  CameraActor.cpp
+  Capsule.cpp
+  Cylinder.cpp
+  LightActor.cpp
+  MaterialComponent.cpp
+  MeshComponent.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\tiny_obj_loader.h(1665,27): warning C4018: '<': signed/unsigned mismatch
+  MouseMoveableComponent.cpp
+  Scene0.cpp
+  Scene4.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  SceneManager.cpp
+  ShaderComponent.cpp
+  Shape.cpp
+  ShapeComponent.cpp
+  Sphere.cpp
+  Timer.cpp
+  Window.cpp
+  Generating Code...
+  ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

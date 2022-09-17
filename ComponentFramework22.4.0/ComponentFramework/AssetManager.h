@@ -5,10 +5,14 @@
 #include "Component.h"
 #include "Actor.h"
 #include "Debug.h"
+#include "tinyxml2.h"
 
 class AssetManager {
 private:
+	//std::unordered_map <std::string, Ref<Component>> componentGraph;
 	std::unordered_map <std::string, Ref<Component>> componentGraph;
+
+	void AddShapeComponent(tinyxml2::XMLElement* AddShapeComponent);
 public:
 	AssetManager();
 	~AssetManager();
@@ -31,6 +35,8 @@ public:
 #endif
 		return std::dynamic_pointer_cast<ComponentTemplate>(id->second);
 	}
+
+	std::unordered_map <std::string, Ref<Component>> GetComponentGraph() { return componentGraph; }
 
 	//template<typename ComponentTemplate> void GenerateSingleArgumentAsset(std::string name, std::string filePath) { //there is probably a way to use one GenerateAsset method for all the assets with typename ... Args, but I don't want to do it right now
 	//	AddComponent<ComponentTemplate>(name, nullptr, filePath); //you could probably could read the # of arugments and AddComponent using ifs
