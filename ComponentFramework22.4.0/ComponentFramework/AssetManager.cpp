@@ -39,8 +39,18 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 		std::cout << XMLFile.ErrorIDToName(XMLFile.ErrorID()) << std::endl;
 		return;
 	}
-	tinyxml2::XMLElement* sceneRoot = XMLFile.RootElement()->FirstChildElement(SceneName_.c_str()); //getting root of the scene
-	tinyxml2::XMLElement* currentElement;
+	sceneRoot = XMLFile.RootElement()->FirstChildElement(SceneName_.c_str());
+
+	BuildCameraActor();
+	BuildLightActors();
+	BuildComponents();
+	BuildActors();
+	
+	//set everything to null
+	sceneRoot = nullptr; currentElement = nullptr;
+}
+
+void AssetManager::BuildCameraActor() {
 	//Camera Component
 	currentElement = sceneRoot->FirstChildElement("Camera"); //loading the camera
 	AddComponent<CameraActor>(currentElement->Attribute("name"), nullptr); //create the camera actor
@@ -49,34 +59,40 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 		Vec3(transformElement->FloatAttribute("posx"), transformElement->FloatAttribute("posy"), transformElement->FloatAttribute("posz")), //position
 		//Quaternion(transformElement->FloatAttribute("qw"), transformElement->FloatAttribute("qx"), transformElement->FloatAttribute("qy"), transformElement->FloatAttribute("qz"))); //quaternion
 		QMath::angleAxisRotation(transformElement->FloatAttribute("angleDeg"), Vec3(transformElement->FloatAttribute("axisx"), transformElement->FloatAttribute("axisy"), transformElement->FloatAttribute("axisz"))));
+}
+
+void AssetManager::BuildLightActors() {
 	//Light Loop - in Scene Scope
 	currentElement = sceneRoot->FirstChildElement("Light"); //loading first component from Scene Scope
 	bool lightLoop = true;
 	while (lightLoop) {
 		std::string lightCheck = currentElement->Name();
 		if (lightCheck == "Light") { //check if the element is a component
-		//Light loop
+			//Light loop
 			tinyxml2::XMLElement* locationElement = currentElement->FirstChildElement("Location"); //i did this for you to read, these are unnecessary
 			tinyxml2::XMLElement* colourElement = currentElement->FirstChildElement("Colour"); //but imagine if I didn't do it
 			tinyxml2::XMLElement* falloutElement = currentElement->FirstChildElement("Falloff");
 			AddComponent<LightActor>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("LightStyle")->Attribute("style"),
-			Vec3(locationElement->FloatAttribute("x"), locationElement->FloatAttribute("y"), locationElement->FloatAttribute("z")), //location
-			Vec4(colourElement->FloatAttribute("r"), colourElement->FloatAttribute("g"), colourElement->FloatAttribute("b"), colourElement->FloatAttribute("a")), //colour
-			currentElement->FirstChildElement("Intensity")->FloatAttribute("Intensity"), //intensity
-			Vec3(falloutElement->FloatAttribute("x"), falloutElement->FloatAttribute("y"), falloutElement->FloatAttribute("z"))); //fallout
+				Vec3(locationElement->FloatAttribute("x"), locationElement->FloatAttribute("y"), locationElement->FloatAttribute("z")), //location
+				Vec4(colourElement->FloatAttribute("r"), colourElement->FloatAttribute("g"), colourElement->FloatAttribute("b"), colourElement->FloatAttribute("a")), //colour
+				currentElement->FirstChildElement("Intensity")->FloatAttribute("Intensity"), //intensity
+				Vec3(falloutElement->FloatAttribute("x"), falloutElement->FloatAttribute("y"), falloutElement->FloatAttribute("z"))); //fallout
 			if (currentElement == sceneRoot->LastChildElement("Light")) { //stopping looping when the current element is the last element in Scene Scope - sceneRoot->LastChild() will also work, but stopping at the last component should be faster
 				lightLoop = false;
 			}
 		}
 		currentElement = currentElement->NextSiblingElement(); //loading the next component
 	}
+}
+
+void AssetManager::BuildComponents() {
 	//Component Loop - in Scene Scope
 	currentElement = sceneRoot->FirstChildElement("Component"); //loading first component from Scene Scope
 	bool componentLoop = true;
 	while (componentLoop) {
 		std::string componentCheck = currentElement->Name();
 		if (componentCheck == "Component") { //check if the element is a component
-		//component loop
+			//component loop
 			std::string componentType = currentElement->FirstChildElement("Type")->Attribute("type");
 			if (componentType == "Mesh") { //create mesh component
 				AddComponent<MeshComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Mesh")->Attribute("filename"));
@@ -88,7 +104,7 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 				AddComponent<ShaderComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
 			}
 			else if (componentType == "Shape") { //create shape component
-				AddShapeComponent(currentElement);
+				BuildShapeComponent();
 			}
 			if (currentElement == sceneRoot->LastChildElement("Component")) { //stopping looping when the current element is the last element in Scene Scope - sceneRoot->LastChild() will also work, but stopping at the last component should be faster
 				componentLoop = false;
@@ -96,6 +112,9 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 		}
 		currentElement = currentElement->NextSiblingElement(); //loading the next component
 	}
+}
+
+void AssetManager::BuildActors() {
 	//Actor Loop
 	currentElement = sceneRoot->FirstChildElement("Actor"); //find first actor = currentElement 
 	tinyxml2::XMLElement* currentComponent;
@@ -132,26 +151,24 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 		}
 		currentElement = currentElement->NextSiblingElement(); //load next actor
 	}
-	//set everything to null
-	sceneRoot = nullptr; sceneRoot = nullptr; currentElement = nullptr; transformElement = nullptr;
 }
 
-void AssetManager::AddShapeComponent(tinyxml2::XMLElement* AddShapeComponent) {
-	if (AddShapeComponent->FirstChildElement("Sphere") != nullptr) {
-		tinyxml2::XMLElement* Sphere = AddShapeComponent->FirstChildElement("Sphere");
-		AddComponent<ShapeComponent>(AddShapeComponent->Attribute("name"), nullptr, GEOMETRY::Sphere(Sphere->FloatAttribute("centreX"), 
+void AssetManager::BuildShapeComponent() {
+	if (currentElement->FirstChildElement("Sphere") != nullptr) {
+		tinyxml2::XMLElement* Sphere = currentElement->FirstChildElement("Sphere");
+		AddComponent<ShapeComponent>(currentElement->Attribute("name"), nullptr, GEOMETRY::Sphere(Sphere->FloatAttribute("centreX"),
 			Sphere->FloatAttribute("centreY"), Sphere->FloatAttribute("centreZ"), Sphere->FloatAttribute("radius")));
 		//Sphere = nullptr;
 	}
-	else if (AddShapeComponent->FirstChildElement("Cylinder") != nullptr) {
-		tinyxml2::XMLElement* Cylinder = AddShapeComponent->FirstChildElement("Cylinder");
-		AddComponent<ShapeComponent>(AddShapeComponent->Attribute("name"), nullptr, GEOMETRY::Cylinder(Cylinder->FloatAttribute("radius"), 
+	else if (currentElement->FirstChildElement("Cylinder") != nullptr) {
+		tinyxml2::XMLElement* Cylinder = currentElement->FirstChildElement("Cylinder");
+		AddComponent<ShapeComponent>(currentElement->Attribute("name"), nullptr, GEOMETRY::Cylinder(Cylinder->FloatAttribute("radius"),
 			Vec3(Cylinder->FloatAttribute("topX"), Cylinder->FloatAttribute("topY"), Cylinder->FloatAttribute("topZ")), 
 			Vec3(Cylinder->FloatAttribute("bottomX"), Cylinder->FloatAttribute("bottomY"), Cylinder->FloatAttribute("bottomZ"))));
 	}
-	else if (AddShapeComponent->FirstChildElement("Capsule") != nullptr) {
-		tinyxml2::XMLElement* Capsule = AddShapeComponent->FirstChildElement("Capsule");
-		AddComponent<ShapeComponent>(AddShapeComponent->Attribute("name"), nullptr, GEOMETRY::Capsule(Capsule->FloatAttribute("radius"),
+	else if (currentElement->FirstChildElement("Capsule") != nullptr) {
+		tinyxml2::XMLElement* Capsule = currentElement->FirstChildElement("Capsule");
+		AddComponent<ShapeComponent>(currentElement->Attribute("name"), nullptr, GEOMETRY::Capsule(Capsule->FloatAttribute("radius"),
 			Vec3(Capsule->FloatAttribute("topSphereX"), Capsule->FloatAttribute("topSphereY"), Capsule->FloatAttribute("topSphereZ")),
 			Vec3(Capsule->FloatAttribute("bottomSphereX"), Capsule->FloatAttribute("bottomSphereY"), Capsule->FloatAttribute("bottomSphereZ"))));
 	}

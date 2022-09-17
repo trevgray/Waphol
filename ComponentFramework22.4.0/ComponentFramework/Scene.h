@@ -81,6 +81,29 @@ public:
 		}
 	}
 
+	void RenderActors(std::vector<std::string> shaders) const {
+		/*for (std::string shaderFileName : shaders) {
+			glEnable(GL_DEPTH_TEST);
+			glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			glBindBuffer(GL_UNIFORM_BUFFER, GetActor<CameraActor>()->GetMatriciesID());
+			glBindBuffer(GL_UNIFORM_BUFFER, GetActor<LightActor>()->GetLightID());
+
+			glUseProgram(GetAssetManager()->GetComponent<ShaderComponent>(shaderFileName.c_str())->GetProgram());
+
+			for (auto actor : GetActorGraph()) {
+				glUniformMatrix4fv(GetAssetManager()->GetComponent<ShaderComponent>(shaderFileName.c_str())->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
+				if (actor.second->GetComponent<MaterialComponent>() != nullptr) { //everything is an actor, so i just check if it has a texture
+					glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); //this is also amazing because we can add as many actors as we want, and the render does not need to change
+					actor.second->GetComponent<MeshComponent>()->Render(GL_TRIANGLES);
+				}
+			}
+			glBindTexture(GL_TEXTURE_2D, 0);
+			glUseProgram(0);
+		}*/
+	}
+
 	void LoadAssetManager(std::string XMLFile_, std::string SceneName_) {
 		assetManager = std::make_shared<AssetManager>();
 		assetManager->BuildSceneAssets(XMLFile_, SceneName_);

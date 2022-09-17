@@ -9,10 +9,15 @@
 
 class AssetManager {
 private:
-	//std::unordered_map <std::string, Ref<Component>> componentGraph;
 	std::unordered_map <std::string, Ref<Component>> componentGraph;
+	tinyxml2::XMLElement* sceneRoot; //getting root of the scene
+	tinyxml2::XMLElement* currentElement;
 
-	void AddShapeComponent(tinyxml2::XMLElement* AddShapeComponent);
+	void BuildCameraActor();
+	void BuildLightActors();
+	void BuildComponents();
+	void BuildActors();
+	void BuildShapeComponent();
 public:
 	AssetManager();
 	~AssetManager();

@@ -123,7 +123,6 @@ void Scene4::Update(const float deltaTime) {
 
 void Scene4::Render() const {
 	glEnable(GL_DEPTH_TEST);
-	/// Clear the screen
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -141,4 +140,8 @@ void Scene4::Render() const {
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
 	glUseProgram(0);
+
+	/*std::vector<std::string> shaders;
+	shaders.push_back("TextureShader");
+	RenderActors(shaders);*/
 }

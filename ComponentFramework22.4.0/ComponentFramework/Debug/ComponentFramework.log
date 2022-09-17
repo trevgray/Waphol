@@ -1,14 +1,4 @@
-﻿  Actor.cpp
-  AssetManager.cpp
-  CameraActor.cpp
-  Capsule.cpp
-  Cylinder.cpp
-  LightActor.cpp
-  MaterialComponent.cpp
-  MeshComponent.cpp
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\tiny_obj_loader.h(1665,27): warning C4018: '<': signed/unsigned mismatch
-  MouseMoveableComponent.cpp
-  Scene0.cpp
+﻿  Scene0.cpp
   Scene4.cpp
 E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
@@ -19,11 +9,5 @@ E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,24): 
 E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   SceneManager.cpp
-  ShaderComponent.cpp
-  Shape.cpp
-  ShapeComponent.cpp
-  Sphere.cpp
-  Timer.cpp
-  Window.cpp
   Generating Code...
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe
