@@ -37,16 +37,16 @@
     <Filter Include="Source Files\Actors">
       <UniqueIdentifier>{0a7af637-3bce-4c10-8a19-5695d69ecae9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\TinyLoaders">
+    <Filter Include="Source Files\Loaders">
       <UniqueIdentifier>{e5fd8b32-1e77-4bde-b55c-b71e25f06a86}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\TinyLoaders">
+    <Filter Include="Header Files\Loaders">
       <UniqueIdentifier>{3e3fd3a3-7437-4b68-8b16-7adf4fa17f10}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\Geometry">
+    <Filter Include="Header Files\Math\Geometry">
       <UniqueIdentifier>{30d8d010-47ac-4822-9a17-422bb7b31844}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Geometry">
+    <Filter Include="Source Files\Math\Geometry">
       <UniqueIdentifier>{6ed0724b-afe5-41d2-8834-a49d24e6248d}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -106,7 +106,7 @@
       <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
-      <Filter>Source Files\TinyLoaders</Filter>
+      <Filter>Source Files\Loaders</Filter>
     </ClCompile>
     <ClCompile Include="Scene4.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -115,19 +115,19 @@
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
     <ClCompile Include="Shape.cpp">
-      <Filter>Source Files\Geometry</Filter>
+      <Filter>Source Files\Math\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Sphere.cpp">
-      <Filter>Source Files\Geometry</Filter>
+      <Filter>Source Files\Math\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="ShapeComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="Cylinder.cpp">
-      <Filter>Source Files\Geometry</Filter>
+      <Filter>Source Files\Math\Geometry</Filter>
     </ClCompile>
     <ClCompile Include="Capsule.cpp">
-      <Filter>Source Files\Geometry</Filter>
+      <Filter>Source Files\Math\Geometry</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -195,7 +195,7 @@
       <Filter>Header Files\Actors</Filter>
     </ClInclude>
     <ClInclude Include="tiny_obj_loader.h">
-      <Filter>Header Files\TinyLoaders</Filter>
+      <Filter>Header Files\Loaders</Filter>
     </ClInclude>
     <ClInclude Include="ShaderComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -213,7 +213,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml2.h">
-      <Filter>Header Files\TinyLoaders</Filter>
+      <Filter>Header Files\Loaders</Filter>
     </ClInclude>
     <ClInclude Include="Scene4.h">
       <Filter>Header Files\Scenes</Filter>
@@ -225,16 +225,16 @@
       <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="Shape.h">
-      <Filter>Header Files\Geometry</Filter>
+      <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Sphere.h">
-      <Filter>Header Files\Geometry</Filter>
+      <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Cylinder.h">
-      <Filter>Header Files\Geometry</Filter>
+      <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Capsule.h">
-      <Filter>Header Files\Geometry</Filter>
+      <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

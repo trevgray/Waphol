@@ -133,5 +133,3 @@ void SceneManager::BuildNewScene(SCENE_NUMBER scene) {
 		break;
 	}	
 }
-
-

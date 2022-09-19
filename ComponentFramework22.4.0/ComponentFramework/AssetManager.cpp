@@ -10,7 +10,7 @@
 #include "CameraActor.h"
 #include "LightActor.h"
 
-AssetManager::AssetManager() {}
+AssetManager::AssetManager() : sceneRoot(nullptr), currentElement(nullptr) {}
 
 AssetManager::~AssetManager() {
 	RemoveAllComponents();
@@ -58,7 +58,7 @@ void AssetManager::BuildCameraActor() {
 	GetComponent<CameraActor>(currentElement->Attribute("name"))->AddComponent<TransformComponent>(nullptr, //make transform component
 		Vec3(transformElement->FloatAttribute("posx"), transformElement->FloatAttribute("posy"), transformElement->FloatAttribute("posz")), //position
 		//Quaternion(transformElement->FloatAttribute("qw"), transformElement->FloatAttribute("qx"), transformElement->FloatAttribute("qy"), transformElement->FloatAttribute("qz"))); //quaternion
-		QMath::angleAxisRotation(transformElement->FloatAttribute("angleDeg"), Vec3(transformElement->FloatAttribute("axisx"), transformElement->FloatAttribute("axisy"), transformElement->FloatAttribute("axisz"))));
+		QMath::angleAxisRotation(transformElement->FloatAttribute("angleDeg"), Vec3(transformElement->FloatAttribute("axisx"), transformElement->FloatAttribute("axisy"), transformElement->FloatAttribute("axisz")))); //using angle Axis Rotation then converting to Quaternions
 }
 
 void AssetManager::BuildLightActors() {
