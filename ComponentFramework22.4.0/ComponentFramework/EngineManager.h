@@ -2,15 +2,23 @@
 #include "SceneManager.h"
 #include "AssetManager.h"
 #include <memory>
-#include <string>
 
 class EngineManager {
 private:
-	std::unique_ptr<SceneManager> sceneManager;
-	AssetManager* assetManager;
-public:
 	EngineManager();
+	static Ref<EngineManager> instance;
+	Ref<SceneManager> sceneManager;
+	Ref<AssetManager> assetManager;
+public:
 	~EngineManager();
 
-	void Initialize();
+	bool Initialize();
+
+	static Ref<EngineManager> Instance() {
+		if (!instance)
+			instance = Ref<EngineManager>(new EngineManager);
+		return instance;
+	}
+
+	Ref<AssetManager> GetAssetManager() { return assetManager; }
 };
