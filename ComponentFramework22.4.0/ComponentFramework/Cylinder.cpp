@@ -43,7 +43,7 @@ void Cylinder::generateVerticesAndNormals()
 	for (int cylinderCap = 0; cylinderCap != 2; cylinderCap++) { //this runs the loop twice
 		for (float currentcircle = deltaRadius; currentcircle <= r; currentcircle += deltaRadius) { //this makes the circle expand its radius 10 times to represent the top cap
 			circle = Vec3(0.0f, currentcircle, 0.0f); //set the circle with the new radius
-			for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) { //this can changed to any loop that loops 180 times
+			for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) { //this can changed to any loop that loops 180 times and update thetaDeg
 				MATH::Matrix3 rotationMatrix;
 				rotationMatrix = MATH::MMath::rotate(deltaTheta, normal); //rotate the vertex by deltaTheta along the normal of the cylinder
 				circle = rotationMatrix * circle; //update the circle with the rotation
@@ -58,19 +58,16 @@ void Cylinder::generateVerticesAndNormals()
 		}
 	}
 
-	circle = Vec3(normal.z * r, normal.x * r, normal.y * r); //set the circle to have the radius as the y value
-
-
 	//cylinder wall 
 	for (float currentLayer = 0.0f; currentLayer <= height; currentLayer += deltaHeight) { //run 10 times and move the circles z by the deltaHeight
 		for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) { //this can changed to any loop that loops 180 times
 			MATH::Matrix3 rotationMatrix;
 			rotationMatrix = MATH::MMath::rotate(deltaTheta, normal); //rotate the vertex by deltaTheta along the normal of the cylinder
 			circle = rotationMatrix * circle; //update the circle with the rotation
-			vertices.push_back(circle + (capCentrePosA + capCentrePosB)); //move the vertex point based on the position of the shape
+			vertices.push_back(circle + capCentrePosA); //move the vertex point based on the position of the shape
 			normals.push_back(circle);
 		}
-
-		circle.z = -currentLayer; //update the layer in the circle
+		circle = normal * -currentLayer; //update the layer in the circle in the direction of the normal
+		circle.y = r; //set the circle to have the radius as the y value
 	}
 }
