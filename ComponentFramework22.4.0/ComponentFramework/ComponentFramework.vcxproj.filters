@@ -129,6 +129,9 @@
     <ClCompile Include="Capsule.cpp">
       <Filter>Source Files\Math\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="EngineManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -236,6 +239,9 @@
     <ClInclude Include="Capsule.h">
       <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
+    <ClInclude Include="EngineManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="GameEngineLog.txt">
@@ -263,7 +269,7 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="OpenGLAssets.xml">
+    <Xml Include="Assets.xml">
       <Filter>Resource Files</Filter>
     </Xml>
   </ItemGroup>

@@ -23,6 +23,8 @@ public:
 	Debug& operator=(Debug&&) = delete;
 
 	Debug() = delete;
+
+	~Debug() {}
 	
 	static void DebugInit(const std::string& fileName_);
 

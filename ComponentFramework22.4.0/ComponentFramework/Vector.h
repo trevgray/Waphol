@@ -39,6 +39,8 @@ namespace  MATH {
 		void set(float x_, float y_) {
 			x = x_; y = y_;
 		}
+
+		~Vec2() {}
 	};
 	
 
@@ -64,7 +66,7 @@ namespace  MATH {
 			set(v.x,v.y,v.z); 
 		}
 
-		
+		~Vec3() {}
 
 		///////////////////////////////////////////////////////////
 		/// Operator overloads (see note 1 at the end of this file)

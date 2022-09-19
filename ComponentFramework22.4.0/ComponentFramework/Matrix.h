@@ -30,6 +30,8 @@ namespace  MATH {
 		float m[16];
 	public:
 
+		~Matrix4() {}
+
 		inline Matrix4& operator = (const Matrix4& m_) {
 			this->m[0] = m_[0]; this->m[1] = m_[1]; this->m[2] = m_[2]; this->m[3] = m_[3];
 			this->m[4] = m_[4]; this->m[5] = m_[5]; this->m[6] = m_[6]; this->m[7] = m_[7];
@@ -211,6 +213,7 @@ namespace  MATH {
 			loadIdentity();
 		}
 
+		~Matrix3() {}
 
 		/// Now I can use the class itself as an array.
 		/// When overloading the [] operator you need to declair one

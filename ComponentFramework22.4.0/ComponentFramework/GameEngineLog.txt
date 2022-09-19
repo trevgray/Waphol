@@ -1,4 +1,4 @@
-Sat Sep 17 17:08:20 2022
+Mon Sep 19 02:15:11 2022
 [INFO]: Starting the SceneManager
 [INFO]: OpenGL version: 4.6.0 NVIDIA 516.94
 [INFO]: Graphics card vendor NVIDIA Corporation
@@ -16,3 +16,7 @@ Sat Sep 17 17:08:20 2022
 "view" loc:-1
 
 [INFO]: Creating values for CameraActor: 
+[INFO]: Deleting EngineManager: 
+[INFO]: Deleting assets Scene4: 
+[INFO]: Deleted Scene4: 
+[INFO]: Deleting the SceneManager

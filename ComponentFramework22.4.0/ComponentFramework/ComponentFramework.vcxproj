@@ -153,6 +153,7 @@
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EMath.cpp" />
+    <ClCompile Include="EngineManager.cpp" />
     <ClCompile Include="LightActor.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
@@ -183,6 +184,7 @@
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EMath.h" />
+    <ClInclude Include="EngineManager.h" />
     <ClInclude Include="Euler.h" />
     <ClInclude Include="LightActor.h" />
     <ClInclude Include="MaterialComponent.h" />
@@ -222,7 +224,7 @@
     <None Include="shaders\textureVert.glsl" />
   </ItemGroup>
   <ItemGroup>
-    <Xml Include="OpenGLAssets.xml" />
+    <Xml Include="Assets.xml" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

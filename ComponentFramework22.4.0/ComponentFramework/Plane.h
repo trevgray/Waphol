@@ -61,6 +61,8 @@ namespace  MATH {
 		Plane(float x, float y, float z, float d) {
 			set(x, y, z, d);
 		}
+
+		~Plane() {}
 		
 		/// print the values of the plane and add a comment if you wish
 		void print(const char* comment = nullptr) {

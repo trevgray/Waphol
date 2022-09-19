@@ -9,6 +9,8 @@
 #include "Vector.h"
 namespace GEOMETRY {
 	struct Shape {
+
+		virtual ~Shape() {}
 		// Anything that can be hit by a ray needs to be part of this class heirachy
 		// virtual RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const = 0; (TO DO)
 

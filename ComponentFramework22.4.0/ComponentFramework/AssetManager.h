@@ -17,6 +17,7 @@ private:
 	void BuildLightActors();
 	void BuildComponents();
 	void BuildActors();
+	
 	void BuildShapeComponent();
 public:
 	AssetManager();

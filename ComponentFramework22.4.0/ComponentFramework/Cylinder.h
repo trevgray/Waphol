@@ -27,6 +27,8 @@ namespace GEOMETRY {
 			set(c.r, c.capCentrePosA, c.capCentrePosB);
 		}
 
+		~Cylinder() {}
+
 		float calculateHeight();
 		MATH::Vec3 getNormalizedVector();
 		void generateVerticesAndNormals() override;

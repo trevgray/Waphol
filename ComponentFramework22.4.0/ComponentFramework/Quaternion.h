@@ -39,6 +39,8 @@ namespace  MATH {
 			set(q.w, q.ijk.x, q.ijk.y, q.ijk.z);
 		}
 
+		~Quaternion() {}
+
 		/// An assignment operator   
 		inline Quaternion& operator = (const Quaternion& q) {
 			set(q.w, q.ijk.x, q.ijk.y, q.ijk.z);

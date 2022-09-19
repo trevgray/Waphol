@@ -98,6 +98,7 @@ void SceneManager::BuildNewScene(SCENE_NUMBER scene) {
 		currentScene->OnDestroy();
 		delete currentScene;
 		currentScene = nullptr;
+		EngineManager::Instance()->GetAssetManager()->RemoveAllComponents();
 	}
 
 	switch (scene) {

@@ -34,6 +34,8 @@ namespace MATH {
 			set(e.xAxis, e.yAxis, e.zAxis);
 		}
 
+		~Euler() {}
+
 		/// An assignment operator   
 		inline Euler& operator = (const Euler& e) {
 			set(e.xAxis, e.yAxis, e.zAxis);

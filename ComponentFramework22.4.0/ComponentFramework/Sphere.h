@@ -30,6 +30,8 @@ namespace GEOMETRY {
 			set(s.x, s.y, s.z, s.r);
 		}
 
+		~Sphere() {}
+
 		/// print the values of the sphere and add a comment if you wish
 		void print(const char* comment = nullptr) {
 			if (comment) printf("%s\n", comment);

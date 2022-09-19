@@ -27,6 +27,8 @@ namespace GEOMETRY {
 			set(c.r, c.sphereCentrePosA, c.sphereCentrePosB);
 		}
 
+		~Capsule() {}
+
 		float calculateHeight();
 		MATH::Vec3 getNormalizedVector();
 		// Fill the vertices and normals list with Vec3's to represent a capsule

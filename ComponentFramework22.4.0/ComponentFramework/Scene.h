@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Actor.h"
-#include "AssetManager.h"
+#include "EngineManager.h"
 #include "CameraActor.h"
 #include "LightActor.h"
 #include <unordered_map>
@@ -10,7 +10,6 @@ union SDL_Event;
 
 class Scene {
 private:
-	Ref<AssetManager> assetManager;
 	std::unordered_map <std::string, Ref<Actor>> actorGraph;
 public:
 	virtual ~Scene() {};
@@ -59,23 +58,23 @@ public:
 	}
 
 	void LoadNonPrehabActors() {
-		for (auto& component : assetManager->GetComponentGraph()) {
+		for (auto& component : EngineManager::Instance()->GetAssetManager()->GetComponentGraph()) {
 			Actor* actor = dynamic_cast<Actor*>(component.second.get());
 			if (actor != nullptr && actor->getPrehab() == false) {
 				AddActor<Actor>(component.first, new Actor(nullptr));
-				GetActor<Actor>(component.first)->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<Actor>(component.first)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
 				GetActor<Actor>(component.first)->OnCreate(); 
 			}
 			actor = dynamic_cast<CameraActor*>(component.second.get());
 			if (actor != nullptr && actor->getPrehab() == false) {
 				AddActor<CameraActor>(component.first, new CameraActor(nullptr));
-				GetActor<CameraActor>()->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<CameraActor>()->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
 				GetActor<CameraActor>()->OnCreate();
 			}
 			actor = dynamic_cast<LightActor*>(component.second.get());
 			if (actor != nullptr && actor->getPrehab() == false) {
 				AddActor<LightActor>(component.first, new CameraActor(nullptr));
-				GetActor<LightActor>()->InheritActor(assetManager->GetComponent<Actor>(component.first.c_str()));
+				GetActor<LightActor>()->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
 				GetActor<LightActor>()->OnCreate();
 			}
 		}
@@ -104,13 +103,12 @@ public:
 		}*/
 	}
 
-	void LoadAssetManager(std::string XMLFile_, std::string SceneName_) {
-		assetManager = std::make_shared<AssetManager>();
-		assetManager->BuildSceneAssets(XMLFile_, SceneName_);
-		assetManager->OnCreate();
+	void LoadAssets(std::string XMLFile_, std::string SceneName_) {
+		EngineManager::Instance()->GetAssetManager()->BuildSceneAssets(XMLFile_, SceneName_);
+		EngineManager::Instance()->GetAssetManager()->OnCreate();
 	}
 
-	Ref<AssetManager> GetAssetManager() const { return assetManager; }
+	//Ref<AssetManager> GetAssetManager() const { return assetManager; }
 
 
 
