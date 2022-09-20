@@ -16,6 +16,11 @@ AssetManager::~AssetManager() {
 	RemoveAllComponents();
 }
 
+void AssetManager::LoadAssets(std::string XMLFile_, std::string SceneName_) {
+	BuildSceneAssets(XMLFile_, SceneName_);
+	OnCreate();
+}
+
 bool AssetManager::OnCreate() {
 	for (std::pair<std::string, Ref<Component>> c : componentGraph) {
 		if (c.second->OnCreate() == false) {

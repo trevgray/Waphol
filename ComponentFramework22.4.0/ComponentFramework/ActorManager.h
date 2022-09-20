@@ -16,7 +16,6 @@ public:
 
 	void LoadNonPrehabActors();
 	void RenderActors(std::vector<std::string> shaders) const;
-	void LoadAssets(std::string XMLFile_, std::string SceneName_);
 
 	template<typename ActorTemplate, typename ...Args> void AddActor(std::string name, Args && ...args_);
 

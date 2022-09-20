@@ -14,7 +14,7 @@
 
 bool Scene0::OnCreate()
 {
-	EngineManager::Instance()->GetActorManager()->LoadAssets("Assets.xml", "Scene0");
+	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene0");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
 	//std::vector<std::string> names{

@@ -77,14 +77,14 @@ void ActorManager::LoadNonPrehabActors() {
 }
 
 void ActorManager::RenderActors(std::vector<std::string> shaders) const {
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<CameraActor>()->GetMatriciesID());
+	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<LightActor>()->GetLightID());
+
 	for (std::string shaderFileName : shaders) {
-		glEnable(GL_DEPTH_TEST);
-		glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-		glBindBuffer(GL_UNIFORM_BUFFER, GetActor<CameraActor>()->GetMatriciesID());
-		glBindBuffer(GL_UNIFORM_BUFFER, GetActor<LightActor>()->GetLightID());
-
 		glUseProgram(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>(shaderFileName.c_str())->GetProgram());
 
 		for (auto actor : GetActorGraph()) {
@@ -97,11 +97,6 @@ void ActorManager::RenderActors(std::vector<std::string> shaders) const {
 		glBindTexture(GL_TEXTURE_2D, 0);
 		glUseProgram(0);
 	}
-}
-
-void ActorManager::LoadAssets(std::string XMLFile_, std::string SceneName_) {
-	EngineManager::Instance()->GetAssetManager()->BuildSceneAssets(XMLFile_, SceneName_);
-	EngineManager::Instance()->GetAssetManager()->OnCreate();
 }
 
 //template<typename ComponentTemplate> Ref<ComponentTemplate> GetComponent(int objectNum) const { //old version that used array indices to get specific actors

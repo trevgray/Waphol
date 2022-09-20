@@ -29,7 +29,7 @@ Scene4::~Scene4() {
 
 bool Scene4::OnCreate() {
 	Debug::Info("Loading assets Scene4: ", __FILE__, __LINE__);
-	EngineManager::Instance()->GetActorManager()->LoadAssets("Assets.xml", "Scene4");
+	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene4");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
 	//Red Checker creation loop

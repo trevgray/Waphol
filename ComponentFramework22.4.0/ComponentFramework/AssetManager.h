@@ -17,14 +17,15 @@ private:
 	void BuildLightActors();
 	void BuildComponents();
 	void BuildActors();
+	void BuildSceneAssets(std::string XMLFile_, std::string SceneName_);
 	
 	void BuildShapeComponent();
 public:
 	AssetManager();
 	~AssetManager();
 	bool OnCreate();
+	void LoadAssets(std::string XMLFile_, std::string SceneName_);
 	void RemoveAllComponents();
-	void BuildSceneAssets(std::string XMLFile_, std::string SceneName_);
 
 	template<typename ComponentTemplate, typename ... Args> void AddComponent(std::string name, Args&& ... args_) {
 		Ref<ComponentTemplate> t = std::make_shared<ComponentTemplate>(std::forward<Args>(args_)...);
