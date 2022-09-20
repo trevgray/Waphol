@@ -132,6 +132,9 @@
     <ClCompile Include="EngineManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="ActorManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -240,6 +243,9 @@
       <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="EngineManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="ActorManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

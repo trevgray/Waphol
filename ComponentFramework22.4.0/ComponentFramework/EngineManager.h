@@ -1,6 +1,7 @@
 #pragma once
 #include "SceneManager.h"
 #include "AssetManager.h"
+#include "ActorManager.h"
 #include <memory>
 
 class EngineManager {
@@ -9,6 +10,7 @@ private:
 	static Ref<EngineManager> instance;
 	Ref<SceneManager> sceneManager;
 	Ref<AssetManager> assetManager;
+	Ref<ActorManager> actorManager;
 public:
 	~EngineManager();
 
@@ -21,4 +23,6 @@ public:
 	}
 
 	Ref<AssetManager> GetAssetManager() { return assetManager; }
+
+	Ref<ActorManager> GetActorManager() { return actorManager; }
 };

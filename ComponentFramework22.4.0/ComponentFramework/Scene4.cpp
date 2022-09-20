@@ -29,18 +29,18 @@ Scene4::~Scene4() {
 
 bool Scene4::OnCreate() {
 	Debug::Info("Loading assets Scene4: ", __FILE__, __LINE__);
-	LoadAssets("Assets.xml", "Scene4");
-	LoadNonPrehabActors();
+	EngineManager::Instance()->GetActorManager()->LoadAssets("Assets.xml", "Scene4");
+	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
 	//Red Checker creation loop
 	RowX = RowY = nextRow = 0.0f;
 	std::string checkerName;
 	for (int x = 0; x <= 11; x++) {
 		checkerName = "RedChecker" + std::to_string(x);;
-		AddActor<Actor>(checkerName, new Actor(GetActor<Actor>("CheckerBoardActor").get()));
-		GetActor<Actor>(checkerName)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("RedCheckerActor"));
-		GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-4.5f + RowX, -4.3f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
-		GetActor<Actor>(checkerName)->OnCreate();
+		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(checkerName, new Actor(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor").get()));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("RedCheckerActor"));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-4.5f + RowX, -4.3f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->OnCreate();
 		RowX += 2.55f;
 		nextRow++;
 		if (nextRow == 4) {
@@ -55,10 +55,10 @@ bool Scene4::OnCreate() {
 	RowX = RowY = nextRow = 0.0f;
 	for (int x = 0; x <= 11; x++) {
 		checkerName = "BlackChecker" + std::to_string(x);
-		AddActor<Actor>(checkerName, new Actor (GetActor<Actor>("CheckerBoardActor").get()));
-		GetActor<Actor>(checkerName)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("BlackCheckerActor"));
-		GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-3.225f + RowX, 4.4f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
-		GetActor<Actor>(checkerName)->OnCreate();
+		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(checkerName, new Actor (EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor").get()));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("BlackCheckerActor"));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-3.225f + RowX, 4.4f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->OnCreate();
 		RowX += 2.55f;
 		nextRow++;
 		if (nextRow == 4) {
@@ -80,26 +80,26 @@ void Scene4::HandleEvents(const SDL_Event &sdlEvent) {
 	switch( sdlEvent.type ) {
     case SDL_KEYDOWN:
 		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LEFT) {
-			GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(1.0, 0.0, 0.0));
-			GetActor<CameraActor>()->UpdateViewMatrix();
+			EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(1.0, 0.0, 0.0));
+			EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->UpdateViewMatrix();
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_RIGHT) {
-			GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(-1.0, 0.0, 0.0));
-			GetActor<CameraActor>()->UpdateViewMatrix();
+			EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(-1.0, 0.0, 0.0));
+			EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->UpdateViewMatrix();
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_UP) {
-			GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(0.0, 0.0, 1.0));
-			GetActor<CameraActor>()->UpdateViewMatrix();
+			EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(0.0, 0.0, 1.0));
+			EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->UpdateViewMatrix();
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_DOWN) {
-			GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(0.0, 0.0, -1.0));
-			GetActor<CameraActor>()->UpdateViewMatrix();
+			EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition() + Vec3(0.0, 0.0, -1.0));
+			EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->UpdateViewMatrix();
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_E) {
-			GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->SetTransform(GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetPosition(), GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->SetTransform(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetPosition(), EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(-2.0f, Vec3(0.0f, 1.0f, 0.0f)));
 		}
 		else if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_Q) {
-			GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->SetTransform(GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetPosition(), GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->SetTransform(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetPosition(), EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>()->GetQuaternion() * QMath::angleAxisRotation(2.0f, Vec3(0.0f, 1.0f, 0.0f)));
 		}
 		break;
 
@@ -122,16 +122,16 @@ void Scene4::Update(const float deltaTime) {
 }
 
 void Scene4::Render() const {
-	glEnable(GL_DEPTH_TEST);
+	/*glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<CameraActor>()->GetMatriciesID());
-	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<LightActor>()->GetLightID());
+	glBindBuffer(GL_UNIFORM_BUFFER, EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetMatriciesID());
+	glBindBuffer(GL_UNIFORM_BUFFER, EngineManager::Instance()->GetActorManager()->GetActor<LightActor>()->GetLightID());
 
 	glUseProgram(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetProgram());
 
-	for (auto actor : GetActorGraph()) {
+	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
 		if (actor.second->GetComponent<MaterialComponent>() != nullptr) { //everything is an actor, so i just check if it has a texture
 			glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); //this is also amazing because we can add as many actors as we want, and the render does not need to change
@@ -139,9 +139,9 @@ void Scene4::Render() const {
 		}
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);
+	glUseProgram(0);*/
 
-	/*std::vector<std::string> shaders;
+	std::vector<std::string> shaders;
 	shaders.push_back("TextureShader");
-	RenderActors(shaders);*/
+	EngineManager::Instance()->GetActorManager()->RenderActors(shaders);
 }
