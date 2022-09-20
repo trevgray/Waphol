@@ -1,2 +1,29 @@
-﻿  Main.cpp
+﻿  EngineManager.cpp
+  Scene0.cpp
+  Scene4.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  SceneManager.cpp
+  Main.cpp
+  Generating Code...
+Window.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Window.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+VMath.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'VMath.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+TransformComponent.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'TransformComponent.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+tinyxml2.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'tinyxml2.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+Timer.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Timer.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+Sphere.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Sphere.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+ShapeComponent.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'ShapeComponent.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+Shape.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Shape.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+MMath.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'MMath.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+QMath.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'QMath.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+MouseMoveableComponent.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'MouseMoveableComponent.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+LightActor.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'LightActor.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+EMath.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'EMath.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
+Debug.obj : warning LNK4099: PDB 'vc143.pdb' was not found with 'Debug.obj' or at 'E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\vc143.pdb'; linking object as if no debug info
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

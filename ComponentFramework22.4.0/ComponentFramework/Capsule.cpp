@@ -15,9 +15,9 @@ float GEOMETRY::Capsule::calculateHeight() { //using Pythagoras Theorem to find 
 
 MATH::Vec3 GEOMETRY::Capsule::getNormalizedVector() { //returns the normalized vector that represents the axis
 	MATH::Vec3 normalizedVector;
-	normalizedVector.x = abs(sphereCentrePosA.x - sphereCentrePosB.x);
-	normalizedVector.y = abs(sphereCentrePosA.y - sphereCentrePosB.y);
-	normalizedVector.z = abs(sphereCentrePosA.z - sphereCentrePosB.z);
+	normalizedVector.x = sphereCentrePosA.x - sphereCentrePosB.x;
+	normalizedVector.y = sphereCentrePosA.y - sphereCentrePosB.y;
+	normalizedVector.z = sphereCentrePosA.z - sphereCentrePosB.z;
 	normalizedVector = VMath::normalize(normalizedVector);
 	return normalizedVector;
 }

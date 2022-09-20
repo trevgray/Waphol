@@ -15,9 +15,9 @@ float Cylinder::calculateHeight() { //using Pythagoras Theorem to find the heigh
 
 MATH::Vec3 Cylinder::getNormalizedVector() { //returns the normalized vector that represents the axis
 	MATH::Vec3 normalizedVector;
-	normalizedVector.x = abs(capCentrePosA.x - capCentrePosB.x);
-	normalizedVector.y = abs(capCentrePosA.y - capCentrePosB.y);
-	normalizedVector.z = abs(capCentrePosA.z - capCentrePosB.z);
+	normalizedVector.x = capCentrePosA.x - capCentrePosB.x;
+	normalizedVector.y = capCentrePosA.y - capCentrePosB.y;
+	normalizedVector.z = capCentrePosA.z - capCentrePosB.z;
 	normalizedVector = VMath::normalize(normalizedVector);
 	return normalizedVector;
 }
