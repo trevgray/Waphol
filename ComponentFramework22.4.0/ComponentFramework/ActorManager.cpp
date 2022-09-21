@@ -64,14 +64,14 @@ void ActorManager::LoadNonPrehabActors() {
 		actor = dynamic_cast<CameraActor*>(component.second.get());
 		if (actor != nullptr && actor->getPrehab() == false) {
 			AddActor<CameraActor>(component.first, new CameraActor(nullptr));
-			GetActor<CameraActor>()->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
-			GetActor<CameraActor>()->OnCreate();
+			GetActor<CameraActor>(component.first)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
+			GetActor<CameraActor>(component.first)->OnCreate();
 		}
 		actor = dynamic_cast<LightActor*>(component.second.get());
 		if (actor != nullptr && actor->getPrehab() == false) {
 			AddActor<LightActor>(component.first, new CameraActor(nullptr));
-			GetActor<LightActor>()->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
-			GetActor<LightActor>()->OnCreate();
+			GetActor<LightActor>(component.first)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
+			GetActor<LightActor>(component.first)->OnCreate();
 		}
 	}
 }

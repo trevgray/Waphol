@@ -49,6 +49,12 @@
     <Filter Include="Source Files\Math\Geometry">
       <UniqueIdentifier>{6ed0724b-afe5-41d2-8834-a49d24e6248d}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\Managers">
+      <UniqueIdentifier>{2ef09d89-cec4-4073-95da-98ecfe24d565}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Managers">
+      <UniqueIdentifier>{7c116380-2237-4220-8e2b-82df28ae55d1}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -68,9 +74,6 @@
     </ClCompile>
     <ClCompile Include="VMath.cpp">
       <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="SceneManager.cpp">
-      <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="QMath.cpp">
       <Filter>Source Files\Math</Filter>
@@ -99,9 +102,6 @@
     <ClCompile Include="MouseMoveableComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
-    <ClCompile Include="AssetManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="EMath.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
@@ -129,11 +129,23 @@
     <ClCompile Include="Capsule.cpp">
       <Filter>Source Files\Math\Geometry</Filter>
     </ClCompile>
-    <ClCompile Include="EngineManager.cpp">
-      <Filter>Source Files</Filter>
+    <ClCompile Include="ControllerComponent.cpp">
+      <Filter>Source Files\Components</Filter>
     </ClCompile>
     <ClCompile Include="ActorManager.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="AssetManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="EngineManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="SceneManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files\Managers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -163,9 +175,6 @@
     </ClInclude>
     <ClInclude Include="Scene.h">
       <Filter>Header Files\Scenes</Filter>
-    </ClInclude>
-    <ClInclude Include="SceneManager.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="AxisAngle.h">
       <Filter>Header Files\Math</Filter>
@@ -215,9 +224,6 @@
     <ClInclude Include="MouseMoveableComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
-    <ClInclude Include="AssetManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="tinyxml2.h">
       <Filter>Header Files\Loaders</Filter>
     </ClInclude>
@@ -242,11 +248,23 @@
     <ClInclude Include="Capsule.h">
       <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="EngineManager.h">
-      <Filter>Header Files</Filter>
+    <ClInclude Include="ControllerComponent.h">
+      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="ActorManager.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="AssetManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="EngineManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="SceneManager.h">
+      <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

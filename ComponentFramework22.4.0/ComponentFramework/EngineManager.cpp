@@ -4,6 +4,7 @@ EngineManager::EngineManager() {
 	sceneManager = std::make_unique<SceneManager>();
 	assetManager = std::make_unique<AssetManager>();
 	actorManager = std::make_unique<ActorManager>();
+	inputManager = std::make_unique<InputManager>();
 }
 
 EngineManager::~EngineManager() {

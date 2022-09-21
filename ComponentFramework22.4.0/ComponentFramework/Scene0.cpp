@@ -11,11 +11,14 @@
 #include "ShaderComponent.h"
 #include "MeshComponent.h"
 #include "ShapeComponent.h"
+#include "ControllerComponent.h"
 
 bool Scene0::OnCreate()
 {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene0");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
+	EngineManager::Instance()->GetInputManager()->SetControllerActors(EngineManager::Instance()->GetActorManager()->GetActorGraph());
 
 	//std::vector<std::string> names{
 	//	"CheckerBoardActor", "ActorChecker1", "ActorChecker2",
@@ -41,6 +44,7 @@ void Scene0::OnDestroy()
 
 void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 {
+	EngineManager::Instance()->GetInputManager()->HandleInputs(sdlEvent);
 	switch (sdlEvent.type) {
 	case SDL_KEYDOWN:
 		if (sdlEvent.key.keysym.scancode == SDL_SCANCODE_LEFT) {

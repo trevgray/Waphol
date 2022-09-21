@@ -151,10 +151,12 @@
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="CameraActor.cpp" />
     <ClCompile Include="Capsule.cpp" />
+    <ClCompile Include="ControllerComponent.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EMath.cpp" />
     <ClCompile Include="EngineManager.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightActor.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
@@ -183,11 +185,13 @@
     <ClInclude Include="CameraActor.h" />
     <ClInclude Include="Capsule.h" />
     <ClInclude Include="Component.h" />
+    <ClInclude Include="ControllerComponent.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Debug.h" />
     <ClInclude Include="EMath.h" />
     <ClInclude Include="EngineManager.h" />
     <ClInclude Include="Euler.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightActor.h" />
     <ClInclude Include="MaterialComponent.h" />
     <ClInclude Include="MeshComponent.h" />
