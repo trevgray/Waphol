@@ -1,5 +1,6 @@
 #include "InputManager.h"
 #include "ControllerComponent.h"
+#include "PhysicsBodyComponent.h"
 
 InputManager::InputManager() {}
 
@@ -12,7 +13,7 @@ void InputManager::HandleInputs(const SDL_Event& sdlEvent) {
 		std::string actorName;
 		actorName = actor->GetComponent<ControllerComponent>()->GetControllerTemplate();
 		if (actorName == "PlayerController") {
-            PlayerController(sdlEvent);
+            PlayerController(sdlEvent, actor);
 		}
 	}
 }
@@ -25,9 +26,11 @@ void InputManager::SetControllerActors(std::unordered_map<std::string, Ref<Actor
 	}
 }
 
-void InputManager::PlayerController(const SDL_Event& sdlEvent) { //temp controller class till i figure out a better system
+void InputManager::PlayerController(const SDL_Event& sdlEvent, Ref<Actor> actor) { //temp controller class till i figure out a better system
     // if key pressed, set velocity or acceleration
+    Ref<PhysicsBodyComponent> actorPhysics = actor->GetComponent<PhysicsBodyComponent>();
 
+    //Vec3 vel;
     if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.repeat == 0)
     {
         switch (sdlEvent.key.keysym.scancode)
@@ -37,19 +40,18 @@ void InputManager::PlayerController(const SDL_Event& sdlEvent) { //temp controll
             // Need to always normalize speed, otherwise having two keys down
             // results in velocity magnitude being sqrt(2) x maxSpeed.
             // However, this is being done in Update()
-
-        /*case SDL_SCANCODE_W:
-            vel.y = maxSpeed * 1.0f;
+        case SDL_SCANCODE_W:
+            actorPhysics.get()->vel.y = actorPhysics.get()->getMaxSpeed() * 1.0f;
             break;
         case SDL_SCANCODE_A:
-            vel.x = maxSpeed * -1.0f;
+            actorPhysics.get()->vel.x = actorPhysics.get()->getMaxSpeed() * -1.0f;
             break;
         case SDL_SCANCODE_S:
-            vel.y = maxSpeed * -1.0f;
+            actorPhysics.get()->vel.y = actorPhysics.get()->getMaxSpeed() * -1.0f;
             break;
         case SDL_SCANCODE_D:
-            vel.x = maxSpeed * 1.0f;
-            break;*/
+            actorPhysics.get()->vel.x = actorPhysics.get()->getMaxSpeed() * 1.0f;
+            break;
 
             // This section is for seeing how to use acceleration rather than velocity
             // for player movement.
@@ -71,6 +73,7 @@ void InputManager::PlayerController(const SDL_Event& sdlEvent) { //temp controll
         default:
             break;*/
         }
+        //actorPhysics.get()->setVel(vel);
     }
 
     // if key is released, stop applying movement
@@ -84,22 +87,22 @@ void InputManager::PlayerController(const SDL_Event& sdlEvent) { //temp controll
             // Need to always normalize velocity, otherwise if player
             // releases one of two pressed keys, then speed remains at sqrt(0.5) of maxSpeed
 
-        /*case SDL_SCANCODE_W:
-            vel.y = 0.0f;
-            if (VMath::mag(vel) > VERY_SMALL) vel = VMath::normalize(vel) * maxSpeed;
+        case SDL_SCANCODE_W:
+            actorPhysics.get()->vel.y = 0.0f;
+            if (VMath::mag(actorPhysics.get()->vel) > VERY_SMALL) actorPhysics.get()->vel = VMath::normalize(actorPhysics.get()->vel) * actorPhysics.get()->getMaxSpeed();
             break;
         case SDL_SCANCODE_A:
-            vel.x = -0.0f;
-            if (VMath::mag(vel) > VERY_SMALL) vel = VMath::normalize(vel) * maxSpeed;
+            actorPhysics.get()->vel.x = -0.0f;
+            if (VMath::mag(actorPhysics.get()->vel) > VERY_SMALL) actorPhysics.get()->vel = VMath::normalize(actorPhysics.get()->vel) * actorPhysics.get()->getMaxSpeed();
             break;
         case SDL_SCANCODE_S:
-            vel.y = -0.0f;
-            if (VMath::mag(vel) > VERY_SMALL) vel = VMath::normalize(vel) * maxSpeed;
+            actorPhysics.get()->vel.y = -0.0f;
+            if (VMath::mag(actorPhysics.get()->vel) > VERY_SMALL) actorPhysics.get()->vel = VMath::normalize(actorPhysics.get()->vel) * actorPhysics.get()->getMaxSpeed();
             break;
         case SDL_SCANCODE_D:
-            vel.x = 0.0f;
-            if (VMath::mag(vel) > VERY_SMALL) vel = VMath::normalize(vel) * maxSpeed;
-            break;*/
+            actorPhysics.get()->vel.x = 0.0f;
+            if (VMath::mag(actorPhysics.get()->vel) > VERY_SMALL) actorPhysics.get()->vel = VMath::normalize(actorPhysics.get()->vel) * actorPhysics.get()->getMaxSpeed();
+            break;
 
             // This section is for seeing how to use acceleration rather than velocity
             // for player movement.
@@ -119,5 +122,6 @@ void InputManager::PlayerController(const SDL_Event& sdlEvent) { //temp controll
         default:
             break;*/
         }
+        //actorPhysics.get()->setVel(vel);
     }
 }

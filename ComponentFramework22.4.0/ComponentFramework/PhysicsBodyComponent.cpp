@@ -4,7 +4,7 @@ using namespace MATH;
 PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_) : Component(parent_) {
     transform = transform_;
 
-    vel = Vec3(0,-9.8,0);
+    vel = Vec3();
     accel = Vec3();
     mass = 1.0f;
     radius = 0.0f;

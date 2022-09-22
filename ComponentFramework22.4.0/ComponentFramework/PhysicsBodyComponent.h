@@ -40,10 +40,11 @@ public:
 	virtual float getMaxAngular() { return maxAngular; }
 
 	virtual void setVel(MATH::Vec3 vel_) { vel = vel_; }
+
+	MATH::Vec3 vel;
 private:
 	Ref<TransformComponent> transform;
 
-	MATH::Vec3 vel;
 	MATH::Vec3 accel;
 	float mass;
 	float orientation;	// facing this direction

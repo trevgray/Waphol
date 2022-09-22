@@ -13,7 +13,8 @@ public:
 	void SetControllerActors(std::unordered_map <std::string, Ref<Actor>> actorGraph);
 
 	//Controllers
-	void PlayerController(const SDL_Event& sdlEvent);
+	void PlayerController(const SDL_Event& sdlEvent, Ref<Actor> actor);
+
 private:
 	std::vector <Ref<Actor>> controllerActors;
 };
