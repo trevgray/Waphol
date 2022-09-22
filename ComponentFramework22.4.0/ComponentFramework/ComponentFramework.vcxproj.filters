@@ -99,9 +99,6 @@
     <ClCompile Include="LightActor.cpp">
       <Filter>Source Files\Actors</Filter>
     </ClCompile>
-    <ClCompile Include="MouseMoveableComponent.cpp">
-      <Filter>Source Files\Components</Filter>
-    </ClCompile>
     <ClCompile Include="EMath.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
@@ -220,9 +217,6 @@
     </ClInclude>
     <ClInclude Include="UBO_Padding.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="MouseMoveableComponent.h">
-      <Filter>Header Files\Components</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml2.h">
       <Filter>Header Files\Loaders</Filter>
