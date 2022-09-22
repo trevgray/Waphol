@@ -29,8 +29,11 @@ bool Actor::OnCreate() {
 }
 
 void Actor::Update(const float deltaTime) {
-	
+	for (auto component : components) {
+		component->Update(deltaTime);
+	}
 }
+
 void Actor::Render()const {}
 
 Matrix4 Actor::GetModelMatrix() {

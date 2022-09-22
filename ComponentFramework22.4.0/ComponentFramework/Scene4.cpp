@@ -118,7 +118,7 @@ void Scene4::HandleEvents(const SDL_Event &sdlEvent) {
 }
 
 void Scene4::Update(const float deltaTime) {
-	
+	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
 }
 
 void Scene4::Render() const {

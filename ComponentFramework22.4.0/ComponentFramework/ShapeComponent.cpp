@@ -30,9 +30,7 @@ void ShapeComponent::OnDestroy()
 {
 }
 
-void ShapeComponent::Update(const float deltaTime_)
-{
-}
+void ShapeComponent::Update(const float deltaTime_) {}
 
 void ShapeComponent::Render() const
 {

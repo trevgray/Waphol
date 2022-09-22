@@ -163,6 +163,7 @@
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene0.cpp" />
     <ClCompile Include="Scene4.cpp" />
+    <ClCompile Include="Scene5.cpp" />
     <ClCompile Include="SceneManager.cpp" />
     <ClCompile Include="Main.cpp" />
     <ClCompile Include="MMath.cpp" />
@@ -198,6 +199,7 @@
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Scene0.h" />
     <ClInclude Include="Scene4.h" />
+    <ClInclude Include="Scene5.h" />
     <ClInclude Include="SceneManager.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="MMath.h" />

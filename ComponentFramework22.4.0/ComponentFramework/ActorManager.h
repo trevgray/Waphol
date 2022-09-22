@@ -15,6 +15,7 @@ public:
 	std::unordered_map<std::string, Ref<Actor>> GetActorGraph() const;
 
 	void LoadNonPrehabActors();
+	void UpdateActors(const float deltaTime);
 	void RenderActors(std::vector<std::string> shaders) const;
 
 	template<typename ActorTemplate, typename ...Args> void AddActor(std::string name, Args && ...args_);

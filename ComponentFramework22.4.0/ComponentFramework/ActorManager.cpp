@@ -76,6 +76,12 @@ void ActorManager::LoadNonPrehabActors() {
 	}
 }
 
+void ActorManager::UpdateActors(const float deltaTime) {
+	for (auto actor : GetActorGraph()) {
+		actor.second->Update(deltaTime);
+	}
+}
+
 void ActorManager::RenderActors(std::vector<std::string> shaders) const {
 	glEnable(GL_DEPTH_TEST);
 	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
