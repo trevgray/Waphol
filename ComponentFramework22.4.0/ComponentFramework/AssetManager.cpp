@@ -37,7 +37,7 @@ void AssetManager::RemoveAllComponents() {
 	componentGraph.clear();
 }
 
-void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_) {
+void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_) { //TODO - Controller Component, PhysicsBodyComponent
 	tinyxml2::XMLDocument XMLFile;
 	XMLFile.LoadFile(XMLFile_.c_str()); //loading XML file
 	if (XMLFile.Error()) { //Error detection in the xml
@@ -99,6 +99,7 @@ void AssetManager::BuildComponents() {
 		if (componentCheck == "Component") { //check if the element is a component
 			//component loop
 			std::string componentType = currentElement->FirstChildElement("Type")->Attribute("type");
+
 			if (componentType == "Mesh") { //create mesh component
 				AddComponent<MeshComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Mesh")->Attribute("filename"));
 			}

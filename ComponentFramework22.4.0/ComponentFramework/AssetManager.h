@@ -9,17 +9,21 @@
 
 class AssetManager {
 private:
+	//Component Graph
 	std::unordered_map <std::string, Ref<Component>> componentGraph;
-	tinyxml2::XMLElement* sceneRoot; //getting root of the scene
+	//XML Elements
+	tinyxml2::XMLElement* sceneRoot; 
 	tinyxml2::XMLElement* currentElement;
-
+	//Lists of potential components and actors types in a scene
+	//std::vector<std::string> componentTypes; //idea for the future - loop through all the component types in the BuildComponents() and BuildActors() check the currentComponent - then add them - use XML to add the componentTypes
+	//Build Component Functions
+	void BuildSceneAssets(std::string XMLFile_, std::string SceneName_);
 	void BuildCameraActor();
 	void BuildLightActors();
 	void BuildComponents();
 	void BuildActors();
-	void BuildSceneAssets(std::string XMLFile_, std::string SceneName_);
-	
 	void BuildShapeComponent();
+
 public:
 	AssetManager();
 	~AssetManager();

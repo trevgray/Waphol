@@ -15,7 +15,6 @@ class Scene5 : public Scene {
 private:
 	int nextRow;
 	float RowX, RowY;
-	//maybe the assetManager should also be inherited for Scene.h - that would also fix the scope issue
 public:
 	explicit Scene5();
 	virtual ~Scene5();

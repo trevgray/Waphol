@@ -11,6 +11,7 @@
 #include "MaterialComponent.h"
 #include "QMath.h"
 #include "ControllerComponent.h"
+#include "PhysicsBodyComponent.h"
 
 Scene5::Scene5(): RowX(0), RowY(0), nextRow(0) {
 	Debug::Info("Created Scene5: ", __FILE__, __LINE__);
@@ -23,9 +24,10 @@ Scene5::~Scene5() {
 
 bool Scene5::OnCreate() {
 	Debug::Info("Loading assets Scene5: ", __FILE__, __LINE__);
-	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene4");
+	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene5");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>());
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(EngineManager::Instance()->GetActorManager()->GetActorGraph());
 

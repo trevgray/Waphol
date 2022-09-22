@@ -226,5 +226,65 @@
 			<Falloff x="0.0" y="0.0" z="0.0"/>
 		</Light>
 	</Scene4>
+
+	<Scene5>
+		<Component name = "CheckerPieceMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/CheckerPiece.obj"/>
+		</Component>
+
+		<Component name = "PlaneMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/Plane.obj"/>
+		</Component>
+
+		<Component name = "RedCheckerTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/redCheckerPiece.png"/>
+		</Component>
+
+		<Component name = "BlackCheckerTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/blackCheckerPiece.png"/>
+		</Component>
+
+		<Component name = "CheckerBoardTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/8x8_checkered_board.png"/>
+		</Component>
+
+		<Component name = "TextureShader">
+			<Type type = "Shader"/>
+			<Shader vertFileName = "shaders/textureVert.glsl" fragFileName = "shaders/textureFrag.glsl" />
+		</Component>
+
+		<Actor name = "CheckerBoardActor" parent="null">
+			<Mesh name = "PlaneMesh"/>
+			<Material name = "CheckerBoardTexture"/>
+			<Transform posx="0.0" posy ="0.0" posz="0.0" angleDeg="-20.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="1.0" scaley ="1.0" scalez="1.0"/>
+		</Actor>
+
+		<Actor name = "RedCheckerActor" parent="CheckerBoardActor">
+			<Mesh name = "CheckerPieceMesh"/>
+			<Material name = "RedCheckerTexture"/>
+		</Actor>
+
+		<Actor name = "BlackCheckerActor" parent="CheckerBoardActor">
+			<Mesh name = "CheckerPieceMesh"/>
+			<Material name = "BlackCheckerTexture"/>
+		</Actor>
+
+		<Camera name = "camera">
+			<Transform posx="0.0" posy ="0.5" posz="-13.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="0.0" scaley ="0.0" scalez="0.0"/>
+		</Camera>
+
+		<Light name = "light">
+			<LightStyle style ="DirectionLight"/>
+			<Location x="0.0" y ="-10.0" z="0.0"/>
+			<Colour r="0.8" g="0.8" b="0.8" a="0.0"/>
+			<Intensity intensity ="1.0"/>
+			<Falloff x="0.0" y="0.0" z="0.0"/>
+		</Light>
+	</Scene5>
 	
 </Root>
