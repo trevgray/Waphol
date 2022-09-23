@@ -41,16 +41,16 @@ void InputManager::PlayerController(const SDL_Event& sdlEvent, Ref<Actor> actor)
             // results in velocity magnitude being sqrt(2) x maxSpeed.
             // However, this is being done in Update()
         case SDL_SCANCODE_W:
-            actorPhysics.get()->vel.y = actorPhysics.get()->getMaxSpeed() * 1.0f;
+            actorPhysics->vel.y = actorPhysics->GetMaxSpeed() * 1.0f;
             break;
         case SDL_SCANCODE_A:
-            actorPhysics.get()->vel.x = actorPhysics.get()->getMaxSpeed() * -1.0f;
+            actorPhysics->vel.x = actorPhysics->GetMaxSpeed() * -1.0f;
             break;
         case SDL_SCANCODE_S:
-            actorPhysics.get()->vel.y = actorPhysics.get()->getMaxSpeed() * -1.0f;
+            actorPhysics->vel.y = actorPhysics->GetMaxSpeed() * -1.0f;
             break;
         case SDL_SCANCODE_D:
-            actorPhysics.get()->vel.x = actorPhysics.get()->getMaxSpeed() * 1.0f;
+            actorPhysics->vel.x = actorPhysics->GetMaxSpeed() * 1.0f;
             break;
 
             // This section is for seeing how to use acceleration rather than velocity
@@ -88,20 +88,20 @@ void InputManager::PlayerController(const SDL_Event& sdlEvent, Ref<Actor> actor)
             // releases one of two pressed keys, then speed remains at sqrt(0.5) of maxSpeed
 
         case SDL_SCANCODE_W:
-            actorPhysics.get()->vel.y = 0.0f;
-            if (VMath::mag(actorPhysics.get()->vel) > VERY_SMALL) actorPhysics.get()->vel = VMath::normalize(actorPhysics.get()->vel) * actorPhysics.get()->getMaxSpeed();
+            actorPhysics->vel.y = 0.0f;
+            if (VMath::mag(actorPhysics->vel) > VERY_SMALL) actorPhysics->vel = VMath::normalize(actorPhysics->vel) * actorPhysics->GetMaxSpeed();
             break;
         case SDL_SCANCODE_A:
             actorPhysics.get()->vel.x = -0.0f;
-            if (VMath::mag(actorPhysics.get()->vel) > VERY_SMALL) actorPhysics.get()->vel = VMath::normalize(actorPhysics.get()->vel) * actorPhysics.get()->getMaxSpeed();
+            if (VMath::mag(actorPhysics->vel) > VERY_SMALL) actorPhysics->vel = VMath::normalize(actorPhysics->vel) * actorPhysics->GetMaxSpeed();
             break;
         case SDL_SCANCODE_S:
             actorPhysics.get()->vel.y = -0.0f;
-            if (VMath::mag(actorPhysics.get()->vel) > VERY_SMALL) actorPhysics.get()->vel = VMath::normalize(actorPhysics.get()->vel) * actorPhysics.get()->getMaxSpeed();
+            if (VMath::mag(actorPhysics->vel) > VERY_SMALL) actorPhysics->vel = VMath::normalize(actorPhysics->vel) * actorPhysics->GetMaxSpeed();
             break;
         case SDL_SCANCODE_D:
             actorPhysics.get()->vel.x = 0.0f;
-            if (VMath::mag(actorPhysics.get()->vel) > VERY_SMALL) actorPhysics.get()->vel = VMath::normalize(actorPhysics.get()->vel) * actorPhysics.get()->getMaxSpeed();
+            if (VMath::mag(actorPhysics->vel) > VERY_SMALL) actorPhysics->vel = VMath::normalize(actorPhysics->vel) * actorPhysics->GetMaxSpeed();
             break;
 
             // This section is for seeing how to use acceleration rather than velocity

@@ -107,6 +107,9 @@ void AssetManager::BuildComponents() {
 				AddComponent<MaterialComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Material")->Attribute("filename"));
 			}
 			else if (componentType == "Shader") { //create shader component
+				/*for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("Shader")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
+					std::cout << a->Value() << std::endl;
+				}*/
 				AddComponent<ShaderComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
 			}
 			else if (componentType == "Shape") { //create shape component
@@ -164,7 +167,6 @@ void AssetManager::BuildShapeComponent() {
 		tinyxml2::XMLElement* Sphere = currentElement->FirstChildElement("Sphere");
 		AddComponent<ShapeComponent>(currentElement->Attribute("name"), nullptr, GEOMETRY::Sphere(Sphere->FloatAttribute("centreX"),
 			Sphere->FloatAttribute("centreY"), Sphere->FloatAttribute("centreZ"), Sphere->FloatAttribute("radius")));
-		//Sphere = nullptr;
 	}
 	else if (currentElement->FirstChildElement("Cylinder") != nullptr) {
 		tinyxml2::XMLElement* Cylinder = currentElement->FirstChildElement("Cylinder");

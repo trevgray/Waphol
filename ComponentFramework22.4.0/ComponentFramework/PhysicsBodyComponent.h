@@ -28,18 +28,20 @@ public:
 
 	virtual void ApplyForce(MATH::Vec3 force_);
 
-	virtual MATH::Vec3 getVel() { return vel; }
-	virtual MATH::Vec3 getAccel() { return accel; }
-	virtual float getMass() { return mass; }
-	virtual float getOrientation() { return orientation; }
-	virtual float getRotation() { return rotation; }
-	virtual float getAngular() { return angular; }
-	virtual float getMaxSpeed() { return maxSpeed; }
-	virtual float getMaxAcceleration() { return maxAcceleration; }
-	virtual float getMaxRotation() { return maxRotation; }
-	virtual float getMaxAngular() { return maxAngular; }
+	virtual MATH::Vec3 GetVel() { return vel; }
+	virtual MATH::Vec3 GetAccel() { return accel; }
+	virtual float GetMass() { return mass; }
+	virtual float GetOrientation() { return orientation; }
+	virtual float GetRotation() { return rotation; }
+	virtual float GetAngular() { return angular; }
+	virtual float GetMaxSpeed() { return maxSpeed; }
+	virtual float GetMaxAcceleration() { return maxAcceleration; }
+	virtual float GetMaxRotation() { return maxRotation; }
+	virtual float GetMaxAngular() { return maxAngular; }
 
-	virtual void setVel(MATH::Vec3 vel_) { vel = vel_; }
+	virtual void SetVel(MATH::Vec3 vel_) { vel = vel_; }
+	virtual void SetAccel(MATH::Vec3 accel_) { accel = accel_; }
+	virtual void SetAngular(float angular_) { angular = angular_; }
 
 	MATH::Vec3 vel;
 private:

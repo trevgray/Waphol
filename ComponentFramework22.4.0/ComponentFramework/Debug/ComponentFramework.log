@@ -1,13 +1,2 @@
-﻿  InputManager.cpp
-  PhysicsBodyComponent.cpp
-  Scene5.cpp
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(35,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(35,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(46,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(46,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(54,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(54,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(64,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(64,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  Generating Code...
+﻿  SteeringComponent.cpp
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

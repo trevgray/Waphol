@@ -12,7 +12,6 @@ https://www.khronos.org/registry/OpenGL/extensions/ARB/ARB_uniform_buffer_object
 
 Below, is a set of const sizes for most the data used in Graphics programming based
 on std140. Notice that even a bool if 4 bytes long and both Vec3 and Vec4 are 16 bytes. 
--Scott
 ***/
  struct UBO_PADDING {
  private:

@@ -17,17 +17,17 @@ ShapeComponent::ShapeComponent(Component* parent_, GEOMETRY::Capsule capsule_) :
 	shape = std::make_shared<GEOMETRY::Capsule>(capsule_.r, capsule_.sphereCentrePosA, capsule_.sphereCentrePosB);
 }
 
-ShapeComponent::~ShapeComponent()
-{
+ShapeComponent::~ShapeComponent() {
+	OnDestroy();
 }
 
-bool ShapeComponent::OnCreate()
-{
-	return true;
+bool ShapeComponent::OnCreate() {
+	isCreated = true;
+	return isCreated;
 }
 
-void ShapeComponent::OnDestroy()
-{
+void ShapeComponent::OnDestroy() {
+	isCreated = false;
 }
 
 void ShapeComponent::Update(const float deltaTime_) {}

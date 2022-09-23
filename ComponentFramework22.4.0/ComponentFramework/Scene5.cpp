@@ -12,6 +12,8 @@
 #include "QMath.h"
 #include "ControllerComponent.h"
 #include "PhysicsBodyComponent.h"
+#include "SteeringComponent.h"
+#include "Seek.h"
 
 Scene5::Scene5(): RowX(0), RowY(0), nextRow(0) {
 	Debug::Info("Created Scene5: ", __FILE__, __LINE__);
@@ -19,7 +21,6 @@ Scene5::Scene5(): RowX(0), RowY(0), nextRow(0) {
 
 Scene5::~Scene5() {
 	Debug::Info("Deleted Scene5: ", __FILE__, __LINE__);
- 
 }
 
 bool Scene5::OnCreate() {
@@ -27,47 +28,14 @@ bool Scene5::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene5");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->GetComponent<TransformComponent>());
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>());
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(EngineManager::Instance()->GetActorManager()->GetActorGraph());
 
-	//Red Checker creation loop
-	RowX = RowY = nextRow = 0.0f;
-	std::string checkerName;
-	for (int x = 0; x <= 11; x++) {
-		checkerName = "RedChecker" + std::to_string(x);;
-		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(checkerName, new Actor(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor").get()));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("RedCheckerActor"));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-4.5f + RowX, -4.3f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->OnCreate();
-		RowX += 2.55f;
-		nextRow++;
-		if (nextRow == 4) {
-			RowX = nextRow = 0.0f;
-			RowY += 1.26f;
-			if (RowY == 1.26f) {
-				RowX = 1.27f;
-			}
-		}
-	}
-	//Black Checker creation loop
-	RowX = RowY = nextRow = 0.0f;
-	for (int x = 0; x <= 11; x++) {
-		checkerName = "BlackChecker" + std::to_string(x);
-		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(checkerName, new Actor (EngineManager::Instance()->GetActorManager()->GetActor<Actor>("CheckerBoardActor").get()));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("BlackCheckerActor"));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->AddComponent<TransformComponent>(nullptr, Vec3(-3.225f + RowX, 4.4f + RowY, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.14f, 0.14f, 0.14f));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(checkerName)->OnCreate();
-		RowX += 2.55f;
-		nextRow++;
-		if (nextRow == 4) {
-			RowX = nextRow = 0.0f;
-			RowY -= 1.26f;
-			if (RowY == -1.26f) {
-				RowX = -1.27f;
-			}
-		}
-	}
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>());
+	std::vector<SteeringBehaviour> steeringBehaviours;
+	steeringBehaviours.push_back(Seek(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()));
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<SteeringComponent>(nullptr, steeringBehaviours, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"));
 	return true;
 }
 

@@ -55,18 +55,30 @@
     <Filter Include="Header Files\Managers">
       <UniqueIdentifier>{7c116380-2237-4220-8e2b-82df28ae55d1}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\SDL">
+      <UniqueIdentifier>{d560296c-f070-4755-bc47-8988c885148d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\SDL">
+      <UniqueIdentifier>{5ef2fda8-eee1-4661-aa53-3b482844dafd}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI">
+      <UniqueIdentifier>{d5a51474-ffa9-43b8-a5c9-07b308f677e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI">
+      <UniqueIdentifier>{a63a1558-9994-4b4c-9836-03a01782ba6a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Steering">
+      <UniqueIdentifier>{9b9c6646-a89c-44bd-b92f-e088b574e908}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\Steering">
+      <UniqueIdentifier>{066efd6b-57ee-44e4-afae-b1c17bfc8705}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Debug.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Timer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="Window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="MMath.cpp">
@@ -150,15 +162,27 @@
     <ClCompile Include="PhysicsBodyComponent.cpp">
       <Filter>Source Files\Components</Filter>
     </ClCompile>
+    <ClCompile Include="Window.cpp">
+      <Filter>Source Files\SDL</Filter>
+    </ClCompile>
+    <ClCompile Include="Timer.cpp">
+      <Filter>Source Files\SDL</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringBehaviour.cpp">
+      <Filter>Source Files\AI\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringOutput.cpp">
+      <Filter>Source Files\AI\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="Seek.cpp">
+      <Filter>Source Files\AI\Steering</Filter>
+    </ClCompile>
+    <ClCompile Include="SteeringComponent.cpp">
+      <Filter>Source Files\Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Timer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="Window.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Matrix.h">
@@ -271,6 +295,24 @@
     </ClInclude>
     <ClInclude Include="PhysicsBodyComponent.h">
       <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringComponent.h">
+      <Filter>Header Files\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Window.h">
+      <Filter>Header Files\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="Timer.h">
+      <Filter>Header Files\SDL</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringBehaviour.h">
+      <Filter>Header Files\AI\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="SteeringOutput.h">
+      <Filter>Header Files\AI\Steering</Filter>
+    </ClInclude>
+    <ClInclude Include="Seek.h">
+      <Filter>Header Files\AI\Steering</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

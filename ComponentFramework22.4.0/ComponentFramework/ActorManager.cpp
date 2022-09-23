@@ -14,6 +14,9 @@ ActorManager::~ActorManager() {
 }
 
 void ActorManager::RemoveAllComponents() {
+	for (auto actor : actorGraph) {
+		actor.second->~Actor();
+	}
 	actorGraph.clear();
 }
 
@@ -77,7 +80,7 @@ void ActorManager::LoadNonPrehabActors() {
 }
 
 void ActorManager::UpdateActors(const float deltaTime) {
-	for (auto actor : GetActorGraph()) {
+	for (auto actor : actorGraph) {
 		actor.second->Update(deltaTime);
 	}
 }

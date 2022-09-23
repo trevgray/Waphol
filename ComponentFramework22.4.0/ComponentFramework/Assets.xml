@@ -258,20 +258,16 @@
 			<Shader vertFileName = "shaders/textureVert.glsl" fragFileName = "shaders/textureFrag.glsl" />
 		</Component>
 
-		<Actor name = "CheckerBoardActor" parent="null">
-			<Mesh name = "PlaneMesh"/>
-			<Material name = "CheckerBoardTexture"/>
-			<Transform posx="0.0" posy ="0.0" posz="0.0" angleDeg="-20.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="1.0" scaley ="1.0" scalez="1.0"/>
-		</Actor>
-
-		<Actor name = "RedCheckerActor" parent="CheckerBoardActor">
+		<Actor name = "Player" parent="null">
 			<Mesh name = "CheckerPieceMesh"/>
 			<Material name = "RedCheckerTexture"/>
+			<Transform posx="12.0" posy ="7.5" posz="-40.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="1.0" scaley ="1.0" scalez="1.0"/>
 		</Actor>
 
-		<Actor name = "BlackCheckerActor" parent="CheckerBoardActor">
+		<Actor name = "NPC" parent="null">
 			<Mesh name = "CheckerPieceMesh"/>
 			<Material name = "BlackCheckerTexture"/>
+			<Transform posx="10.0" posy ="5.0" posz="-40.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="1.0" scaley ="1.0" scalez="1.0"/>
 		</Actor>
 
 		<Camera name = "camera">
