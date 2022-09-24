@@ -32,10 +32,12 @@ bool Scene5::OnCreate() {
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(EngineManager::Instance()->GetActorManager()->GetActorGraph());
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>());
+
 	std::vector<SteeringBehaviour> steeringBehaviours;
 	steeringBehaviours.push_back(Seek(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<SteeringComponent>(nullptr, steeringBehaviours, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"));
+
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>());
 	return true;
 }
 
@@ -49,6 +51,8 @@ void Scene5::HandleEvents(const SDL_Event &sdlEvent) {
 
 void Scene5::Update(const float deltaTime) {
 	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
+	//std::cout << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().x << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().y << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().z << std::endl;
+	std::cout << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->GetPosition().x << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->GetPosition().y << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->GetPosition().z << std::endl;
 }
 
 void Scene5::Render() const {

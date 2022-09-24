@@ -12,7 +12,7 @@ PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComp
     rotation = 0.0f;
     angular = 0.0f;
     maxSpeed = 4.0f;
-    maxAcceleration = 10.0f;
+    maxAcceleration = 200.0f;
     maxRotation = 2.0f;
     maxAngular = 10.0f;
 }

@@ -32,7 +32,7 @@ void SteeringComponent::Update(const float deltaTime_) {
 	// apply the steering to the equations of motion
 	//just call the body update - then do all the steering update stuff in the steering component update
 	if (actorComponent->GetComponent<PhysicsBodyComponent>() != nullptr) {
-		actorComponent->GetComponent<PhysicsBodyComponent>()->Update(deltaTime_);
+		//actorComponent->GetComponent<PhysicsBodyComponent>()->Update(deltaTime_);
 		// Adjust velocity and rotation according to steering input
 		actorComponent->GetComponent<PhysicsBodyComponent>()->SetAccel(steering.linear);
 		actorComponent->GetComponent<PhysicsBodyComponent>()->SetAngular(steering.angular);

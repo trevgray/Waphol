@@ -261,17 +261,17 @@
 		<Actor name = "Player" parent="null">
 			<Mesh name = "CheckerPieceMesh"/>
 			<Material name = "RedCheckerTexture"/>
-			<Transform posx="12.0" posy ="7.5" posz="-40.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="1.0" scaley ="1.0" scalez="1.0"/>
+			<Transform posx="12.5" posy ="7.5" posz="0.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="1.0" scaley ="1.0" scalez="1.0"/>
 		</Actor>
 
 		<Actor name = "NPC" parent="null">
 			<Mesh name = "CheckerPieceMesh"/>
 			<Material name = "BlackCheckerTexture"/>
-			<Transform posx="10.0" posy ="5.0" posz="-40.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="1.0" scaley ="1.0" scalez="1.0"/>
+			<Transform posx="10.0" posy ="5.0" posz="0.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="1.0" scaley ="1.0" scalez="1.0"/>
 		</Actor>
 
 		<Camera name = "camera">
-			<Transform posx="0.0" posy ="0.5" posz="-13.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="0.0" scaley ="0.0" scalez="0.0"/>
+			<Transform posx="0.0" posy ="0.5" posz="-40.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="0.0" scaley ="0.0" scalez="0.0"/>
 		</Camera>
 
 		<Light name = "light">
