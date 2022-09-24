@@ -12,6 +12,6 @@ protected:
 	SteeringOutput result;
 public:
 	SteeringBehaviour();
-	virtual SteeringOutput GetSteering(Ref<Actor> actor_);
+	virtual SteeringOutput GetSteering(Ref<Actor> actor_) = 0;
 	virtual ~SteeringBehaviour();
 };

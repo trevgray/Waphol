@@ -9,7 +9,8 @@ class SteeringComponent : public Component {
 	SteeringComponent& operator = (const SteeringComponent&) = delete;
 	SteeringComponent& operator = (SteeringComponent&&) = delete;
 public:
-	SteeringComponent(Component* parent_, std::vector<SteeringBehaviour> steeringBehaviours_, Ref<Actor> actor_);
+	SteeringComponent(Component* parent_, std::vector<Ref<SteeringBehaviour>> steeringBehaviours_, Ref<Actor> actor_);
+	SteeringComponent(Component* parent_, Ref<SteeringBehaviour> steerBehaviour_, Ref<Actor> actor_);
 	virtual ~SteeringComponent();
 	virtual bool OnCreate();
 	virtual void OnDestroy();
@@ -18,7 +19,7 @@ public:
 	virtual void Render() const;
 
 private:
-	std::vector<SteeringBehaviour> steeringBehaviours;
+	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
 	SteeringOutput steering;
 	Ref<Actor> actorComponent;
 };

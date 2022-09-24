@@ -4,8 +4,14 @@
 #include "Seek.h"
 #include "EngineManager.h"
 
-SteeringComponent::SteeringComponent(Component* parent_, std::vector<SteeringBehaviour> steeringBehaviours_, Ref<Actor> actor_) : Component(parent_) {
+SteeringComponent::SteeringComponent(Component* parent_, std::vector<Ref<SteeringBehaviour>> steeringBehaviours_, Ref<Actor> actor_) : Component(parent_) {
 	steeringBehaviours = steeringBehaviours_;
+	steering = SteeringOutput();
+	actorComponent = actor_;
+}
+
+SteeringComponent::SteeringComponent(Component* parent_, Ref<SteeringBehaviour> steerBehaviour_, Ref<Actor> actor_) : Component(parent_) {
+	steeringBehaviours.push_back(steerBehaviour_);
 	steering = SteeringOutput();
 	actorComponent = actor_;
 }
@@ -53,10 +59,7 @@ void SteeringComponent::RunSteering() {
 
 	std::vector<SteeringOutput> steeringOutputs;
 	for (unsigned i = 0; i < steeringBehaviours.size(); i++) {
-		//steeringOutputs.push_back(steeringBehaviours[i].GetSteering(actorComponent));
-		Ref<TransformComponent> test = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>();
-		Seek seek(test);
-		steeringOutputs.push_back(seek.GetSteering(actorComponent));
+		steeringOutputs.push_back(steeringBehaviours[i]->GetSteering(actorComponent));
 	}
 
 	//add together all steering outputs
