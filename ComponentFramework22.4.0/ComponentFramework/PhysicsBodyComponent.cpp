@@ -1,4 +1,5 @@
 #include "PhysicsBodyComponent.h"
+#include "QMath.h"
 
 using namespace MATH;
 PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_) : Component(parent_) {
@@ -8,12 +9,11 @@ PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComp
     accel = Vec3();
     mass = 1.0f;
     radius = 0.2f;
-    orientation = 0.0f;
     rotation = 0.0f;
     angular = 0.0f;
     maxSpeed = 4.0f;
     maxAcceleration = 200.0f;
-    maxRotation = 2.0f;
+    maxRotation = 60.0f;
     maxAngular = 10.0f;
 }
 
@@ -21,7 +21,6 @@ PhysicsBodyComponent::PhysicsBodyComponent(
     Component* parent_, Ref<TransformComponent> transform_, Vec3 vel_, Vec3 accel_,
     float mass_,
     float radius_ = 0.2f,
-    float orientation_ = 0.0f,
     float rotation_ = 0.0f,
     float angular_ = 0.0f,
     // These are not very good defaults, but they will prevent compiler warnings.
@@ -36,7 +35,6 @@ PhysicsBodyComponent::PhysicsBodyComponent(
     accel = accel_;
     mass = mass_;
     radius = radius_;
-    orientation = orientation_;
     rotation = rotation_;
     angular = angular_;
     maxSpeed = maxSpeed_;
@@ -60,7 +58,8 @@ void PhysicsBodyComponent::Update(float deltaTime) {
     transform->SetPosition(transform->GetPosition() + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime));
     vel = vel + accel * deltaTime;
     // Update orientation
-    orientation += rotation * deltaTime;
+    transform->setOrientation(QMath::angleAxisRotation(rotation * deltaTime, Vec3(0.0f,1.0f,0.0f)));
+    //orientation += rotation * deltaTime;
     rotation += angular * deltaTime;
 
     // Clip to maxSpeed, if speed exceeds max

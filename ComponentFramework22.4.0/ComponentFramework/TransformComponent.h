@@ -25,7 +25,7 @@ public:
 		orientation = orientation_;
 		scale = scale_;
 	}
-	void setRotation(Quaternion orientation_) {
+	void setOrientation(Quaternion orientation_) {
 		orientation = orientation_;
 	}
 	void SetPosition(Vec3 pos_) {

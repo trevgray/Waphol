@@ -1,2 +1,23 @@
 ﻿  Scene5.cpp
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\xutility(238,77): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=double
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\memory(2022): message : see reference to function template instantiation 'void std::_Construct_in_place<_Ty,std::shared_ptr<Actor>,double>(_Ty &,std::shared_ptr<Actor> &&,double &&) noexcept(false)' being compiled
+          with
+          [
+              _Ty=VelocityMatch
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\memory(2741): message : see reference to function template instantiation 'std::_Ref_count_obj2<VelocityMatch>::_Ref_count_obj2<_Ty,double>(_Ty &&,double &&)' being compiled
+          with
+          [
+              _Ty=std::shared_ptr<Actor>
+          ]
+C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.31629\include\memory(2742): message : see reference to function template instantiation 'std::_Ref_count_obj2<VelocityMatch>::_Ref_count_obj2<_Ty,double>(_Ty &&,double &&)' being compiled
+          with
+          [
+              _Ty=std::shared_ptr<Actor>
+          ]
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene5.cpp(41): message : see reference to function template instantiation 'std::shared_ptr<VelocityMatch> std::make_shared<VelocityMatch,std::shared_ptr<Actor>,double>(std::shared_ptr<Actor> &&,double &&)' being compiled
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

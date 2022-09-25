@@ -148,6 +148,7 @@
   <ItemGroup>
     <ClCompile Include="Actor.cpp" />
     <ClCompile Include="ActorManager.cpp" />
+    <ClCompile Include="Arrive.cpp" />
     <ClCompile Include="AssetManager.cpp" />
     <ClCompile Include="CameraActor.cpp" />
     <ClCompile Include="Capsule.cpp" />
@@ -156,6 +157,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EMath.cpp" />
     <ClCompile Include="EngineManager.cpp" />
+    <ClCompile Include="Flee.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightActor.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
@@ -179,12 +181,14 @@
     <ClCompile Include="Timer.cpp" />
     <ClCompile Include="tinyxml2.cpp" />
     <ClCompile Include="TransformComponent.cpp" />
+    <ClCompile Include="VelocityMatch.cpp" />
     <ClCompile Include="VMath.cpp" />
     <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorManager.h" />
+    <ClInclude Include="Arrive.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AxisAngle.h" />
     <ClInclude Include="CameraActor.h" />
@@ -196,6 +200,7 @@
     <ClInclude Include="EMath.h" />
     <ClInclude Include="EngineManager.h" />
     <ClInclude Include="Euler.h" />
+    <ClInclude Include="Flee.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="LightActor.h" />
     <ClInclude Include="MaterialComponent.h" />
@@ -225,6 +230,7 @@
     <ClInclude Include="TransformComponent.h" />
     <ClInclude Include="UBO_Padding.h" />
     <ClInclude Include="Vector.h" />
+    <ClInclude Include="VelocityMatch.h" />
     <ClInclude Include="VMath.h" />
     <ClInclude Include="Window.h" />
   </ItemGroup>

@@ -14,6 +14,8 @@
 #include "PhysicsBodyComponent.h"
 #include "SteeringComponent.h"
 #include "Seek.h"
+#include "VelocityMatch.h"
+#include "Arrive.h"
 
 Scene5::Scene5(): RowX(0), RowY(0), nextRow(0) {
 	Debug::Info("Created Scene5: ", __FILE__, __LINE__);
@@ -28,13 +30,15 @@ bool Scene5::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene5");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>());
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>(), Vec3(), Vec3(), 1.0f, 1.0f, 0.0f, 0.0f, 15.0f, 20.0f, 30.0f, 10.0f);
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(EngineManager::Instance()->GetActorManager()->GetActorGraph());
 
 
 	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
-	steeringBehaviours.push_back(std::make_shared<Seek>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()));
+	//steeringBehaviours.push_back(std::make_shared<Arrive>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()));
+	//steeringBehaviours.push_back(std::make_shared<Seek>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()));
+	steeringBehaviours.push_back(std::make_shared<VelocityMatch>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 0.1));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<SteeringComponent>(nullptr, steeringBehaviours, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"));
 
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>());

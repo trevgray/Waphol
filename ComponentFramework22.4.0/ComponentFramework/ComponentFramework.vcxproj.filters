@@ -73,6 +73,12 @@
     <Filter Include="Header Files\AI\Steering">
       <UniqueIdentifier>{066efd6b-57ee-44e4-afae-b1c17bfc8705}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Source Files\AI\Steering\SteeringBehaviours">
+      <UniqueIdentifier>{b0ca65b3-b84a-4c02-850d-90a988b14a45}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\Steering\SteeringBehaviours">
+      <UniqueIdentifier>{6ddeab44-c97b-46a6-a353-0845d9fdc180}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -174,11 +180,20 @@
     <ClCompile Include="SteeringOutput.cpp">
       <Filter>Source Files\AI\Steering</Filter>
     </ClCompile>
-    <ClCompile Include="Seek.cpp">
-      <Filter>Source Files\AI\Steering</Filter>
-    </ClCompile>
     <ClCompile Include="SteeringComponent.cpp">
       <Filter>Source Files\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Arrive.cpp">
+      <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="Flee.cpp">
+      <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="Seek.cpp">
+      <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClCompile>
+    <ClCompile Include="VelocityMatch.cpp">
+      <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -311,8 +326,17 @@
     <ClInclude Include="SteeringOutput.h">
       <Filter>Header Files\AI\Steering</Filter>
     </ClInclude>
+    <ClInclude Include="Arrive.h">
+      <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="Flee.h">
+      <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="VelocityMatch.h">
+      <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClInclude>
     <ClInclude Include="Seek.h">
-      <Filter>Header Files\AI\Steering</Filter>
+      <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

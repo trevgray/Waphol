@@ -13,7 +13,6 @@ public:
 	PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_, MATH::Vec3 vel_, MATH::Vec3 accel_,
 		float mass_,
 		float radius_,
-		float orientation_,
 		float rotation_,
 		float angular_,
 		float maxSpeed_,
@@ -31,7 +30,6 @@ public:
 	virtual MATH::Vec3 GetVel() { return vel; }
 	virtual MATH::Vec3 GetAccel() { return accel; }
 	virtual float GetMass() { return mass; }
-	virtual float GetOrientation() { return orientation; }
 	virtual float GetRotation() { return rotation; }
 	virtual float GetAngular() { return angular; }
 	virtual float GetMaxSpeed() { return maxSpeed; }
@@ -49,7 +47,6 @@ private:
 
 	MATH::Vec3 accel;
 	float mass;
-	float orientation;	// facing this direction
 	float rotation;			// rotating at this speed (radians per second?)
 	float angular;          // angular acceleration
 	float maxSpeed;
