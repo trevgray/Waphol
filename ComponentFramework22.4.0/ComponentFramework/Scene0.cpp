@@ -105,7 +105,7 @@ void Scene0::Update(const float deltaTime) {
 void Scene0::Render() const
 {
 	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+	glClearColor(1.0f, 0.6f, 1.0f, 0.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	glBindBuffer(GL_UNIFORM_BUFFER, EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetMatriciesID());
@@ -115,8 +115,8 @@ void Scene0::Render() const
 
 	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
-		if (actor.second->GetComponent<MaterialComponent>() != nullptr) { //everything is an actor, so i just check if it has a texture
-			glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); //this is also amazing because we can add as many actors as we want, and the render does not need to change
+		if (actor.second->GetComponent<MaterialComponent>() != nullptr) {
+			glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); 
 			if (renderMeshes) {
 				actor.second->GetComponent<MeshComponent>()->Render(GL_TRIANGLES);
 			}

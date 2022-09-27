@@ -12,9 +12,14 @@ ShapeComponent::ShapeComponent(Component* parent_, GEOMETRY::Cylinder cylinder_)
 	shape = std::make_shared<GEOMETRY::Cylinder>(cylinder_.r, cylinder_.capCentrePosA, cylinder_.capCentrePosB);
 }
 
-ShapeComponent::ShapeComponent(Component* parent_, GEOMETRY::Capsule capsule_) :Component(parent_) {
+ShapeComponent::ShapeComponent(Component* parent_, GEOMETRY::Capsule capsule_) : Component(parent_) {
 	shapeType = ShapeType::capsule;
 	shape = std::make_shared<GEOMETRY::Capsule>(capsule_.r, capsule_.sphereCentrePosA, capsule_.sphereCentrePosB);
+}
+
+ShapeComponent::ShapeComponent(Component* parent_, GEOMETRY::Box box_) : Component(parent_) {
+	shapeType = ShapeType::box;
+	shape = std::make_shared<GEOMETRY::Box>(box_.center, box_.halfExtent, box_.orientation);
 }
 
 ShapeComponent::~ShapeComponent() {

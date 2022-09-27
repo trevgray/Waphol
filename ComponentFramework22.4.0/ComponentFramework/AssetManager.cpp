@@ -180,4 +180,11 @@ void AssetManager::BuildShapeComponent() {
 			Vec3(Capsule->FloatAttribute("topSphereX"), Capsule->FloatAttribute("topSphereY"), Capsule->FloatAttribute("topSphereZ")),
 			Vec3(Capsule->FloatAttribute("bottomSphereX"), Capsule->FloatAttribute("bottomSphereY"), Capsule->FloatAttribute("bottomSphereZ"))));
 	}
+	else if (currentElement->FirstChildElement("Box") != nullptr) {
+		tinyxml2::XMLElement* Box = currentElement->FirstChildElement("Box");
+		AddComponent<ShapeComponent>(currentElement->Attribute("name"), nullptr, GEOMETRY::Box(
+			Vec3(Box->FloatAttribute("centerX"), Box->FloatAttribute("centerY"), Box->FloatAttribute("centerZ")),
+			Vec3(Box->FloatAttribute("halfExtentX"), Box->FloatAttribute("halfExtentY"), Box->FloatAttribute("halfExtentZ")), 
+			QMath::angleAxisRotation(Box->FloatAttribute("angleDeg"), Vec3(Box->FloatAttribute("axisX"), Box->FloatAttribute("axisY"), Box->FloatAttribute("axisZ")))));
+	}
 }

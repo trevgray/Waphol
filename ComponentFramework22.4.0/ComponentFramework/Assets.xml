@@ -18,6 +18,20 @@
 		  <Capsule radius ="1.0" topSphereX="0.0" topSphereY="0.5" topSphereZ="0.0" bottomSphereX="0.0" bottomSphereY="-0.5" bottomSphereZ="0.0" />
 	  </Component>
 
+	  <Component name = "BoxShape">
+		  <Type type = "Shape"/>
+		  <Box centerX ="0.0" centerY ="0.0" centerZ ="0.0" 
+			   halfExtentX ="1.0" halfExtentY="1.0" halfExtentZ ="1.0"
+			   angleDeg ="0.0" axisX="0.0" axisY="1.0" axisZ="0.0" />
+	  </Component>
+	  
+	  <Component name = "CheckerBoardShape">
+		  <Type type = "Shape"/>
+		  <Box centerX ="0.0" centerY ="0.0" centerZ ="-0.4" 
+			   halfExtentX ="5.0" halfExtentY="5.0" halfExtentZ ="0.3"
+			   angleDeg ="0.0" axisX="0.0" axisY="1.0" axisZ="0.0" />
+	  </Component>
+
 	  <Component name = "MarioMesh">
 		  <Type type = "Mesh"/>
 		  <Mesh filename = "meshes/Mario.obj"/>
@@ -76,7 +90,7 @@
 	  <Actor name = "CheckerBoardActor" parent="null">
 		  <Mesh name = "PlaneMesh"/>
 		  <Material name = "CheckerBoardTexture"/>
-		  <Shape name ="SkullSphereShape"/>
+		  <Shape name ="CheckerBoardShape"/>
 		  <Transform posx="0.0" posy="0.0" posz="-17.0"
 				   angleDeg="-20.0" axisx="1.0" axisy="0.0" axisz="0.0"
 				   scalex="1.0" scaley="1.0" scalez="1.0"/>
@@ -130,7 +144,7 @@
 	  <Actor name = "ActorCube" parent="null">
 		  <Mesh name = "CubeMesh"/>
 		  <Material name = "RedCheckerTexture"/>
-		  <Shape name ="SkullSphereShape"/>
+		  <Shape name ="BoxShape"/>
 		  <Transform posx="0.0" posy="0.0" posz="-16.0"
 					angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0"
 					scalex="1.0" scaley="1.0" scalez="1.0"/>
@@ -139,7 +153,7 @@
 	  <Actor name = "ActorCube2" parent="null">
 		  <Mesh name = "CubeMesh"/>
 		  <Material name = "MarioMaterial"/>
-		  <Shape name ="SkullSphereShape"/>
+		  <Shape name ="BoxShape"/>
 		  <Transform posx="3.0" posy="2.0" posz="-16.0"
 					 angleDeg="45.0" axisx="1.0" axisy="0.0" axisz="0.0"
 					 scalex="1.0" scaley="1.0" scalez="1.0"/>

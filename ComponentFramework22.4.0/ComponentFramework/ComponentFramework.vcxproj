@@ -150,6 +150,7 @@
     <ClCompile Include="ActorManager.cpp" />
     <ClCompile Include="Arrive.cpp" />
     <ClCompile Include="AssetManager.cpp" />
+    <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraActor.cpp" />
     <ClCompile Include="Capsule.cpp" />
     <ClCompile Include="ControllerComponent.cpp" />
@@ -191,6 +192,7 @@
     <ClInclude Include="Arrive.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AxisAngle.h" />
+    <ClInclude Include="Box.h" />
     <ClInclude Include="CameraActor.h" />
     <ClInclude Include="Capsule.h" />
     <ClInclude Include="Component.h" />

@@ -195,6 +195,9 @@
     <ClCompile Include="VelocityMatch.cpp">
       <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
     </ClCompile>
+    <ClCompile Include="Box.cpp">
+      <Filter>Source Files\Math\Geometry</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -337,6 +340,9 @@
     </ClInclude>
     <ClInclude Include="Seek.h">
       <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="Box.h">
+      <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

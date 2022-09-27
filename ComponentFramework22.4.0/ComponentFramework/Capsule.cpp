@@ -39,19 +39,19 @@ void GEOMETRY::Capsule::generateVerticesAndNormals() {
 
 	Vec3 normal = getNormalizedVector(); //get the normalized vector
 	//Capsule top & bottom
-	for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) {
+	for (float thetaDeg = 0.0f; thetaDeg <= 180.0f; thetaDeg += deltaTheta) {
 		Vec3 circle(r * sin(thetaDeg * DEGREES_TO_RADIANS), r * cos(thetaDeg * DEGREES_TO_RADIANS), 0.0f); //update the circle every frame with the next vertex location
 		for (float phiDeg = 0.0f; phiDeg <= 360.0f; phiDeg += deltaPhi) {
 			MATH::Matrix3 rotationMatrix;
 			rotationMatrix = MATH::MMath::rotate(deltaPhi, normal); //rotate the vertex by deltaTheta along the normal of the cylinder
 			circle = rotationMatrix * circle;//update the circle with the rotation
 
-			/*int topDegree = 90 + ((0.9 * abs(normal.y - 1)) * 100); 
-			int bottomDegree = 180 + ((0.9 * abs(normal.y - 1)) * 100);*/
+			/*int topDegree = 90 + (abs(normal.y - 1) * 100); 
+			int bottomDegree = 180 + (abs(normal.y - 1) * 100);*/
 			if (thetaDeg < 90) { //top circle
 				vertices.push_back(circle + Vec3(sphereCentrePosA.x, sphereCentrePosA.y, sphereCentrePosA.z)); //move the vertex point based on the position of the top circle
 			}
-			else if (thetaDeg < 180) { //bottom circle
+			else { //bottom circle
 				vertices.push_back(circle + Vec3(sphereCentrePosB.x, sphereCentrePosB.y, sphereCentrePosB.z)); //move the vertex point based on the position of the bottom circle
 			}
 			normals.push_back(circle);
