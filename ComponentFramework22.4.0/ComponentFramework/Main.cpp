@@ -4,6 +4,15 @@
 #include <string>
 #include "EngineManager.h"
 #include "Debug.h"
+
+//static std::size_t memoryAllocated = 0;
+//
+//void* operator new(std::size_t memorySize) {
+//	if (memorySize == 0) { memorySize++; }
+//	std::cout << "allocating " << memorySize << " bytes of memory\n";
+//	memoryAllocated += memorySize;
+//	return malloc(memorySize);
+//}
   
 int main(int argc, char* args[]) {
 	
@@ -19,6 +28,8 @@ int main(int argc, char* args[]) {
 	}
 
 	EngineManager::Instance()->~EngineManager();
+
+	//std::cout << memoryAllocated << std::endl;
 
 	/// This writes out memory leaks to the output window not the console window
 	_CrtDumpMemoryLeaks();
