@@ -20,7 +20,7 @@ SteeringOutput Flee::GetSteering(Ref<Actor> actor_) {
 
 	//std::cout << result.linear.x << " " << result.linear.y << " " << result.linear.z << std::endl;
 
-	result.angular = 0.0f;
+	result.rotation = Quaternion(0, Vec3());
 
 	return result;
 }

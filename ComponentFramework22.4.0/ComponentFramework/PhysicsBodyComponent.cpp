@@ -58,7 +58,7 @@ void PhysicsBodyComponent::Update(float deltaTime) {
     transform->SetPosition(transform->GetPosition() + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime));
     vel = vel + accel * deltaTime;
     // Update orientation
-    transform->setOrientation(QMath::angleAxisRotation(90,Vec3(1.0f,0.0f,0.0f)) * QMath::angleAxisRotation(rotation, Vec3(0.0f, 0.0f, 1.0f))); //IDK YET ABOUT THIS
+    //transform->setOrientation(QMath::angleAxisRotation(90,Vec3(1.0f,0.0f,0.0f)) * QMath::angleAxisRotation(rotation, Vec3(0.0f, 0.0f, 1.0f))); //IDK YET ABOUT THIS
     ////orientation += rotation * deltaTime;
     rotation += angular;
 
@@ -69,7 +69,7 @@ void PhysicsBodyComponent::Update(float deltaTime) {
     }
 
     // Clip to maxRotation, if needed
-    if (rotation > maxRotation) rotation = maxRotation;
+    //if (rotation > maxRotation) rotation = maxRotation;
 
     // Could introduce dampening, of velocity and/or rotation, to simulate friction
     //vel -= 0.05 * vel;

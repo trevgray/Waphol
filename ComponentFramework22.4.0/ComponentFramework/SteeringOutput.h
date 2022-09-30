@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Vector.h"
+#include "Quaternion.h"
 using namespace MATH;
 
 class SteeringOutput
@@ -11,19 +12,19 @@ public:
 	// There might be a better way, but I can't think of it right now.
 
 	Vec3 linear;
-	float angular;
+	Quaternion rotation;
 
 	SteeringOutput();
-	SteeringOutput(Vec3 linear_, float angular_);
+	SteeringOutput(Vec3 linear_, Quaternion rotation_);
 	~SteeringOutput();
 
 	inline const SteeringOutput operator + (const SteeringOutput& v) const {
-		return SteeringOutput(linear + v.linear, angular + v.angular);
+		return SteeringOutput(linear + v.linear, rotation + v.rotation);
 	}
 
 	inline SteeringOutput& operator += (const SteeringOutput& v) {
 		linear += v.linear;
-		angular += v.angular;
+		rotation = v.rotation;
 		return *this;
 	}
 

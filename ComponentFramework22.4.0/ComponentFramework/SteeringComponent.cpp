@@ -41,7 +41,7 @@ void SteeringComponent::Update(const float deltaTime_) {
 		//actorComponent->GetComponent<PhysicsBodyComponent>()->Update(deltaTime_);
 		// Adjust velocity and rotation according to steering input
 		actorComponent->GetComponent<PhysicsBodyComponent>()->SetAccel(steering.linear);
-		actorComponent->GetComponent<PhysicsBodyComponent>()->SetAngular(steering.angular);
+		actorComponent->GetComponent<TransformComponent>()->setOrientation(steering.rotation);
 
 		//clip accel to max
 		if (VMath::mag(actorComponent->GetComponent<PhysicsBodyComponent>()->GetAccel()) > actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAcceleration()) {
@@ -49,9 +49,9 @@ void SteeringComponent::Update(const float deltaTime_) {
 		}
 
 		//clip angular acceleration to max - angular = angular > maxAngular ? maxAngular : angular;
-		if (actorComponent->GetComponent<PhysicsBodyComponent>()->GetAngular() > actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAngular()) {
+		/*if (actorComponent->GetComponent<PhysicsBodyComponent>()->GetAngular() > actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAngular()) {
 			actorComponent->GetComponent<PhysicsBodyComponent>()->SetAngular(actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAngular());
-		}
+		}*/
 	}
 }
 

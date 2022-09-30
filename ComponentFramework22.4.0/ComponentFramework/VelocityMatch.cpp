@@ -21,7 +21,7 @@ SteeringOutput VelocityMatch::GetSteering(Ref<Actor> actor_) {
 		result.linear *= actor_->GetComponent<PhysicsBodyComponent>()->GetMaxAcceleration();
 	}
 
-	result.angular = 0.0f;
+	result.rotation = Quaternion(0, Vec3());
 
 	return result;
 }

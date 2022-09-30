@@ -1,13 +1,14 @@
 #include "SteeringOutput.h"
+#include "Quaternion.h"
 
 SteeringOutput::SteeringOutput() {
 	linear = Vec3();
-	angular = 0.0f;
+	rotation = Quaternion();
 }
 
-SteeringOutput::SteeringOutput(Vec3 linear_, float angular_) {
+SteeringOutput::SteeringOutput(Vec3 linear_, Quaternion rotation_) {
 	linear = linear_;
-	angular = angular_;
+	rotation = rotation_;
 }
 
 SteeringOutput::~SteeringOutput() {

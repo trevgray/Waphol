@@ -201,6 +201,9 @@
     <ClCompile Include="Align.cpp">
       <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
     </ClCompile>
+    <ClCompile Include="FaceVelocity.cpp">
+      <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -348,6 +351,9 @@
       <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
     <ClInclude Include="Align.h">
+      <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="FaceVelocity.h">
       <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
     </ClInclude>
   </ItemGroup>
