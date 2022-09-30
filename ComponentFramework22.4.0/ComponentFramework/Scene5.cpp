@@ -16,6 +16,7 @@
 #include "Seek.h"
 #include "VelocityMatch.h"
 #include "Arrive.h"
+#include "Align.h"
 
 Scene5::Scene5(): RowX(0), RowY(0), nextRow(0) {
 	Debug::Info("Created Scene5: ", __FILE__, __LINE__);
@@ -34,11 +35,11 @@ bool Scene5::OnCreate() {
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(EngineManager::Instance()->GetActorManager()->GetActorGraph());
 
-
 	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
 	//steeringBehaviours.push_back(std::make_shared<Arrive>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()));
 	//steeringBehaviours.push_back(std::make_shared<Seek>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()));
-	steeringBehaviours.push_back(std::make_shared<VelocityMatch>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 0.1));
+	//steeringBehaviours.push_back(std::make_shared<VelocityMatch>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 0.1));
+	steeringBehaviours.push_back(std::make_shared<Align>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>(), EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->GetQuaternion(), 1.0f, 10.0f, 0.1f));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<SteeringComponent>(nullptr, steeringBehaviours, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"));
 
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>());

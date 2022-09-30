@@ -26,8 +26,8 @@ PhysicsBodyComponent::PhysicsBodyComponent(
     // These are not very good defaults, but they will prevent compiler warnings.
     float maxSpeed_ = 4.0f,
     float maxAcceleration_ = 10.0f,
-    float maxRotation_ = 2.0f,
-    float maxAngular_ = 10.0f
+    float maxRotation_ = 180.0f,
+    float maxAngular_ = 180.0f
 ) : Component(parent_)
 {
     transform = transform_;
@@ -58,9 +58,9 @@ void PhysicsBodyComponent::Update(float deltaTime) {
     transform->SetPosition(transform->GetPosition() + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime));
     vel = vel + accel * deltaTime;
     // Update orientation
-    transform->setOrientation(QMath::angleAxisRotation(rotation * deltaTime, Vec3(0.0f,1.0f,0.0f)));
-    //orientation += rotation * deltaTime;
-    rotation += angular * deltaTime;
+    transform->setOrientation(QMath::angleAxisRotation(90,Vec3(1.0f,0.0f,0.0f)) * QMath::angleAxisRotation(rotation, Vec3(0.0f, 0.0f, 1.0f))); //IDK YET ABOUT THIS
+    ////orientation += rotation * deltaTime;
+    rotation += angular;
 
     // Clip to maxSpeed, if speed exceeds max
     if (VMath::mag(vel) > maxSpeed)

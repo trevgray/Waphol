@@ -40,6 +40,7 @@ public:
 	virtual void SetVel(MATH::Vec3 vel_) { vel = vel_; }
 	virtual void SetAccel(MATH::Vec3 accel_) { accel = accel_; }
 	virtual void SetAngular(float angular_) { angular = angular_; }
+	virtual void SetRotation(float rotation_) { rotation = rotation_; }
 
 	MATH::Vec3 vel;
 private:

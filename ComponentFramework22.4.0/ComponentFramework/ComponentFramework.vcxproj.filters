@@ -198,6 +198,9 @@
     <ClCompile Include="Box.cpp">
       <Filter>Source Files\Math\Geometry</Filter>
     </ClCompile>
+    <ClCompile Include="Align.cpp">
+      <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -343,6 +346,9 @@
     </ClInclude>
     <ClInclude Include="Box.h">
       <Filter>Header Files\Math\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Align.h">
+      <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
