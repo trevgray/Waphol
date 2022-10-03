@@ -27,8 +27,7 @@ SteeringOutput Arrive::GetSteering(Ref<Actor> actor_) {
 	if (distance < targetRadius) {
 		actor_->GetComponent<PhysicsBodyComponent>()->SetVel(Vec3());
 		result.linear = Vec3();
-		result.rotation = Quaternion(0, Vec3());
-		std::cout << "STOPPED" << std::endl;
+		result.rotation = Quaternion();
 		return result;
 	}
 	// if we are outside the slow radius, use max speed
@@ -52,7 +51,6 @@ SteeringOutput Arrive::GetSteering(Ref<Actor> actor_) {
 		result.linear = VMath::normalize(result.linear);
 		result.linear *= actor_->GetComponent<PhysicsBodyComponent>()->GetMaxAcceleration();
 	}
-	result.rotation = Quaternion(0, Vec3());
-	std::cout << "MOVING" << std::endl;
+	result.rotation = Quaternion();
 	return result;
 }

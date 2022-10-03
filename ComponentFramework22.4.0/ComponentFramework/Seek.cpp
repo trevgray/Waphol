@@ -20,7 +20,7 @@ SteeringOutput Seek::GetSteering(Ref<Actor> actor_) {
 
 	//std::cout << result.linear.x << " " << result.linear.y << " " << result.linear.z << std::endl;
 
-	result.rotation = Quaternion(0, Vec3());
+	result.rotation = Quaternion();
 
 	return result;
 }

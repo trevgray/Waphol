@@ -56,7 +56,7 @@ void SteeringComponent::Update(const float deltaTime_) {
 }
 
 void SteeringComponent::RunSteering() {
-
+	steering = SteeringOutput();
 	std::vector<SteeringOutput> steeringOutputs;
 	for (unsigned i = 0; i < steeringBehaviours.size(); i++) {
 		steeringOutputs.push_back(steeringBehaviours[i]->GetSteering(actorComponent));
