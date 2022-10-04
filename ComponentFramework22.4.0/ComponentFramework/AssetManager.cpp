@@ -9,6 +9,7 @@
 #include "ShapeComponent.h"
 #include "CameraActor.h"
 #include "LightActor.h"
+#include "PhysicsBodyComponent.h"
 
 AssetManager::AssetManager() : sceneRoot(nullptr), currentElement(nullptr) {}
 
@@ -37,7 +38,7 @@ void AssetManager::RemoveAllComponents() {
 	componentGraph.clear();
 }
 
-void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_) { //TODO - Controller Component, PhysicsBodyComponent
+void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_) { //TODO - Controller Component, PhysicsBodyComponent, Steering Component
 	tinyxml2::XMLDocument XMLFile;
 	XMLFile.LoadFile(XMLFile_.c_str()); //loading XML file
 	if (XMLFile.Error()) { //Error detection in the xml
@@ -112,6 +113,9 @@ void AssetManager::BuildComponents() {
 				}*/
 				AddComponent<ShaderComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
 			}
+			//else if (componentType == "PhysicsBodyComponent") { //create physics component
+			//	AddComponent<PhysicsBodyComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
+			//}
 			else if (componentType == "Shape") { //create shape component
 				BuildShapeComponent();
 			}

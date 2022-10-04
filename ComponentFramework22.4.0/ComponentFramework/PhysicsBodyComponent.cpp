@@ -1,5 +1,6 @@
 #include "PhysicsBodyComponent.h"
 #include "QMath.h"
+#include "EngineManager.h"
 
 using namespace MATH;
 PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_) : Component(parent_) {
@@ -9,11 +10,9 @@ PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComp
     accel = Vec3();
     mass = 1.0f;
     radius = 0.2f;
-    rotation = 0.0f;
     angular = 0.0f;
     maxSpeed = 4.0f;
     maxAcceleration = 200.0f;
-    maxRotation = 60.0f;
     maxAngular = 10.0f;
 }
 
@@ -21,7 +20,6 @@ PhysicsBodyComponent::PhysicsBodyComponent(
     Component* parent_, Ref<TransformComponent> transform_, Vec3 vel_, Vec3 accel_,
     float mass_,
     float radius_ = 0.2f,
-    float rotation_ = 0.0f,
     float angular_ = 0.0f,
     // These are not very good defaults, but they will prevent compiler warnings.
     float maxSpeed_ = 4.0f,
@@ -35,11 +33,32 @@ PhysicsBodyComponent::PhysicsBodyComponent(
     accel = accel_;
     mass = mass_;
     radius = radius_;
-    rotation = rotation_;
     angular = angular_;
     maxSpeed = maxSpeed_;
     maxAcceleration = maxAcceleration_;
-    maxRotation = maxRotation_;
+    maxAngular = maxAngular_;
+}
+
+PhysicsBodyComponent::PhysicsBodyComponent(
+    Component* parent_, Vec3 vel_, Vec3 accel_,
+    float mass_,
+    float radius_ = 0.2f,
+    float angular_ = 0.0f,
+    // These are not very good defaults, but they will prevent compiler warnings.
+    float maxSpeed_ = 4.0f,
+    float maxAcceleration_ = 10.0f,
+    float maxRotation_ = 180.0f,
+    float maxAngular_ = 180.0f
+) : Component(parent_)
+{
+    transform = nullptr;
+    vel = vel_;
+    accel = accel_;
+    mass = mass_;
+    radius = radius_;
+    angular = angular_;
+    maxSpeed = maxSpeed_;
+    maxAcceleration = maxAcceleration_;
     maxAngular = maxAngular_;
 }
 
@@ -61,7 +80,7 @@ void PhysicsBodyComponent::Update(float deltaTime) {
         // Update orientation
         //transform->setOrientation(QMath::angleAxisRotation(90,Vec3(1.0f,0.0f,0.0f)) * QMath::angleAxisRotation(rotation, Vec3(0.0f, 0.0f, 1.0f))); //IDK YET ABOUT THIS
         ////orientation += rotation * deltaTime;
-        rotation += angular;
+        //rotation += angular;
 
         // Clip to maxSpeed, if speed exceeds max
         if (VMath::mag(vel) > maxSpeed)
@@ -79,7 +98,18 @@ void PhysicsBodyComponent::Update(float deltaTime) {
 }
 
 bool PhysicsBodyComponent::OnCreate() {
-    isCreated = true;
+    //find parent actor
+    for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+        if (actor.second->GetComponent<PhysicsBodyComponent>() != nullptr && actor.second->GetComponent<PhysicsBodyComponent>().get() == this) {
+            transform = actor.second->GetComponent<TransformComponent>();
+            isCreated = true;
+            break;
+        }
+    }
+    if (transform == nullptr) {
+        throw std::invalid_argument("Transform component must be defined first before the PhysicsBodyComponent");
+        isCreated = false;
+    }
     return isCreated;
 }
 

@@ -3,6 +3,7 @@
 
 void GEOMETRY::Box::generateVerticesAndNormals() {
 	//vertex points
+	//bottomRightBack = orientation * (center + MATH::Vec3(halfExtent.x, -halfExtent.y, -halfExtent.z)) //also works
 	MATH::Vec3 bottomRightBack = MATH::QMath::rotate(center + MATH::Vec3(halfExtent.x, -halfExtent.y, -halfExtent.z), orientation);
 	MATH::Vec3 bottomLeftBack = MATH::QMath::rotate(center + MATH::Vec3(-halfExtent.x, -halfExtent.y, -halfExtent.z), orientation);
 

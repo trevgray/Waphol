@@ -32,7 +32,10 @@ bool Scene5::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene5");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>(), Vec3(), Vec3(), 1.0f, 1.0f, 0.0f, 0.0f, 15.0f, 20.0f, 30.0f, 10.0f);
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<PhysicsBodyComponent>(nullptr, Vec3(), Vec3(), 1.0f, 1.0f, 0.0f, 15.0f, 20.0f, 30.0f, 10.0f);
+
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<PhysicsBodyComponent>()->OnCreate();
+
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
 	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
 	steeringBehaviours.push_back(std::make_shared<FaceVelocity>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion()));
