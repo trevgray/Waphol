@@ -10,8 +10,6 @@
 #include "ShaderComponent.h"
 #include "MaterialComponent.h"
 #include "QMath.h"
-#include "ControllerComponent.h"
-#include "PhysicsBodyComponent.h"
 #include "SteeringComponent.h"
 #include "Seek.h"
 #include "VelocityMatch.h"
@@ -32,11 +30,11 @@ bool Scene5::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene5");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<PhysicsBodyComponent>(nullptr, Vec3(), Vec3(), 1.0f, 1.0f, 0.0f, 15.0f, 20.0f, 30.0f, 10.0f);
+	//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<PhysicsBodyComponent>(nullptr, Vec3(), Vec3(), 1.0f, 15.0f, 20.0f, 30.0f, 10.0f);
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<PhysicsBodyComponent>()->OnCreate();
+	//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<PhysicsBodyComponent>()->OnCreate();
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
+	//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<ControllerComponent>(nullptr, "PlayerController");
 	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
 	steeringBehaviours.push_back(std::make_shared<FaceVelocity>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion()));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<SteeringComponent>(nullptr, steeringBehaviours, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"));
@@ -49,7 +47,7 @@ bool Scene5::OnCreate() {
 	steeringBehaviours.push_back(std::make_shared<Align>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>(), EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->GetQuaternion()));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<SteeringComponent>(nullptr, steeringBehaviours, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"));
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>());
+	//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<PhysicsBodyComponent>(nullptr, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>());
 	return true;
 }
 

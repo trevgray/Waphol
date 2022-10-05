@@ -1,5 +1,3 @@
-//Part of his MATH library. I moved it to GEOMETRY and inherited from Shape
-
 #ifndef SPHERE_H
 #define SPHERE_H
 #include "Shape.h"

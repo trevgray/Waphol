@@ -12,16 +12,12 @@ public:
 	PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_);
 	PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_, MATH::Vec3 vel_, MATH::Vec3 accel_,
 		float mass_,
-		float radius_,
-		float angular_,
 		float maxSpeed_,
 		float maxAcceleration_,
 		float maxRotation_,
 		float maxAngular_);
 	PhysicsBodyComponent(Component* parent_, MATH::Vec3 vel_, MATH::Vec3 accel_,
 		float mass_,
-		float radius_,
-		float angular_,
 		float maxSpeed_,
 		float maxAcceleration_,
 		float maxRotation_,
@@ -38,14 +34,12 @@ public:
 	virtual MATH::Vec3 GetVel() { return vel; }
 	virtual MATH::Vec3 GetAccel() { return accel; }
 	virtual float GetMass() { return mass; }
-	virtual float GetAngular() { return angular; }
 	virtual float GetMaxSpeed() { return maxSpeed; }
 	virtual float GetMaxAcceleration() { return maxAcceleration; }
 	virtual float GetMaxAngular() { return maxAngular; }
 
 	virtual void SetVel(MATH::Vec3 vel_) { vel = vel_; }
 	virtual void SetAccel(MATH::Vec3 accel_) { accel = accel_; }
-	virtual void SetAngular(float angular_) { angular = angular_; }
 
 	MATH::Vec3 vel;
 private:
@@ -53,10 +47,8 @@ private:
 
 	MATH::Vec3 accel;
 	float mass;
-	float angular;          // angular acceleration
 	float maxSpeed;
 	float maxAcceleration;
 	float maxAngular;
-	float radius;           // for getting near walls
 };
 

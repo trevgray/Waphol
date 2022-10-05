@@ -22,7 +22,9 @@ private:
 	void BuildLightActors();
 	void BuildComponents();
 	void BuildActors();
+
 	void BuildShapeComponent();
+	void BuildPhysicsBodyComponent();
 
 public:
 	AssetManager();

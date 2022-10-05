@@ -10,6 +10,7 @@
 #include "CameraActor.h"
 #include "LightActor.h"
 #include "PhysicsBodyComponent.h"
+#include "ControllerComponent.h"
 
 AssetManager::AssetManager() : sceneRoot(nullptr), currentElement(nullptr) {}
 
@@ -38,7 +39,7 @@ void AssetManager::RemoveAllComponents() {
 	componentGraph.clear();
 }
 
-void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_) { //TODO - Controller Component, PhysicsBodyComponent, Steering Component
+void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_) { //TODO - Steering Component
 	tinyxml2::XMLDocument XMLFile;
 	XMLFile.LoadFile(XMLFile_.c_str()); //loading XML file
 	if (XMLFile.Error()) { //Error detection in the xml
@@ -92,6 +93,10 @@ void AssetManager::BuildLightActors() {
 }
 
 void AssetManager::BuildComponents() {
+	/*for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("Shader")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
+		std::cout << a->Value() << std::endl; - save for maybe asset manager redesign?
+	}*/
+
 	//Component Loop - in Scene Scope
 	currentElement = sceneRoot->FirstChildElement("Component"); //loading first component from Scene Scope
 	bool componentLoop = true;
@@ -107,15 +112,15 @@ void AssetManager::BuildComponents() {
 			else if (componentType == "Material") { //create material component
 				AddComponent<MaterialComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Material")->Attribute("filename"));
 			}
+			else if (componentType == "Controller") { //create controller component
+				AddComponent<ControllerComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Controller")->Attribute("controllerTemplate"));
+			}
 			else if (componentType == "Shader") { //create shader component
-				/*for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("Shader")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
-					std::cout << a->Value() << std::endl;
-				}*/
 				AddComponent<ShaderComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
 			}
-			//else if (componentType == "PhysicsBodyComponent") { //create physics component
-			//	AddComponent<PhysicsBodyComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
-			//}
+			else if (componentType == "PhysicsBodyComponent") { //create physics component
+				BuildPhysicsBodyComponent();
+			}
 			else if (componentType == "Shape") { //create shape component
 				BuildShapeComponent();
 			}
@@ -145,6 +150,7 @@ void AssetManager::BuildActors() {
 			GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<MeshComponent>(GetComponent<MeshComponent>(currentComponent->Attribute("name"))); //set the mesh to a component made in the first loop
 			currentComponent = currentElement->FirstChildElement("Material");
 			GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<MaterialComponent>(GetComponent<MaterialComponent>(currentComponent->Attribute("name"))); //set the material to a component made in the first loop
+
 			if (currentElement->FirstChildElement("Transform") != nullptr) { //if the transform component exists - I don't always want to give every actor a transform, so i did this
 				tinyxml2::XMLElement* transformElement = currentElement->FirstChildElement("Transform"); //i did this for you to read, it is unnecessary
 				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<TransformComponent>(nullptr, //make transform component
@@ -157,6 +163,14 @@ void AssetManager::BuildActors() {
 			if (currentElement->FirstChildElement("Shape") != nullptr) {
 				currentComponent = currentElement->FirstChildElement("Shape");
 				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<ShapeComponent>(GetComponent<ShapeComponent>(currentComponent->Attribute("name")));
+			}
+			if (currentElement->FirstChildElement("PhysicsBodyComponent") != nullptr) {
+				currentComponent = currentElement->FirstChildElement("PhysicsBodyComponent");
+				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<PhysicsBodyComponent>(GetComponent<PhysicsBodyComponent>(currentComponent->Attribute("name")));
+			}
+			if (currentElement->FirstChildElement("Controller") != nullptr) {
+				currentComponent = currentElement->FirstChildElement("Controller");
+				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<ControllerComponent>(GetComponent<ControllerComponent>(currentComponent->Attribute("name")));
 			}
 			if (currentElement == sceneRoot->LastChildElement("Actor")) { //exit when component is = to the LastChildElement in currentComponent
 				actorLoop = false;
@@ -191,4 +205,15 @@ void AssetManager::BuildShapeComponent() {
 			Vec3(Box->FloatAttribute("halfExtentX"), Box->FloatAttribute("halfExtentY"), Box->FloatAttribute("halfExtentZ")), 
 			QMath::angleAxisRotation(Box->FloatAttribute("angleDeg"), Vec3(Box->FloatAttribute("axisX"), Box->FloatAttribute("axisY"), Box->FloatAttribute("axisZ")))));
 	}
+}
+
+void AssetManager::BuildPhysicsBodyComponent() {
+	AddComponent<PhysicsBodyComponent>(currentElement->Attribute("name"), nullptr,
+		Vec3(currentElement->FirstChildElement("Velocity")->FloatAttribute("x"), currentElement->FirstChildElement("Velocity")->FloatAttribute("y"), currentElement->FirstChildElement("Velocity")->FloatAttribute("z")), /*velocity*/
+		Vec3(currentElement->FirstChildElement("Acceleration")->FloatAttribute("x"), currentElement->FirstChildElement("Acceleration")->FloatAttribute("y"), currentElement->FirstChildElement("Acceleration")->FloatAttribute("z")), /*accel*/
+		currentElement->FirstChildElement("Attributes")->FloatAttribute("mass"),
+		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxSpeed"),
+		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxAcceleration"),
+		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxRotation"),
+		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxAngular"));
 }

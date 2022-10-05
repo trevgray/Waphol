@@ -9,8 +9,6 @@ PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComp
     vel = Vec3();
     accel = Vec3();
     mass = 1.0f;
-    radius = 0.2f;
-    angular = 0.0f;
     maxSpeed = 4.0f;
     maxAcceleration = 200.0f;
     maxAngular = 10.0f;
@@ -19,8 +17,6 @@ PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComp
 PhysicsBodyComponent::PhysicsBodyComponent(
     Component* parent_, Ref<TransformComponent> transform_, Vec3 vel_, Vec3 accel_,
     float mass_,
-    float radius_ = 0.2f,
-    float angular_ = 0.0f,
     // These are not very good defaults, but they will prevent compiler warnings.
     float maxSpeed_ = 4.0f,
     float maxAcceleration_ = 10.0f,
@@ -32,8 +28,6 @@ PhysicsBodyComponent::PhysicsBodyComponent(
     vel = vel_;
     accel = accel_;
     mass = mass_;
-    radius = radius_;
-    angular = angular_;
     maxSpeed = maxSpeed_;
     maxAcceleration = maxAcceleration_;
     maxAngular = maxAngular_;
@@ -42,8 +36,6 @@ PhysicsBodyComponent::PhysicsBodyComponent(
 PhysicsBodyComponent::PhysicsBodyComponent(
     Component* parent_, Vec3 vel_, Vec3 accel_,
     float mass_,
-    float radius_ = 0.2f,
-    float angular_ = 0.0f,
     // These are not very good defaults, but they will prevent compiler warnings.
     float maxSpeed_ = 4.0f,
     float maxAcceleration_ = 10.0f,
@@ -55,8 +47,6 @@ PhysicsBodyComponent::PhysicsBodyComponent(
     vel = vel_;
     accel = accel_;
     mass = mass_;
-    radius = radius_;
-    angular = angular_;
     maxSpeed = maxSpeed_;
     maxAcceleration = maxAcceleration_;
     maxAngular = maxAngular_;
@@ -102,14 +92,16 @@ bool PhysicsBodyComponent::OnCreate() {
     for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
         if (actor.second->GetComponent<PhysicsBodyComponent>() != nullptr && actor.second->GetComponent<PhysicsBodyComponent>().get() == this) {
             transform = actor.second->GetComponent<TransformComponent>();
-            isCreated = true;
+
+            //isCreated = true;
             break;
         }
     }
-    if (transform == nullptr) {
+    isCreated = true;
+    /*if (transform == nullptr) {
         throw std::invalid_argument("Transform component must be defined first before the PhysicsBodyComponent");
         isCreated = false;
-    }
+    }*/
     return isCreated;
 }
 
