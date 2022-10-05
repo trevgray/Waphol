@@ -7,6 +7,7 @@ protected:
 public:
 	VelocityMatch(Ref<Actor> target_, float timeToTarget_);
 	virtual ~VelocityMatch();
+	bool OnCreate();
 	virtual SteeringOutput GetSteering(Ref<Actor> actor_);
 };
 

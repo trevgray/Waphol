@@ -11,6 +11,10 @@ FaceVelocity::~FaceVelocity() {
 
 }
 
+bool FaceVelocity::OnCreate() {
+	return true;
+}
+
 SteeringOutput FaceVelocity::GetSteering(Ref<Actor> actor_) {
 	//Vec3 direction = target->GetComponent<TransformComponent>()->GetPosition() - target->GetComponent<PhysicsBodyComponent>()->GetVel();
 	float angleDirection = atan2(target->GetComponent<PhysicsBodyComponent>()->GetVel().y, target->GetComponent<PhysicsBodyComponent>()->GetVel().x) * RADIANS_TO_DEGREES;

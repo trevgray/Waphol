@@ -118,7 +118,7 @@ void AssetManager::BuildComponents() {
 			else if (componentType == "Shader") { //create shader component
 				AddComponent<ShaderComponent>(currentElement->Attribute("name"), nullptr, currentElement->FirstChildElement("Shader")->Attribute("vertFileName"), currentElement->FirstChildElement("Shader")->Attribute("fragFileName"));
 			}
-			else if (componentType == "PhysicsBodyComponent") { //create physics component
+			else if (componentType == "PhysicsBody") { //create physics component
 				BuildPhysicsBodyComponent();
 			}
 			else if (componentType == "Shape") { //create shape component
@@ -164,8 +164,8 @@ void AssetManager::BuildActors() {
 				currentComponent = currentElement->FirstChildElement("Shape");
 				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<ShapeComponent>(GetComponent<ShapeComponent>(currentComponent->Attribute("name")));
 			}
-			if (currentElement->FirstChildElement("PhysicsBodyComponent") != nullptr) {
-				currentComponent = currentElement->FirstChildElement("PhysicsBodyComponent");
+			if (currentElement->FirstChildElement("PhysicsBody") != nullptr) {
+				currentComponent = currentElement->FirstChildElement("PhysicsBody");
 				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<PhysicsBodyComponent>(GetComponent<PhysicsBodyComponent>(currentComponent->Attribute("name")));
 			}
 			if (currentElement->FirstChildElement("Controller") != nullptr) {

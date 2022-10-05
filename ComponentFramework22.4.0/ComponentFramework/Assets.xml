@@ -243,17 +243,23 @@
 
 	<Scene5>
 		<Component name = "PhysicsBodyCharacter">
-			<Type type = "PhysicsBodyComponent"/>
+			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
 			<Acceleration x="0.0" y ="0.0" z="0.0"/>
 			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
 		</Component>
 
 		<Component name = "PhysicsBodyNPC">
-			<Type type = "PhysicsBodyComponent"/>
+			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
 			<Acceleration x="0.0" y ="0.0" z="0.0"/>
 			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
+		</Component>
+
+		<Component name = "SteeringNPC">
+			<Type type = "Steering"/>
+			<SteeringBehaviour one="Align" two="Arrive"/>
+			<Arguments AlignTargetName="Player" ArriveTargetName="Player" ArriveTargetRadius="1.0" ArriveSlowRadius="3.0" ArriveTimeToTarget="0.1"/>
 		</Component>
 
 		<Component name = "PlayerController">
@@ -294,7 +300,7 @@
 		<Actor name = "Player" parent="null">
 			<Mesh name = "CheckerPieceMesh"/>
 			<Material name = "RedCheckerTexture"/>
-			<PhysicsBodyComponent name = "PhysicsBodyCharacter"/>
+			<PhysicsBody name = "PhysicsBodyCharacter"/>
 			<Controller name = "PlayerController"/>
 			<Transform posx="12.5" posy ="7.5" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
 		</Actor>
@@ -302,7 +308,7 @@
 		<Actor name = "NPC" parent="null">
 			<Mesh name = "CheckerPieceMesh"/>
 			<Material name = "BlackCheckerTexture"/>
-			<PhysicsBodyComponent name = "PhysicsBodyNPC"/>
+			<PhysicsBody name = "PhysicsBodyNPC"/>
 			<Transform posx="10.0" posy ="5.0" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
 		</Actor>
 

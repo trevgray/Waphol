@@ -9,6 +9,7 @@ protected:
 public:
 	Align(Ref<TransformComponent> target_, Quaternion baseq_);
 	virtual ~Align();
+	bool OnCreate();
 	virtual SteeringOutput GetSteering(Ref<Actor> actor_);
 	double mapToRange(double degrees);
 };

@@ -7,6 +7,7 @@ protected:
 public:
 	Seek(Ref<TransformComponent> target_);
 	virtual ~Seek();
+	bool OnCreate();
 	virtual SteeringOutput GetSteering(Ref<Actor> actor_);
 };
 

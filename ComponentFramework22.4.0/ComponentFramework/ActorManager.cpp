@@ -77,6 +77,7 @@ void ActorManager::LoadNonPrehabActors() {
 			GetActor<LightActor>(component.first)->OnCreate();
 		}
 	}
+	EngineManager::Instance()->GetInputManager()->SetControllerActors(actorGraph);
 }
 
 void ActorManager::UpdateActors(const float deltaTime) {

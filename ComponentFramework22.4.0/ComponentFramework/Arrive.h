@@ -11,6 +11,7 @@ public:
 	Arrive(Ref<TransformComponent> target_);
 	Arrive(Ref<TransformComponent> target_, float targetRadius_, float slowRadius_, float timeToTarget);
 	virtual ~Arrive();
+	bool OnCreate();
 	virtual SteeringOutput GetSteering(Ref<Actor> actor_);
 };
 

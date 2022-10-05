@@ -10,6 +10,10 @@ VelocityMatch::~VelocityMatch() {
 
 }
 
+bool VelocityMatch::OnCreate() {
+	return true;
+}
+
 SteeringOutput VelocityMatch::GetSteering(Ref<Actor> actor_) {
 	// Acceleration tries to get to the target velocity
 	result.linear = target->GetComponent<PhysicsBodyComponent>()->GetVel() - actor_->GetComponent<PhysicsBodyComponent>()->GetVel();

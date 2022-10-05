@@ -9,6 +9,10 @@ Flee::~Flee() {
 
 }
 
+bool Flee::OnCreate() {
+	return true;
+}
+
 SteeringOutput Flee::GetSteering(Ref<Actor> actor_) {
 	//get direction to target
 	result.linear = actor_->GetComponent<TransformComponent>()->GetPosition() - target->GetPosition();

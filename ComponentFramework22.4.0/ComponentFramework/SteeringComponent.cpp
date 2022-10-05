@@ -2,6 +2,11 @@
 #include "PhysicsBodyComponent.h"
 
 #include "Seek.h"
+#include "VelocityMatch.h"
+#include "Arrive.h"
+#include "Align.h"
+#include "Flee.h"
+#include "FaceVelocity.h"
 #include "EngineManager.h"
 
 SteeringComponent::SteeringComponent(Component* parent_, std::vector<Ref<SteeringBehaviour>> steeringBehaviours_, Ref<Actor> actor_) : Component(parent_) {
@@ -21,6 +26,19 @@ SteeringComponent::~SteeringComponent() {
 }
 
 bool SteeringComponent::OnCreate() {
+	//find parent actor
+	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+		if (actor.second->GetComponent<SteeringComponent>() != nullptr && actor.second->GetComponent<SteeringComponent>().get() == this) {
+			actorComponent = actor.second;
+
+			//isCreated = true;
+			break;
+		}
+	}
+
+	for (unsigned i = 0; i < steeringBehaviours.size(); i++) {
+		steeringBehaviours[i]->OnCreate();
+	}
 	isCreated = true;
 	return isCreated;
 }

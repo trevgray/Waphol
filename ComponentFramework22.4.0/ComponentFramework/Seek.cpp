@@ -9,6 +9,10 @@ Seek::~Seek() {
 
 }
 
+bool Seek::OnCreate() {
+	return true;
+}
+
 SteeringOutput Seek::GetSteering(Ref<Actor> actor_) {
 	//get direction to target
 	result.linear = target->GetPosition() - actor_->GetComponent<TransformComponent>()->GetPosition();

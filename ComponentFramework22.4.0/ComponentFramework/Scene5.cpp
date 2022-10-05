@@ -38,7 +38,6 @@ bool Scene5::OnCreate() {
 	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
 	steeringBehaviours.push_back(std::make_shared<FaceVelocity>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion()));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<SteeringComponent>(nullptr, steeringBehaviours, EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"));
-	EngineManager::Instance()->GetInputManager()->SetControllerActors(EngineManager::Instance()->GetActorManager()->GetActorGraph());
 
 	steeringBehaviours.clear();
 	steeringBehaviours.push_back(std::make_shared<Arrive>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()));

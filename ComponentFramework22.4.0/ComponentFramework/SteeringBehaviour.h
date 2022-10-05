@@ -13,5 +13,6 @@ protected:
 public:
 	SteeringBehaviour();
 	virtual SteeringOutput GetSteering(Ref<Actor> actor_) = 0;
+	virtual bool OnCreate() = 0;
 	virtual ~SteeringBehaviour();
 };

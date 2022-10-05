@@ -19,6 +19,10 @@ Arrive::~Arrive() {
 
 }
 
+bool Arrive::OnCreate() {
+	return true;
+}
+
 SteeringOutput Arrive::GetSteering(Ref<Actor> actor_) {
 	//get direction to target
 	Vec3 direction = target->GetPosition() - actor_->GetComponent<TransformComponent>()->GetPosition();

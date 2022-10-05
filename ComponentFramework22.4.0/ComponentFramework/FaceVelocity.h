@@ -8,6 +8,7 @@ protected:
 public:
 	FaceVelocity(Ref<Actor> target_, Quaternion baseQ_);
 	virtual ~FaceVelocity();
+	bool OnCreate();
 	virtual SteeringOutput GetSteering(Ref<Actor> actor_);
 };
 

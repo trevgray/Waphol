@@ -10,6 +10,11 @@ Align::~Align() {
 
 }
 
+bool Align::OnCreate() {
+	//base q can get obtained from actor_ - idk change getsteering maybe???
+	return true;
+}
+
 SteeringOutput Align::GetSteering(Ref<Actor> actor_) {
 	Vec3 direction = target->GetPosition() - actor_->GetComponent<TransformComponent>()->GetPosition();
 	float angleDirection = atan2(direction.y, direction.x) * RADIANS_TO_DEGREES;

@@ -7,6 +7,7 @@ protected:
 public:
 	Flee(Ref<TransformComponent> target_);
 	virtual ~Flee();
+	bool OnCreate();
 	virtual SteeringOutput GetSteering(Ref<Actor> actor_);
 };
 

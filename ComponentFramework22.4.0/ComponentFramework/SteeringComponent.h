@@ -11,6 +11,7 @@ class SteeringComponent : public Component {
 public:
 	SteeringComponent(Component* parent_, std::vector<Ref<SteeringBehaviour>> steeringBehaviours_, Ref<Actor> actor_);
 	SteeringComponent(Component* parent_, Ref<SteeringBehaviour> steerBehaviour_, Ref<Actor> actor_);
+
 	virtual ~SteeringComponent();
 	virtual bool OnCreate();
 	virtual void OnDestroy();
