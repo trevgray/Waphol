@@ -1,5 +1,29 @@
-﻿  AssetManager.cpp
-  FaceVelocity.cpp
-  VelocityMatch.cpp
+﻿  Main.cpp
+  MemoryManager.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(81,24): warning C4018: '<': signed/unsigned mismatch
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(84,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(86,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(94,24): warning C4018: '<': signed/unsigned mismatch
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(97,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(99,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(107,24): warning C4018: '<': signed/unsigned mismatch
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(110,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(112,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(120,24): warning C4018: '<': signed/unsigned mismatch
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(123,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(125,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(133,24): warning C4018: '<': signed/unsigned mismatch
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(136,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(138,23): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(155,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(157,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(165,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(167,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(174,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(176,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(183,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(185,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(192,21): warning C4309: '=': truncation of constant value
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\MemoryManager.cpp(194,21): warning C4309: '=': truncation of constant value
   Generating Code...
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

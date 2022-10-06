@@ -26,7 +26,7 @@ void AssetManager::LoadAssets(std::string XMLFile_, std::string SceneName_) {
 
 bool AssetManager::OnCreate() {
 	for (std::pair<std::string, Ref<Component>> c : componentGraph) {
-		if (c.second->OnCreate() == false) {
+		if (c.second->OnCreate() == false) { //getting a HEAP[ComponentFramework.exe]: Invalid address specified to RtlValidateHeap( 00F20000, 0294239B ) A breakpoint instruction(__debugbreak() statement or a similar call) was executed in ComponentFramework.exe.
 #ifdef _DEBUG
 			Debug::Error("Component failed to create", __FILE__, __LINE__);
 #endif
@@ -48,6 +48,8 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 		return;
 	}
 	sceneRoot = XMLFile.RootElement()->FirstChildElement(SceneName_.c_str());
+
+	XMLFile.Clear(); //delete[] inside this clear is making a problem
 
 	BuildCameraActor();
 	BuildLightActors();

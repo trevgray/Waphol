@@ -204,6 +204,9 @@
     <ClCompile Include="FaceVelocity.cpp">
       <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
     </ClCompile>
+    <ClCompile Include="MemoryManager.cpp">
+      <Filter>Source Files\Managers</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -355,6 +358,9 @@
     </ClInclude>
     <ClInclude Include="FaceVelocity.h">
       <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="MemoryManager.h">
+      <Filter>Header Files\Managers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
