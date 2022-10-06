@@ -24,6 +24,7 @@ public:
 
 	inline SteeringOutput& operator += (const SteeringOutput& v) {
 		linear += v.linear;
+		if (v.rotation.w != -1)
 		rotation = v.rotation;
 		return *this;
 	}

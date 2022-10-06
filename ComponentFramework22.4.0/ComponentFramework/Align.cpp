@@ -1,9 +1,19 @@
 #include "Align.h"
 #include "PhysicsBodyComponent.h"
+#include "EngineManager.h"
 
 Align::Align(Ref<TransformComponent> target_, Quaternion baseq_) {
 	target = target_;
-	baseq = baseq_;
+	baseQ = baseq_;
+	firstLoop = false;
+}
+
+Align::Align(std::string targetName_) {
+	target = nullptr;
+	baseQ = Quaternion();
+	
+	targetName = targetName_;
+	firstLoop = false;
 }
 
 Align::~Align() {
@@ -11,15 +21,26 @@ Align::~Align() {
 }
 
 bool Align::OnCreate() {
-	//base q can get obtained from actor_ - idk change getsteering maybe???
+	//find parent actor
+	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+		if (actor.second != nullptr && actor.first == targetName) {
+			target = actor.second->GetComponent<TransformComponent>();
+			break;
+		}
+	}
 	return true;
 }
 
 SteeringOutput Align::GetSteering(Ref<Actor> actor_) {
+	if (firstLoop == false) {
+		baseQ = actor_->GetComponent<TransformComponent>()->GetQuaternion();
+		firstLoop = true;
+	}
+
 	Vec3 direction = target->GetPosition() - actor_->GetComponent<TransformComponent>()->GetPosition();
 	float angleDirection = atan2(direction.y, direction.x) * RADIANS_TO_DEGREES;
 
-	result.rotation = baseq * QMath::angleAxisRotation(angleDirection + 90, Vec3(0.0f,0.0f,1.0f));
+	result.rotation = baseQ * QMath::angleAxisRotation(angleDirection + 90, Vec3(0.0f,0.0f,1.0f));
 	
 	result.linear = Vec3();
 

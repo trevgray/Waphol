@@ -11,6 +11,7 @@
 #include "LightActor.h"
 #include "PhysicsBodyComponent.h"
 #include "ControllerComponent.h"
+#include "SteeringComponent.h"
 
 AssetManager::AssetManager() : sceneRoot(nullptr), currentElement(nullptr) {}
 
@@ -124,6 +125,9 @@ void AssetManager::BuildComponents() {
 			else if (componentType == "Shape") { //create shape component
 				BuildShapeComponent();
 			}
+			else if (componentType == "Steering") { //create shape component
+				BuildSteeringComponent();
+			}
 			if (currentElement == sceneRoot->LastChildElement("Component")) { //stopping looping when the current element is the last element in Scene Scope - sceneRoot->LastChild() will also work, but stopping at the last component should be faster
 				componentLoop = false;
 			}
@@ -172,6 +176,10 @@ void AssetManager::BuildActors() {
 				currentComponent = currentElement->FirstChildElement("Controller");
 				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<ControllerComponent>(GetComponent<ControllerComponent>(currentComponent->Attribute("name")));
 			}
+			if (currentElement->FirstChildElement("Steering") != nullptr) {
+				currentComponent = currentElement->FirstChildElement("Steering");
+				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<SteeringComponent>(GetComponent<SteeringComponent>(currentComponent->Attribute("name")));
+			}
 			if (currentElement == sceneRoot->LastChildElement("Actor")) { //exit when component is = to the LastChildElement in currentComponent
 				actorLoop = false;
 			}
@@ -216,4 +224,49 @@ void AssetManager::BuildPhysicsBodyComponent() {
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxAcceleration"),
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxRotation"),
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxAngular"));
+}
+
+void AssetManager::BuildSteeringComponent() {
+	std::vector<std::string> steeringBehaviourNames; //set up arrays for all the names of the behaviours & arguments
+	std::vector<std::string> steeringArguments;
+	for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("SteeringBehaviour")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
+		steeringBehaviourNames.push_back(a->Value()); //add all the names of the behaviours
+	}
+	for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("Arguments")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
+		steeringArguments.push_back(a->Value()); //add all the names of the behaviours
+	}
+	int steeringArgumentsIterator = 0; //set an iterator to loop through all the arguments between the behaviours
+	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
+	for (std::string behaviour : steeringBehaviourNames) {
+		if (behaviour == "Align") {
+			steeringBehaviours.push_back(std::make_shared<Align>(steeringArguments[steeringArgumentsIterator]));
+			steeringArgumentsIterator += 1;
+		}
+		else if (behaviour == "Arrive") {
+			steeringBehaviours.push_back(std::make_shared<Arrive>(steeringArguments[steeringArgumentsIterator], 
+				std::stof(steeringArguments[steeringArgumentsIterator + 1]),
+				std::stof(steeringArguments[steeringArgumentsIterator + 2]),
+				std::stof(steeringArguments[steeringArgumentsIterator + 3])));
+			steeringArgumentsIterator += 4;
+		}
+		else if (behaviour == "FaceVelocity") {
+			steeringBehaviours.push_back(std::make_shared<FaceVelocity>(steeringArguments[steeringArgumentsIterator]));
+			steeringArgumentsIterator += 1;
+		}
+		else if (behaviour == "Flee") {
+			steeringBehaviours.push_back(std::make_shared<Flee>(steeringArguments[steeringArgumentsIterator]));
+			steeringArgumentsIterator += 1;
+		}
+		else if (behaviour == "Seek") {
+			steeringBehaviours.push_back(std::make_shared<Seek>(steeringArguments[steeringArgumentsIterator]));
+			steeringArgumentsIterator += 1;
+		}
+		else if (behaviour == "VelocityMatch") {
+			steeringBehaviours.push_back(std::make_shared<VelocityMatch>(steeringArguments[steeringArgumentsIterator],
+				std::stof(steeringArguments[steeringArgumentsIterator + 1])));
+			steeringArgumentsIterator += 2;
+		}
+	}
+
+	AddComponent<SteeringComponent>(currentElement->Attribute("name"), nullptr, steeringBehaviours);
 }

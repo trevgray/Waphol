@@ -25,7 +25,7 @@ private:
 
 	void BuildShapeComponent();
 	void BuildPhysicsBodyComponent();
-
+	void BuildSteeringComponent();
 public:
 	AssetManager();
 	~AssetManager();

@@ -1,5 +1,6 @@
 #include "Arrive.h"
 #include "PhysicsBodyComponent.h"
+#include "EngineManager.h"
 
 Arrive::Arrive(Ref<TransformComponent> target_) {
 	target = target_;
@@ -15,11 +16,27 @@ Arrive::Arrive(Ref<TransformComponent> target_, float targetRadius_, float slowR
 	timeToTarget = timeToTarget_;
 }
 
+Arrive::Arrive(std::string targetName_, float targetRadius_, float slowRadius_, float timeToTarget_) {
+	target = nullptr;
+	targetRadius = targetRadius_;
+	slowRadius = slowRadius_;
+	timeToTarget = timeToTarget_;
+
+	targetName = targetName_;
+}
+
 Arrive::~Arrive() {
 
 }
 
 bool Arrive::OnCreate() {
+	//find parent actor
+	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+		if (actor.second != nullptr && actor.first == targetName) {
+			target = actor.second->GetComponent<TransformComponent>();
+			break;
+		}
+	}
 	return true;
 }
 
@@ -31,7 +48,7 @@ SteeringOutput Arrive::GetSteering(Ref<Actor> actor_) {
 	if (distance < targetRadius) {
 		actor_->GetComponent<PhysicsBodyComponent>()->SetVel(Vec3());
 		result.linear = Vec3();
-		result.rotation = Quaternion();
+		result.rotation = Quaternion(-1, Vec3(0.0f,0.0f,0.0f));
 		return result;
 	}
 	// if we are outside the slow radius, use max speed
@@ -55,6 +72,6 @@ SteeringOutput Arrive::GetSteering(Ref<Actor> actor_) {
 		result.linear = VMath::normalize(result.linear);
 		result.linear *= actor_->GetComponent<PhysicsBodyComponent>()->GetMaxAcceleration();
 	}
-	result.rotation = Quaternion();
+	result.rotation = Quaternion(-1, Vec3(0.0f, 0.0f, 0.0f));
 	return result;
 }

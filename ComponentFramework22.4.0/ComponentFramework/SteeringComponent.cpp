@@ -1,14 +1,6 @@
 #include "SteeringComponent.h"
 #include "PhysicsBodyComponent.h"
 
-#include "Seek.h"
-#include "VelocityMatch.h"
-#include "Arrive.h"
-#include "Align.h"
-#include "Flee.h"
-#include "FaceVelocity.h"
-#include "EngineManager.h"
-
 SteeringComponent::SteeringComponent(Component* parent_, std::vector<Ref<SteeringBehaviour>> steeringBehaviours_, Ref<Actor> actor_) : Component(parent_) {
 	steeringBehaviours = steeringBehaviours_;
 	steering = SteeringOutput();
@@ -19,6 +11,12 @@ SteeringComponent::SteeringComponent(Component* parent_, Ref<SteeringBehaviour> 
 	steeringBehaviours.push_back(steerBehaviour_);
 	steering = SteeringOutput();
 	actorComponent = actor_;
+}
+
+SteeringComponent::SteeringComponent(Component* parent_, std::vector<Ref<SteeringBehaviour>> steeringBehaviours_) : Component(parent_) {
+	steeringBehaviours = steeringBehaviours_;
+	steering = SteeringOutput();
+	actorComponent = nullptr;
 }
 
 SteeringComponent::~SteeringComponent() {

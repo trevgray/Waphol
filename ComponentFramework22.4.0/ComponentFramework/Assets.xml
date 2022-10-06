@@ -256,6 +256,12 @@
 			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
 		</Component>
 
+		<Component name = "SteeringPlayer">
+			<Type type = "Steering"/>
+			<SteeringBehaviour one="FaceVelocity"/>
+			<Arguments target="Player"/>
+		</Component>
+
 		<Component name = "SteeringNPC">
 			<Type type = "Steering"/>
 			<SteeringBehaviour one="Align" two="Arrive"/>
@@ -303,6 +309,7 @@
 			<PhysicsBody name = "PhysicsBodyCharacter"/>
 			<Controller name = "PlayerController"/>
 			<Transform posx="12.5" posy ="7.5" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
+			<Steering name = "SteeringPlayer"/>
 		</Actor>
 
 		<Actor name = "NPC" parent="null">
@@ -310,6 +317,7 @@
 			<Material name = "BlackCheckerTexture"/>
 			<PhysicsBody name = "PhysicsBodyNPC"/>
 			<Transform posx="10.0" posy ="5.0" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
+			<Steering name = "SteeringNPC"/>
 		</Actor>
 
 		<Camera name = "camera">
