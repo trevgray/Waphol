@@ -1,10 +1,17 @@
 #include "EngineManager.h"
 
-EngineManager::EngineManager() {
+EngineManager::EngineManager() : fps(60), isRunning(false), fullScreen(false) {
+	timer = std::make_unique<Timer>();
+	if (timer == nullptr) {
+		Debug::FatalError("Failed to initialize Timer object", __FILE__, __LINE__);
+		return;
+	}
+	//managers
 	sceneManager = std::make_unique<SceneManager>();
 	assetManager = std::make_unique<AssetManager>();
 	actorManager = std::make_unique<ActorManager>();
 	inputManager = std::make_unique<InputManager>();
+	networkManager = std::make_unique<NetworkManager>();
 }
 
 EngineManager::~EngineManager() {
@@ -12,11 +19,21 @@ EngineManager::~EngineManager() {
 }
 
 bool EngineManager::Initialize() {
-	if (sceneManager->Initialize("Game Engine", 1280, 720) == true) {
-		sceneManager->Run();
-		return true;
+	//open the engine xml here
+	networkManager->Initialize(Server);
+	std::thread networkThread(&NetworkManager::Run, networkManager);
+
+	timer->Start();
+	isRunning = true;
+	if (sceneManager->Initialize("Game Engine", 1280, 720) == false) {
+		return false;
 	}
-	return false;
+	networkThread.detach();
+	while (isRunning) {
+		timer->UpdateFrameTicks();
+		sceneManager->Run();
+	}
+	return true;
 }
 
 Ref<EngineManager> EngineManager::instance = 0;

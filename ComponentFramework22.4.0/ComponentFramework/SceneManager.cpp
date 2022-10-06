@@ -1,14 +1,14 @@
 #include <SDL.h>
 #include "SceneManager.h"
-#include "Timer.h"
+#include "EngineManager.h"
+
 #include "Window.h"
 #include "Scene0.h"
 #include "Scene4.h"
 #include "Scene5.h"
 
 SceneManager::SceneManager(): 
-	currentScene(nullptr), window(nullptr), timer(nullptr),
-	fps(60), isRunning(false), fullScreen(false) {
+	currentScene(nullptr), window(nullptr) {
 	Debug::Info("Starting the SceneManager", __FILE__, __LINE__);
 }
 
@@ -17,11 +17,6 @@ SceneManager::~SceneManager() {
 		currentScene->OnDestroy();
 		delete currentScene;
 		currentScene = nullptr;
-	}
-	
-	if (timer) {
-		delete timer;
-		timer = nullptr;
 	}
 
 	if (window) {
@@ -39,12 +34,6 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 		return false;
 	}
 
-	timer = new Timer();
-	if (timer == nullptr) {
-		Debug::FatalError("Failed to initialize Timer object", __FILE__, __LINE__);
-		return false;
-	}
-
 	/********************************   Default first scene   ***********************/
 	BuildNewScene(SCENE_NUMBER::SCENE5);
 	
@@ -53,23 +42,18 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 
 /// This is the whole game
 void SceneManager::Run() {
-	timer->Start();
-	isRunning = true;
-	while (isRunning) {
-		timer->UpdateFrameTicks();
-		currentScene->Update(timer->GetDeltaTime());
-		currentScene->Render();
-		HandleEvents();
-		SDL_GL_SwapWindow(window->getWindow());
-		SDL_Delay(timer->GetSleepTime(fps));
-	}
+	currentScene->Update(EngineManager::Instance()->GetTimer()->GetDeltaTime());
+	currentScene->Render();
+	HandleEvents();
+	SDL_GL_SwapWindow(window->getWindow());
+	SDL_Delay(EngineManager::Instance()->GetTimerSleepTime());
 }
 
 void SceneManager::HandleEvents() {
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent)) {
 		if (sdlEvent.type == SDL_EventType::SDL_QUIT) {
-			isRunning = false;
+			EngineManager::Instance()->SetIsRunning(false);
 			return;
 		}
 		else if (sdlEvent.type == SDL_KEYDOWN) {
@@ -85,7 +69,7 @@ void SceneManager::HandleEvents() {
 		}
 		if (currentScene == nullptr) {
 			Debug::FatalError("Failed to initialize Scene", __FILE__, __LINE__);
-			isRunning = false;
+			EngineManager::Instance()->SetIsRunning(false);
 			return;
 		}
 		currentScene->HandleEvents(sdlEvent);

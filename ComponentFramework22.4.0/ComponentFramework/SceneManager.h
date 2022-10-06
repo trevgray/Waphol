@@ -25,12 +25,12 @@ private:
 	};
 
 	class Scene* currentScene;
-	class Timer* timer;
+	//class Timer* timer;
 	class Window* window;
 
-	unsigned int fps;
+	/*unsigned int fps;
 	bool isRunning;
-	bool fullScreen;
+	bool fullScreen;*/
 	void BuildNewScene(SCENE_NUMBER scene_);
 };
 
