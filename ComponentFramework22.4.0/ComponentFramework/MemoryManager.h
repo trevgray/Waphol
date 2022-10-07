@@ -45,7 +45,7 @@ using byte = unsigned char; //basically just 8 bytes
 		void* oneThousandByteList[973]; //partitionSize / 1024 + 3
 		void* eightThousandByteList[122]; //partitionSize / 8192 + 3
 		void* thirtyTwoThousandByteList[29]; //partitionSize / 32768 + 3
-		void* sixtyFiveThousandByteList[14]; //65536
+		void* sixtyFiveThousandByteList[15]; //65536
 
 	public:
 		MemoryManager(std::size_t masterBlockSize) :masterBlock(nullptr) { //set up for 5000000 bits
