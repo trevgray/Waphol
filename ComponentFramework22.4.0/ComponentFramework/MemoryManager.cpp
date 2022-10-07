@@ -65,6 +65,18 @@ void* MemoryManager::allocate(std::size_t memorySize) {
 			}
 		}
 	}
+	else if (memorySize <= SIXTY_FIVE_THOUSAND_BYTES) { //65536
+		for (size_t iterator = (partitionSize * 4); iterator < (partitionSize * 5); iterator += 65539) {
+			void* preIterate = &masterBlock[iterator];
+			char* guardByteStart = &(static_cast<char*>(preIterate)[0]) + 65538;
+			if (*guardByteStart != 1) { //finish first available block
+				*guardByteStart = 1; //block  unavailable
+
+				thirtyTwoThousandByteList[iterator / 65539] = preIterate;
+				return preIterate;
+			}
+		}
+	}
 	//return malloc(memorySize);
 	throw std::invalid_argument("Fatal Error: Can't Find a Memory Location");
 	return nullptr;
@@ -142,6 +154,19 @@ void MemoryManager::deallocate(void* memoryLocation, std::size_t memorySize) {
 			}
 		}
 	}
+	else if (memorySize <= SIXTY_FIVE_THOUSAND_BYTES) { //65536
+		for (size_t x = 0; x < sixtyFiveThousandByteListSize; x++) { //loop through all the nineteen byte objects
+			if (thirtyTwoThousandByteList[x] == memoryLocation) { //check if it == the memory location
+				char* guardByteStart = &(static_cast<char*>(memoryLocation)[0]) + 65536; //we should probably check the guard bits here
+				*guardByteStart = 0xde;
+				guardByteStart++;
+				*guardByteStart = 0xad;   //end of block
+				guardByteStart++;
+				*guardByteStart = 0;      //block  available
+				return;
+			}
+		}
+	}
 	else {
 		throw std::invalid_argument("Fatal Error: Can't Find Memory Location");
 		return;
@@ -186,9 +211,18 @@ void MemoryManager::Initialize() {
 		guardByteStart++;
 		*guardByteStart = 0;      //block  available
 	}
-	for (size_t iteratorNum = (partitionSize * 4); iteratorNum < (partitionSize * 5 - 32771); iteratorNum += 32771) { //loop through all objects and default there values
+	for (size_t iteratorNum = (partitionSize * 4); iteratorNum < (partitionSize * 5); iteratorNum += 32771) { //loop through all objects and default there values
 		void* iterator = &masterBlock[iteratorNum];
 		char* guardByteStart = &(static_cast<char*>(iterator)[0]) + 32768;
+		*guardByteStart = 0xde;
+		guardByteStart++;
+		*guardByteStart = 0xad;   //end of block
+		guardByteStart++;
+		*guardByteStart = 0;      //block  available
+	}
+	for (size_t iteratorNum = (partitionSize * 5); iteratorNum < (partitionSize * 6) - 65536; iteratorNum += 65539) { //loop through all objects and default there values
+		void* iterator = &masterBlock[iteratorNum];
+		char* guardByteStart = &(static_cast<char*>(iterator)[0]) + 65536;
 		*guardByteStart = 0xde;
 		guardByteStart++;
 		*guardByteStart = 0xad;   //end of block

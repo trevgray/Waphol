@@ -2198,7 +2198,7 @@ namespace tinyxml2
 #endif
         ClearError();
 
-        delete[] _charBuffer;
+        //delete[] _charBuffer;
         _charBuffer = 0;
         _parsingDepth = 0;
 

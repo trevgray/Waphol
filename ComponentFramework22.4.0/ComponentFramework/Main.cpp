@@ -11,7 +11,7 @@ static std::size_t memoryAllocated = 0;
 static std::size_t maxMemoryAllocated = 0;
 static std::size_t minMemoryAllocated = 0;
 
-MemoryManager mm = MemoryManager(5000000);
+MemoryManager mm = MemoryManager(6000000);
 
 void* operator new(std::size_t memorySize) {
 	if (memorySize == 0) { memorySize++; }

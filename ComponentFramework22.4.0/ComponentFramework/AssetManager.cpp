@@ -49,7 +49,7 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 	}
 	sceneRoot = XMLFile.RootElement()->FirstChildElement(SceneName_.c_str());
 
-	XMLFile.Clear(); //delete[] inside this clear is making a problem
+	//XMLFile.Clear(); //delete[] inside this clear is making a problem
 
 	BuildCameraActor();
 	BuildLightActors();
