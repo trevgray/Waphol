@@ -194,6 +194,17 @@ bool NetworkManager::Initialize(NetworkNode networkMode_) {
 		hints.ai_socktype = SOCK_STREAM; //TCP works like a stream
 		hints.ai_protocol = IPPROTO_TCP;
 
+		//Resolve the server address and port
+		iResult = getaddrinfo("localhost", DEFAULT_PORT, &hints, &result); //localhost connections be to the own computer - this is where you enter the ip
+		{ //result gets full of how to connection to the computer
+			if (iResult != 0) {
+				std::cout << "getaddrinfo failed with error: " << iResult << std::endl;
+				WSACleanup();
+				system("pause");
+				return 1;
+			}
+		}
+
 		for (ptr = result; ptr != NULL; ptr = ptr->ai_next) { //move addresses till one succeeds
 			//Create a socket for connecting to the server
 			connectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol); //find a open socket

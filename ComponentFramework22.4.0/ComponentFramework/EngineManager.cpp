@@ -20,7 +20,7 @@ EngineManager::~EngineManager() {
 
 bool EngineManager::Initialize() {
 	//open the engine xml here
-	networkManager->Initialize(Server);
+	networkManager->Initialize(Client);
 	std::thread networkThread(&NetworkManager::Run, networkManager);
 
 	timer->Start();
