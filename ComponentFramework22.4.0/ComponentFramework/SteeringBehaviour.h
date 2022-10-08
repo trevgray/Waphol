@@ -15,4 +15,9 @@ public:
 	virtual SteeringOutput GetSteering(Ref<Actor> actor_) = 0;
 	virtual bool OnCreate() = 0;
 	virtual ~SteeringBehaviour();
+
+	void SetWeight(float weight_);
+
+	/*void SetWeight(float weight_) { weight = weight_; }
+	float GetWeight() { return weight; }*/
 };

@@ -13,6 +13,7 @@ public:
 
 	Vec3 linear;
 	Quaternion rotation;
+	float weight;
 
 	SteeringOutput();
 	SteeringOutput(Vec3 linear_, Quaternion rotation_);
@@ -23,9 +24,10 @@ public:
 	}
 
 	inline SteeringOutput& operator += (const SteeringOutput& v) {
-		linear += v.linear;
-		if (v.rotation.w != -1)
-		rotation = v.rotation;
+		linear += v.weight * v.linear;
+		if (v.rotation.w != -1) {
+			rotation = v.rotation * weight;
+		}
 		return *this;
 	}
 

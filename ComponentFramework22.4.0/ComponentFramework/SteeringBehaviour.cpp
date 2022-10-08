@@ -13,3 +13,7 @@ SteeringBehaviour::SteeringBehaviour() {
 //}
 
 SteeringBehaviour::~SteeringBehaviour() {}
+
+void SteeringBehaviour::SetWeight(float weight_) {
+	result.weight = weight_;
+}

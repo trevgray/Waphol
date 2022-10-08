@@ -260,12 +260,14 @@
 			<Type type = "Steering"/>
 			<SteeringBehaviour one="FaceVelocity"/>
 			<Arguments target="Player"/>
+			<Weights one="1.0"/>
 		</Component>
 
 		<Component name = "SteeringNPC">
 			<Type type = "Steering"/>
 			<SteeringBehaviour one="Align" two="Arrive"/>
 			<Arguments AlignTargetName="Player" ArriveTargetName="Player" ArriveTargetRadius="1.0" ArriveSlowRadius="3.0" ArriveTimeToTarget="0.1"/>
+			<Weights one="1.0" two="1.0"/>
 		</Component>
 
 		<Component name = "PlayerController">

@@ -229,13 +229,18 @@ void AssetManager::BuildPhysicsBodyComponent() {
 void AssetManager::BuildSteeringComponent() {
 	std::vector<std::string> steeringBehaviourNames; //set up arrays for all the names of the behaviours & arguments
 	std::vector<std::string> steeringArguments;
+	std::vector<float> weights;
 	for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("SteeringBehaviour")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
 		steeringBehaviourNames.push_back(a->Value()); //add all the names of the behaviours
 	}
 	for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("Arguments")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
-		steeringArguments.push_back(a->Value()); //add all the names of the behaviours
+		steeringArguments.push_back(a->Value()); //add all the arguments
 	}
-	int steeringArgumentsIterator = 0; //set an iterator to loop through all the arguments between the behaviours
+	for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("Weights")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
+		weights.push_back(a->FloatValue()); //add all the floats
+	}
+	size_t steeringArgumentsIterator = 0; //set an iterator to loop through all the arguments between the behaviours
+	size_t weightIterator = 0;
 	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
 	for (std::string behaviour : steeringBehaviourNames) {
 		if (behaviour == "Align") {
@@ -266,6 +271,8 @@ void AssetManager::BuildSteeringComponent() {
 				std::stof(steeringArguments[steeringArgumentsIterator + 1])));
 			steeringArgumentsIterator += 2;
 		}
+		steeringBehaviours.back()->SetWeight(weights[weightIterator]);
+		weightIterator++;
 	}
 
 	AddComponent<SteeringComponent>(currentElement->Attribute("name"), nullptr, steeringBehaviours);
