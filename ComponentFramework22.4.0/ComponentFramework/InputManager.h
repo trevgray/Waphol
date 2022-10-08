@@ -2,6 +2,23 @@
 #include "Actor.h"
 #include <SDL_image.h>
 #include <unordered_map>
+#include <SDL_gamecontroller.h>
+
+struct GameController {
+	GameController() {
+		SDLController = nullptr;
+	}
+	/*Controller(SDL_GameController* controllerPtr) { 
+		SDLController = controllerPtr;
+	};*/
+	SDL_GameController* SDLController;
+	//Ref<SDL_Joystick> SDLStick0;
+	//Ref<SDL_Joystick> SDLStick1;
+	~GameController() {
+		SDL_GameControllerClose(SDLController);
+		
+		std::cout << "TEST\n"; }
+};
 
 class InputManager {
 public:
@@ -17,5 +34,6 @@ public:
 
 private:
 	std::vector <Ref<Actor>> controllerActors;
+	std::vector<Ref<GameController>> gameControllers;
 };
 

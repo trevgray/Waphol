@@ -23,7 +23,7 @@ NetworkManager::NetworkManager() {
 }
 
 NetworkManager::~NetworkManager() {
-	std::cout << "DESTORYTING\n";
+	Debug::Info("Shutting Down the NetworkManager", __FILE__, __LINE__);
 	if (networkMode == Offline) { //we are not using networking - do nothing
 		return;
 	}

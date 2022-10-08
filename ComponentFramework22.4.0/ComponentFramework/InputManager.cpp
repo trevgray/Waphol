@@ -24,11 +24,39 @@ void InputManager::SetControllerActors(std::unordered_map<std::string, Ref<Actor
 			controllerActors.push_back(actor.second);
 		}
 	}
+    SDL_Init(SDL_INIT_JOYSTICK | SDL_INIT_GAMECONTROLLER | SDL_INIT_HAPTIC); //intialize all the controller systems
+
+    if (SDL_NumJoysticks() > 0) { //num of controllers
+        //controller
+        gameControllers.push_back(std::make_shared<GameController>());
+        gameControllers[0]->SDLController = SDL_GameControllerOpen(0);
+    }
 }
 
 void InputManager::PlayerController(const SDL_Event& sdlEvent, Ref<Actor> actor) { //temp controller class till i figure out a better system
     // if key pressed, set velocity or acceleration
     Ref<PhysicsBodyComponent> actorPhysics = actor->GetComponent<PhysicsBodyComponent>();
+
+    if (gameControllers.size() != 0) {
+        if (sdlEvent.cbutton.type == SDL_CONTROLLERBUTTONDOWN) {
+            switch (sdlEvent.cbutton.button) {
+            case SDL_CONTROLLER_BUTTON_A:
+                std::cout << "controller A" << std::endl;
+            }
+        }
+        if (sdlEvent.cbutton.type == SDL_JOYAXISMOTION) {
+            float clampToRange = 32767 / actorPhysics->GetMaxSpeed() ;
+            if (sdlEvent.jaxis.axis == 0) { //X axis motion
+                actorPhysics->vel.x = sdlEvent.jaxis.value / clampToRange;
+            }
+            else if (sdlEvent.jaxis.axis == 1) {
+                actorPhysics->vel.y = -sdlEvent.jaxis.value / clampToRange;
+            }
+            else {
+                actorPhysics->vel = Vec3();
+            }
+        }
+    }
 
     //Vec3 vel;
     if (sdlEvent.type == SDL_KEYDOWN && sdlEvent.key.repeat == 0)
