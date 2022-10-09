@@ -67,31 +67,33 @@ void NetworkManager::Run() {
 			return;
 		}
 		else if(networkMode == Server) {
-			//listen
-			iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
-			if (iResult == SOCKET_ERROR) {
-				std::cout << "Listen Socket failed with error: " << WSAGetLastError() << std::endl;
+			if (clientSocket == INVALID_SOCKET) { //when the listen socket is null
+				//listen
+				iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
+				if (iResult == SOCKET_ERROR) {
+					std::cout << "Listen Socket failed with error: " << WSAGetLastError() << std::endl;
+					closesocket(listenSocket);
+					WSACleanup();
+					system("pause");
+					return;
+				}
+
+				std::cout << "Waiting for connection request..." << std::endl;
+
+				//Accept a client socket
+				clientSocket = accept(listenSocket, nullptr, nullptr);
+				if (clientSocket == INVALID_SOCKET) {
+					std::cout << "Accept failed with error: " << WSAGetLastError() << std::endl;
+					closesocket(listenSocket);
+					WSACleanup();
+					system("pause");
+					return;
+				}
+
+				std::cout << "Connected to client" << std::endl;
+
 				closesocket(listenSocket);
-				WSACleanup();
-				system("pause");
-				return;
 			}
-
-			std::cout << "Waiting for connection request..." << std::endl;
-
-			//Accept a client socket
-			clientSocket = accept(listenSocket, nullptr, nullptr);
-			if (clientSocket == INVALID_SOCKET) {
-				std::cout << "Accept failed with error: " << WSAGetLastError() << std::endl;
-				closesocket(listenSocket);
-				WSACleanup();
-				system("pause");
-				return;
-			}
-
-			std::cout << "Connected to client" << std::endl;
-
-			closesocket(listenSocket);
 
 			//receive until the peer shutdown the connect
 			for (int x = 0; x < DEFAULT_BUFFER_LENGTH; x++) {
@@ -100,6 +102,7 @@ void NetworkManager::Run() {
 			iResult = recv(clientSocket, recvbuf, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
 				std::cout << "Received string: " << recvbuf << std::endl;
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(Vec3(static_cast<int>(recvbuf[0]), static_cast<int>(recvbuf[0]), static_cast<int>(recvbuf[0])));
 			}
 			else if (iResult == 0) {
 				std::cout << "Connection closing..." << std::endl;
@@ -119,6 +122,7 @@ void NetworkManager::Run() {
 			message.clear();
 			std::cout << "Input a sting to send (!exit to disconnect): ";
 			std::cin >> message;
+
 			int messageSize = strlen(message.c_str());
 			//Send an initial buffer
 			iResult = send(connectSocket, message.c_str(), messageSize, 0);
