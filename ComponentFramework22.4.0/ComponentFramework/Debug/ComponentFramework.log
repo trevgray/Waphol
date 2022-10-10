@@ -1,5 +1,2 @@
 ﻿  NetworkManager.cpp
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\NetworkManager.cpp(105,214): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\NetworkManager.cpp(105,184): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\NetworkManager.cpp(105,154): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

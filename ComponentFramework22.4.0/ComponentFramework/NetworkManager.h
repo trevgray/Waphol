@@ -34,8 +34,7 @@ private:
 	
 	//server sockets
 	SOCKET listenSocket;
-	SOCKET clientSocket;
-	//client sockets
+	//connection sockets
 	SOCKET connectSocket;
 
 	char recvbuf[DEFAULT_BUFFER_LENGTH];

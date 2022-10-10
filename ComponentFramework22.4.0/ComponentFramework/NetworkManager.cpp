@@ -13,7 +13,6 @@ NetworkManager::NetworkManager() {
 	hints = addrinfo();
 	//server sockets
 	listenSocket = INVALID_SOCKET;
-	clientSocket = INVALID_SOCKET;
 	//client sockets
 	connectSocket = INVALID_SOCKET;
 
@@ -27,9 +26,9 @@ NetworkManager::~NetworkManager() {
 	if (networkMode == Offline) { //we are not using networking - do nothing
 		return;
 	}
-	else if (networkMode == Server) {
+	else {
 		//shutdown the connection on our end
-		iResult = shutdown(clientSocket, SD_SEND);
+		iResult = shutdown(connectSocket, SD_SEND);
 		if (iResult == SOCKET_ERROR) {
 			std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
 			closesocket(listenSocket);
@@ -40,34 +39,20 @@ NetworkManager::~NetworkManager() {
 
 		std::cout << "Connection closed" << std::endl;
 
-		closesocket(clientSocket);
-	}
-	else if (networkMode == Client) {
-		//shutdown the connection
-		iResult = shutdown(connectSocket, SD_SEND);
-		if (iResult == SOCKET_ERROR) {
-			std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
-			closesocket(connectSocket);
-			WSACleanup();
-			system("pause");
-			return;
-		}
-
-		std::cout << "Connection closed" << std::endl;
-
 		closesocket(connectSocket);
+		WSACleanup();
 	}
-	
-	WSACleanup();
 }
 
 void NetworkManager::Run() {
+	int pingIteration = 0;
+	std::string message;
 	while (EngineManager::Instance()->GetIsRunning() == true) {
 		if (networkMode == Offline) { //we are not using networking - do nothing
 			return;
 		}
 		else if(networkMode == Server) {
-			if (clientSocket == INVALID_SOCKET) { //when the listen socket is null
+			if (connectSocket == INVALID_SOCKET) { //when the listen socket is null
 				//listen
 				iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
 				if (iResult == SOCKET_ERROR) {
@@ -81,8 +66,8 @@ void NetworkManager::Run() {
 				std::cout << "Waiting for connection request..." << std::endl;
 
 				//Accept a client socket
-				clientSocket = accept(listenSocket, nullptr, nullptr);
-				if (clientSocket == INVALID_SOCKET) {
+				connectSocket = accept(listenSocket, nullptr, nullptr);
+				if (connectSocket == INVALID_SOCKET) {
 					std::cout << "Accept failed with error: " << WSAGetLastError() << std::endl;
 					closesocket(listenSocket);
 					WSACleanup();
@@ -99,10 +84,19 @@ void NetworkManager::Run() {
 			for (int x = 0; x < DEFAULT_BUFFER_LENGTH; x++) {
 				recvbuf[x] = 0;
 			}
-			iResult = recv(clientSocket, recvbuf, DEFAULT_BUFFER_LENGTH, 0);
+			iResult = recv(connectSocket, recvbuf, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
 				std::cout << "Received string: " << recvbuf << std::endl;
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(Vec3(static_cast<int>(recvbuf[0]), static_cast<int>(recvbuf[0]), static_cast<int>(recvbuf[0])));
+				message = "Server Ping " + std::to_string(pingIteration);
+				pingIteration++;
+				iResult = send(connectSocket, message.c_str(), strlen(message.c_str()), 0);
+				if (iResult == SOCKET_ERROR) {
+					std::cout << "Send failed with error: " << iResult << std::endl;
+					closesocket(connectSocket);
+					WSACleanup();
+					system("pause");
+					return;
+				}
 			}
 			else if (iResult == 0) {
 				std::cout << "Connection closing..." << std::endl;
@@ -118,14 +112,10 @@ void NetworkManager::Run() {
 		}
 		else if (networkMode == Client) {
 			//Receive until the peer closes connection
-			std::string message;
-			message.clear();
-			std::cout << "Input a sting to send (!exit to disconnect): ";
-			std::cin >> message;
-
-			int messageSize = strlen(message.c_str());
+			message = "Client Ping " + std::to_string(pingIteration);
+			pingIteration++;
 			//Send an initial buffer
-			iResult = send(connectSocket, message.c_str(), messageSize, 0);
+			iResult = send(connectSocket, message.c_str(), strlen(message.c_str()), 0);
 			if (iResult == SOCKET_ERROR) {
 				std::cout << "Send failed with error: " << iResult << std::endl;
 				closesocket(connectSocket);
@@ -133,7 +123,18 @@ void NetworkManager::Run() {
 				system("pause");
 				return;
 			}
-			std::cout << "Bytes sent: " << iResult << std::endl;
+			iResult = recv(connectSocket, recvbuf, DEFAULT_BUFFER_LENGTH, 0);
+			if (iResult > 0) {
+				std::cout << "Received string: " << recvbuf << std::endl;
+			}
+			else {
+				std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
+				closesocket(listenSocket);
+				WSACleanup();
+				system("pause");
+				return;
+			}
+			//std::cout << "Bytes sent: " << iResult << std::endl;
 		}
 	}
 }
