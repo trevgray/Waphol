@@ -159,6 +159,7 @@
     <ClCompile Include="Debug.cpp" />
     <ClCompile Include="EMath.cpp" />
     <ClCompile Include="EngineManager.cpp" />
+    <ClCompile Include="EventManager.cpp" />
     <ClCompile Include="FaceVelocity.cpp" />
     <ClCompile Include="Flee.cpp" />
     <ClCompile Include="InputManager.cpp" />
@@ -206,6 +207,7 @@
     <ClInclude Include="EMath.h" />
     <ClInclude Include="EngineManager.h" />
     <ClInclude Include="Euler.h" />
+    <ClInclude Include="EventManager.h" />
     <ClInclude Include="FaceVelocity.h" />
     <ClInclude Include="Flee.h" />
     <ClInclude Include="InputManager.h" />

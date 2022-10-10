@@ -2,6 +2,7 @@
 #define SCENEMANAGER_H
 
 #include <string>
+//#include "Scene.h"
 class SceneManager  {
 public:
 	
@@ -11,7 +12,7 @@ public:
 	bool Initialize(std::string name_, int width_, int height_);
 	void HandleEvents();
 	
-	
+	class Scene* GetCurrentScene() { return currentScene; }
 private:
 	enum class SCENE_NUMBER {
 		SCENE0 = 0,
