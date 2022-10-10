@@ -4,7 +4,6 @@
 #include "ActorManager.h"
 #include "InputManager.h"
 #include "NetworkManager.h"
-#include "EventManager.h"
 
 #include "Timer.h"
 
@@ -28,7 +27,6 @@ private:
 	Ref<ActorManager> actorManager;
 	Ref<InputManager> inputManager;
 	Ref<NetworkManager> networkManager;
-	Ref<EventManager> eventManager;
 	//threads
 	//std::thread networkThread;
 public:
@@ -52,9 +50,7 @@ public:
 	unsigned int GetFPS() { return fps; }
 	unsigned int GetTimerSleepTime() { return timer->GetSleepTime(fps); }
 
-	Ref<SceneManager> GetSceneManager() { return sceneManager; }
 	Ref<AssetManager> GetAssetManager() { return assetManager; }
 	Ref<ActorManager> GetActorManager() { return actorManager; }
 	Ref<InputManager> GetInputManager() { return inputManager; }
-	Ref<EventManager> GetEventManager() { return eventManager; }
 };

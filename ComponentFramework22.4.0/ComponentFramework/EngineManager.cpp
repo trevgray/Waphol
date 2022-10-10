@@ -12,7 +12,6 @@ EngineManager::EngineManager() : fps(60), isRunning(false), fullScreen(false) {
 	actorManager = std::make_unique<ActorManager>();
 	inputManager = std::make_unique<InputManager>();
 	networkManager = std::make_unique<NetworkManager>();
-	eventManager = std::make_unique<EventManager>();
 }
 
 EngineManager::~EngineManager() {
@@ -21,20 +20,15 @@ EngineManager::~EngineManager() {
 
 bool EngineManager::Initialize() {
 	//open the engine xml here
-	networkManager->Initialize(Offline);
+	networkManager->Initialize(Server);
 	std::thread networkThread(&NetworkManager::Run, networkManager);
-
-	//std::thread eventThread(&EventManager::Run, eventManager);
 
 	timer->Start();
 	isRunning = true;
 	if (sceneManager->Initialize("Game Engine", 1280, 720) == false) {
 		return false;
 	}
-
 	networkThread.detach();
-	//eventThread.detach();
-
 	while (isRunning) {
 		timer->UpdateFrameTicks();
 		sceneManager->Run();

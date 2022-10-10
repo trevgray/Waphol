@@ -47,7 +47,6 @@ NetworkManager::~NetworkManager() {
 void NetworkManager::Run() {
 	int pingIteration = 0;
 	std::string message;
-
 	while (EngineManager::Instance()->GetIsRunning() == true) {
 		if (networkMode == Offline) { //we are not using networking - do nothing
 			return;
