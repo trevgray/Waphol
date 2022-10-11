@@ -48,10 +48,7 @@ void NetworkManager::Run() {
 	int pingIteration = 0;
 	std::string message;
 	while (EngineManager::Instance()->GetIsRunning() == true) {
-		if (networkMode == Offline) { //we are not using networking - do nothing
-			return;
-		}
-		else if(networkMode == Server) {
+		if(networkMode == Server) {
 			if (connectSocket == INVALID_SOCKET) { //when the listen socket is null
 				//listen
 				iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
@@ -135,6 +132,9 @@ void NetworkManager::Run() {
 				return;
 			}
 			//std::cout << "Bytes sent: " << iResult << std::endl;
+		}
+		else if (networkMode == Offline) { //we are not using networking - do nothing
+			return;
 		}
 	}
 }
