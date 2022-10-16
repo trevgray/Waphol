@@ -16,6 +16,7 @@ NetworkManager::NetworkManager() {
 	//client sockets
 	connectSocket = INVALID_SOCKET;
 
+	sendbuf = nullptr;
 	ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
 }
 
@@ -133,8 +134,7 @@ void NetworkManager::Run() {
 			if (iResult > 0) {
 
 				//float f = atof(recvbuf);
-				std::mutex mutex; // scope for unique_lock
-				std::unique_lock<std::mutex> lock(transformUpdateMutex);
+				std::unique_lock<std::mutex> lock(transformUpdateMutex); // scope for unique_lock
 				printf("%f %f %f\n", test.x, test.y, test.z);
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->SetPosition(test);
 				lock.unlock();

@@ -20,7 +20,7 @@ EngineManager::~EngineManager() {
 
 bool EngineManager::Initialize() {
 	//open the engine xml here
-	networkManager->Initialize(Client);
+	networkManager->Initialize(Offline);
 
 	timer->Start();
 	isRunning = true;

@@ -5,6 +5,7 @@
   EngineManager.cpp
   FaceVelocity.cpp
   Flee.cpp
+  Main.cpp
   NetworkManager.cpp
   PhysicsBodyComponent.cpp
   Scene0.cpp
@@ -19,7 +20,6 @@ E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,21): 
 E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Scene5.cpp
   SceneManager.cpp
-  Main.cpp
   Seek.cpp
   SteeringComponent.cpp
   VelocityMatch.cpp
