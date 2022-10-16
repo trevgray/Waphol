@@ -1,1 +1,27 @@
-﻿  ComponentFramework.vcxproj -> D:\GitHub\WalfolEngine\ComponentFramework22.4.0\Debug\ComponentFramework.exe
+﻿  ActorManager.cpp
+  Align.cpp
+  Arrive.cpp
+  AssetManager.cpp
+  EngineManager.cpp
+  FaceVelocity.cpp
+  Flee.cpp
+  NetworkManager.cpp
+  PhysicsBodyComponent.cpp
+  Scene0.cpp
+  Scene4.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Scene5.cpp
+  SceneManager.cpp
+  Main.cpp
+  Seek.cpp
+  SteeringComponent.cpp
+  VelocityMatch.cpp
+  Generating Code...
+  ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

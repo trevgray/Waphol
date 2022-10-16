@@ -14,6 +14,8 @@
 #define DEFAULT_PORT "27015"
 #define DEFAULT_BUFFER_LENGTH 512
 
+#include <mutex>
+
 enum NetworkNode {
 	Offline, Server, Client
 };
@@ -37,6 +39,9 @@ private:
 	//connection sockets
 	SOCKET connectSocket;
 
+	std::mutex transformUpdateMutex;
+
 	char recvbuf[DEFAULT_BUFFER_LENGTH];
+	char* sendbuf;
 	int iSendResult;
 };

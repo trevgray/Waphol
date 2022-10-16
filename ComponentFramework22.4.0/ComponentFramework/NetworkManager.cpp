@@ -16,9 +16,7 @@ NetworkManager::NetworkManager() {
 	//client sockets
 	connectSocket = INVALID_SOCKET;
 
-	for (int x = 0; x < DEFAULT_BUFFER_LENGTH; x++) {
-		recvbuf[x] = 0;
-	}
+	ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
 }
 
 NetworkManager::~NetworkManager() {
@@ -47,6 +45,7 @@ NetworkManager::~NetworkManager() {
 void NetworkManager::Run() {
 	int pingIteration = 0;
 	std::string message;
+
 	while (EngineManager::Instance()->GetIsRunning() == true) {
 		if(networkMode == Server) {
 			if (connectSocket == INVALID_SOCKET) { //when the listen socket is null
@@ -78,15 +77,20 @@ void NetworkManager::Run() {
 			}
 
 			//receive until the peer shutdown the connect
-			for (int x = 0; x < DEFAULT_BUFFER_LENGTH; x++) {
-				recvbuf[x] = 0;
-			}
+			ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
+
 			iResult = recv(connectSocket, recvbuf, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
 				std::cout << "Received string: " << recvbuf << std::endl;
-				message = "Server Ping " + std::to_string(pingIteration);
-				pingIteration++;
-				iResult = send(connectSocket, message.c_str(), strlen(message.c_str()), 0);
+
+				/*message = "Server Ping " + std::to_string(pingIteration);
+				pingIteration++;*/
+
+				Vec3 f = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
+				//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
+				sendbuf = (char*)&f;
+
+				iResult = send(connectSocket, sendbuf, sizeof(float), 0);
 				if (iResult == SOCKET_ERROR) {
 					std::cout << "Send failed with error: " << iResult << std::endl;
 					closesocket(connectSocket);
@@ -120,9 +124,22 @@ void NetworkManager::Run() {
 				system("pause");
 				return;
 			}
-			iResult = recv(connectSocket, recvbuf, DEFAULT_BUFFER_LENGTH, 0);
+
+			ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
+
+			Vec3 test;
+
+			iResult = recv(connectSocket, (char*) &test, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
-				std::cout << "Received string: " << recvbuf << std::endl;
+
+				//float f = atof(recvbuf);
+				std::mutex mutex; // scope for unique_lock
+				std::unique_lock<std::mutex> lock(transformUpdateMutex);
+				printf("%f %f %f\n", test.x, test.y, test.z);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->SetPosition(test);
+				lock.unlock();
+
+				//std::cout << "Received string: " << recvbuf << std::endl;
 			}
 			else {
 				std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
