@@ -30,7 +30,7 @@ bool Scene5::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene5");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	EngineManager::Instance()->GetSoundManager()->AddSound("test", "media/getout.ogg", false, TwoD);
+	EngineManager::Instance()->GetSoundManager()->AddSound("test", "media/getout.ogg", false, TwoD, 0.3f);
 	EngineManager::Instance()->GetSoundManager()->PlaySound2D("test");
 
 	return true;
@@ -51,9 +51,10 @@ void Scene5::Update(const float deltaTime) {
 	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
 
 	if (testTime > 10 && testBool == true) {
-		std::cout << "WTF" << std::endl;
+		std::cout << "test" << std::endl;
 		testBool = false;
-		EngineManager::Instance()->GetSoundManager()->DeleteSound("test");
+		//EngineManager::Instance()->GetSoundManager()->DeleteSound("test");
+		EngineManager::Instance()->GetSoundManager()->FadeOutSound("test", 0.0f, 0.0001f);
 	}
 
 	//std::cout << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().x << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().y << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().z << std::endl;

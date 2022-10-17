@@ -15,7 +15,7 @@ public:
 	~SoundManager();
 
 	//graph functions
-	void AddSound(std::string soundName, std::string fileName, bool playLooped, SoundType soundType, Vec3 pos = Vec3());
+	void AddSound(std::string soundName, std::string fileName, bool playLooped, SoundType soundType, float volume = 1.0f, Vec3 pos = Vec3());
 	void DeleteSound(std::string soundName);
 
 	//play sounds
@@ -29,7 +29,14 @@ public:
 	void PauseSound(std::string soundName);
 	void StopAllSound();
 
+	//custom functions
+	void FadeOutSound(std::string soundName, float newVolume, float rateOfChange); //WIP
+
+	void FadeInSound(std::string soundName, float newVolume, float rateOfChange); //WIP
+
 	//sound settings - helper functions
+	bool IsSoundCurrentlyPlaying(std::string soundName);
+
 	float GetSoundVolume(std::string soundName);
 	void SetSoundVolume(std::string soundName, float volume);
 

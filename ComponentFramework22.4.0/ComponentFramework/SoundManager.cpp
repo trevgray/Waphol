@@ -10,7 +10,7 @@ SoundManager::~SoundManager() {
 	irrKlangEngine = nullptr;
 }
 
-auto SoundManager::FindSound(std::string soundName) {
+auto SoundManager::FindSound(std::string soundName) { //helper function
 	auto id = soundGraph.find(soundName);
 	if (id == soundGraph.end()) { //if the sound was not in the graph
 		std::cout << ("Can't find requested sound", __FILE__, __LINE__) << std::endl;
@@ -18,10 +18,11 @@ auto SoundManager::FindSound(std::string soundName) {
 	return id;
 }
 
-void SoundManager::AddSound(std::string soundName, std::string fileName, bool playLooped, SoundType soundType, Vec3 pos) {
+void SoundManager::AddSound(std::string soundName, std::string fileName, bool playLooped, SoundType soundType, float volume, Vec3 pos) {
 	if (soundType == TwoD) {
 		//soundGraph[soundName] = std::make_shared<irrklang::ISound>(irrKlangEngine->play2D(fileName.c_str(), playLooped, true, true));
 		soundGraph[soundName] = irrKlangEngine->play2D(fileName.c_str(), playLooped, true, true);
+		soundGraph[soundName]->setVolume(volume);
 		return;
 	}
 	else { //3d
@@ -31,6 +32,7 @@ void SoundManager::AddSound(std::string soundName, std::string fileName, bool pl
 		position.Z = pos.z;
 
 		soundGraph[soundName] = irrKlangEngine->play3D(fileName.c_str(), position, playLooped, true, true);
+		soundGraph[soundName]->setVolume(volume);
 		return;
 	}
 }
@@ -69,7 +71,30 @@ void SoundManager::StopAllSound() {
 	irrKlangEngine->stopAllSounds(); //irrklang makes it easy - you could loop through all the graph variables to stop them
 }
 
+//custom sound functions
+
+void SoundManager::FadeOutSound(std::string soundName, float newVolume, float rateOfChange) {
+	auto id = FindSound(soundName);
+	for (float volume = id->second->getVolume(); volume > newVolume; volume -= rateOfChange) {
+		id->second->setVolume(volume);
+		//need to pause some how
+	}
+}
+
+void SoundManager::FadeInSound(std::string soundName, float newVolume, float rateOfChange) {
+	auto id = FindSound(soundName);
+	for (float volume = id->second->getVolume(); volume < newVolume; volume += rateOfChange) {
+		id->second->setVolume(volume);
+		//need to pause some how
+	}
+}
+
 //sound settings - helper functions
+
+bool SoundManager::IsSoundCurrentlyPlaying(std::string soundName) {
+	auto id = FindSound(soundName);
+	return irrKlangEngine->isCurrentlyPlaying(id->second->getSoundSource());
+}
 
 float SoundManager::GetSoundVolume(std::string soundName) {
 	auto id = FindSound(soundName);
