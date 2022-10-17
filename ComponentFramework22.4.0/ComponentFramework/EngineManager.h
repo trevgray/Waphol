@@ -4,6 +4,7 @@
 #include "ActorManager.h"
 #include "InputManager.h"
 #include "NetworkManager.h"
+#include "SoundManager.h"
 
 #include "Timer.h"
 
@@ -27,6 +28,7 @@ private:
 	Ref<ActorManager> actorManager;
 	Ref<InputManager> inputManager;
 	Ref<NetworkManager> networkManager;
+	Ref<SoundManager> soundManager;
 	//threads
 	//std::thread networkThread;
 public:
@@ -53,4 +55,5 @@ public:
 	Ref<AssetManager> GetAssetManager() { return assetManager; }
 	Ref<ActorManager> GetActorManager() { return actorManager; }
 	Ref<InputManager> GetInputManager() { return inputManager; }
+	Ref<SoundManager> GetSoundManager() { return soundManager; }
 };

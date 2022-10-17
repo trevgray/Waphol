@@ -29,6 +29,10 @@ bool Scene5::OnCreate() {
 	Debug::Info("Loading assets Scene5: ", __FILE__, __LINE__);
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene5");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
+
+	EngineManager::Instance()->GetSoundManager()->AddSound("test", "media/getout.ogg", false, TwoD);
+	EngineManager::Instance()->GetSoundManager()->PlaySound2D("test");
+
 	return true;
 }
 
@@ -41,7 +45,17 @@ void Scene5::HandleEvents(const SDL_Event &sdlEvent) {
 }
 
 void Scene5::Update(const float deltaTime) {
+	static float testTime = 0; 
+	static bool testBool = true;
+	testTime += deltaTime;
 	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
+
+	if (testTime > 10 && testBool == true) {
+		std::cout << "WTF" << std::endl;
+		testBool = false;
+		EngineManager::Instance()->GetSoundManager()->DeleteSound("test");
+	}
+
 	//std::cout << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().x << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().y << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().z << std::endl;
 	//std::cout << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->GetPosition().x << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->GetPosition().y << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->GetPosition().z << std::endl;
 }

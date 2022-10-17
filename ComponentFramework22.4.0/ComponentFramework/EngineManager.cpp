@@ -12,6 +12,7 @@ EngineManager::EngineManager() : fps(60), isRunning(false), fullScreen(false) {
 	actorManager = std::make_unique<ActorManager>();
 	inputManager = std::make_unique<InputManager>();
 	networkManager = std::make_unique<NetworkManager>();
+	soundManager = std::make_unique<SoundManager>();
 }
 
 EngineManager::~EngineManager() {
