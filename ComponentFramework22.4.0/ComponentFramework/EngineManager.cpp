@@ -21,7 +21,7 @@ EngineManager::~EngineManager() {
 
 bool EngineManager::Initialize() {
 	//open the engine xml here
-	networkManager->Initialize(Offline);
+	networkManager->Initialize(Server);
 
 	timer->Start();
 	isRunning = true;

@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#pragma comment(lib, "ws2_32.lib")
+
 #define DEFAULT_PORT "27015"
 #define DEFAULT_BUFFER_LENGTH 512
 

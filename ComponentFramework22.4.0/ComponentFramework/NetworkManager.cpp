@@ -16,7 +16,6 @@ NetworkManager::NetworkManager() {
 	//client sockets
 	connectSocket = INVALID_SOCKET;
 
-	sendbuf = nullptr;
 	ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
 }
 
@@ -48,7 +47,7 @@ void NetworkManager::Run() {
 	std::string message;
 
 	while (EngineManager::Instance()->GetIsRunning() == true) {
-		if(networkMode == Server) {
+		if (networkMode == Server) {
 			if (connectSocket == INVALID_SOCKET) { //when the listen socket is null
 				//listen
 				iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
@@ -91,7 +90,7 @@ void NetworkManager::Run() {
 				//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 				sendbuf = (char*)&f;
 
-				iResult = send(connectSocket, sendbuf, sizeof(float), 0);
+				iResult = send(connectSocket, sendbuf, sizeof(f), 0);
 				if (iResult == SOCKET_ERROR) {
 					std::cout << "Send failed with error: " << iResult << std::endl;
 					closesocket(connectSocket);
@@ -130,11 +129,12 @@ void NetworkManager::Run() {
 
 			Vec3 test;
 
-			iResult = recv(connectSocket, (char*) &test, DEFAULT_BUFFER_LENGTH, 0);
+			iResult = recv(connectSocket, (char*)&test, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
 
 				//float f = atof(recvbuf);
-				std::unique_lock<std::mutex> lock(transformUpdateMutex); // scope for unique_lock
+				std::mutex mutex; // scope for unique_lock
+				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", test.x, test.y, test.z);
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->SetPosition(test);
 				lock.unlock();
