@@ -88,7 +88,7 @@ void NetworkManager::Run() {
 
 				Vec3 f = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 				//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
-				sendbuf = (char*)&f;
+				sendbuf = (char*)&f; //binary representation 
 
 				iResult = send(connectSocket, sendbuf, sizeof(f), 0);
 				if (iResult == SOCKET_ERROR) {
@@ -133,7 +133,6 @@ void NetworkManager::Run() {
 			if (iResult > 0) {
 
 				//float f = atof(recvbuf);
-				std::mutex mutex; // scope for unique_lock
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", test.x, test.y, test.z);
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->SetPosition(test);

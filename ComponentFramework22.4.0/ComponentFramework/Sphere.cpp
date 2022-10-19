@@ -39,10 +39,15 @@ RayIntersectionInfo GEOMETRY::Sphere::rayIntersectionInfo(const Ray& ray) const 
 	}
 	else if (soln.secondRoot < 0.0f) {
 		rayInfo.isIntersected = true;
+		//ray is going backwards
+		//second root is the smallest absolute value
+		rayInfo.intersectionPoint = ray.currentPosition(soln.secondRoot);
+		rayInfo.t = soln.secondRoot;
 	}
 	else {
 		rayInfo.isIntersected = true;
+		rayInfo.intersectionPoint = ray.currentPosition(soln.firstRoot);
+		rayInfo.t = soln.firstRoot;
 	}
-	
 	return rayInfo;
 }

@@ -87,8 +87,8 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 
 			GEOMETRY::Ray ray{ rayWorldStart, rayWorldDirection };
 
-			std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
-			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;
+			/*std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
+			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;*/
 
 			// Loop through all the actors and check if the ray has collided with them
 			// Pick the one with the smallest positive t value
@@ -113,7 +113,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(rayInObjectSpace);
 
 						if (rayInfo.isIntersected) {
-							std::cout << "You picked: " << actor.first << '\ n';
+							std::cout << "You picked: " << actor.first << '\n';
 							//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
 							//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
 						} 
