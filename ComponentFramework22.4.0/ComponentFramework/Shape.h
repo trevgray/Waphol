@@ -7,6 +7,8 @@
 #include <glew.h>
 #include <vector>
 #include "Vector.h"
+#include "Ray.h"
+
 namespace GEOMETRY {
 	struct Shape {
 
@@ -25,6 +27,9 @@ namespace GEOMETRY {
 		GLuint vbo = 0;
 		size_t dataLength = 0;
 		GLenum drawmode = GL_POINTS;
+
+		// Anything that can be hit by a ray needs to be part of this class hierarchy
+		virtual RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const = 0;
 	};
 }
 #endif

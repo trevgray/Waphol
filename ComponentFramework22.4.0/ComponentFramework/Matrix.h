@@ -125,6 +125,13 @@ namespace  MATH {
 			return Vec4(x / w, y / w, z / w, w / w);
 		}
 
+		Vec4 multiplyWithoutDividingOutW(const Vec4& v) const {
+			float x = v.x * m[0] + v.y * m[4] + v.z * m[8] + v.w * m[12];
+			float y = v.x * m[1] + v.y * m[5] + v.z * m[9] + v.w * m[13];
+			float z = v.x * m[2] + v.y * m[6] + v.z * m[10] + v.w * m[14];
+			return Vec4(x, y, z, 0.0f);
+		}
+
 		/// Multiply a Vec3 by this matrix and return the resulting Vec3
 		/// Mathematicians would say this is impossible but this is just 
 		/// code.  I will assume the w-component of the Vec3 is 1.0.

@@ -71,3 +71,8 @@ void Cylinder::generateVerticesAndNormals()
 		circle.y = r; //set the circle to have the radius as the y value
 	}
 }
+
+RayIntersectionInfo GEOMETRY::Cylinder::rayIntersectionInfo(const Ray& ray) const
+{
+	return RayIntersectionInfo();
+}

@@ -72,3 +72,8 @@ void GEOMETRY::Capsule::generateVerticesAndNormals() {
 		circle.z = r; //set the circle to have the radius as the z value
 	}
 }
+
+RayIntersectionInfo GEOMETRY::Capsule::rayIntersectionInfo(const Ray& ray) const
+{
+	return RayIntersectionInfo();
+}

@@ -38,6 +38,8 @@ namespace GEOMETRY {
 
 		// RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override; (TO DO)
 		void generateVerticesAndNormals();
+
+		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
 	};
 }
 #endif

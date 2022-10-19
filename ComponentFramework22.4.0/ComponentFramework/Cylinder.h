@@ -30,8 +30,12 @@ namespace GEOMETRY {
 		~Cylinder() {}
 
 		float calculateHeight();
+
 		MATH::Vec3 getNormalizedVector();
+
 		void generateVerticesAndNormals() override;
+
+		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
 	};
 }
 

@@ -169,7 +169,7 @@
 	  </Actor>
 
 	  <Camera name = "camera">
-		 <Transform posx="0.0" posy ="0.5" posz="-13.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="0.0" scaley ="0.0" scalez="0.0"/>
+		 <Transform posx="0.0" posy ="0.0" posz="0.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="0.0" scaley ="0.0" scalez="0.0"/>
 	  </Camera>
 
 	  <Light name = "light">

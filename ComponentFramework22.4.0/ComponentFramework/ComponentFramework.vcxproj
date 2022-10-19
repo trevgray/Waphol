@@ -216,7 +216,9 @@
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="PhysicsBodyComponent.h" />
     <ClInclude Include="QMath.h" />
+    <ClInclude Include="QuadraticSolution.h" />
     <ClInclude Include="Quaternion.h" />
+    <ClInclude Include="Ray.h" />
     <ClInclude Include="Scene0.h" />
     <ClInclude Include="Scene4.h" />
     <ClInclude Include="Scene5.h" />

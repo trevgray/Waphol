@@ -148,3 +148,8 @@ void GEOMETRY::Box::generateVerticesAndNormals() {
 	vertices.push_back(bottomRightFront);
 	normals.push_back(bottomRightFront);
 }
+
+GEOMETRY::RayIntersectionInfo GEOMETRY::Box::rayIntersectionInfo(const Ray& ray) const
+{
+	return RayIntersectionInfo();
+}

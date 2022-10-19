@@ -11,6 +11,7 @@
 #include "ShaderComponent.h"
 #include "MeshComponent.h"
 #include "ShapeComponent.h"
+#include "Ray.h"
 
 bool Scene0::OnCreate()
 {
@@ -74,21 +75,51 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 			// TODO: get a ray pointing into the world
 			// We have the x, y pixel coordinates
 			// Need to convert this into world space to build our ray
+			int viewport[4];
+			glGetIntegerv(GL_VIEWPORT, viewport);
+			Matrix4 ndc = MMath::viewportNDC(viewport[2], viewport[3]);
+			Matrix4 projection = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetProjectionMatrix();
+			Matrix4 view = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetViewMatrix();
+			Matrix4 rayTransform = MMath::inverse(ndc * projection * view);
+
+			Vec3 rayWorldStart = Vec3();
+			Vec3 rayWorldDirection = VMath::normalize(rayTransform * mouseCoords);
+
+			GEOMETRY::Ray ray{ rayWorldStart, rayWorldDirection };
+
+			std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
+			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;
 
 			// Loop through all the actors and check if the ray has collided with them
 			// Pick the one with the smallest positive t value
-			/*for (auto it = actors.begin(); it != actors.end(); ++it) {
-				Ref<Actor> actor = std::dynamic_pointer_cast<Actor>(it->second);
-				Ref<TransformComponent> transformComponent = actor->GetComponent <TransformComponent>();
-				Ref<ShapeComponent> shapeComponent = actor->GetComponent <ShapeComponent>();
-				if (shapeComponent->shapeType == ShapeType::sphere
-					//|| shapeComponent->shapeType == ShapeType::cylinder (TODO)
-					//|| shapeComponent->shapeType == ShapeType::capsule (TODO)
-					//|| shapeComponent->shapeType == ShapeType::box (TODO)
-					) {
-					// TODO: Transform the ray into the local space of the object and check if a collision occurred
+
+			EngineManager::Instance()->GetActorManager()->GetActorGraph().begin();
+
+			for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+				glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
+				if (actor.second->GetComponent<ShapeComponent>() != nullptr) {
+					Ref<TransformComponent> transformComponent = actor.second->GetComponent<TransformComponent>();
+					Ref<ShapeComponent> shapeComponent = actor.second->GetComponent<ShapeComponent>();
+					if (shapeComponent->shapeType == ShapeType::sphere
+						//|| shapeComponent->shapeType == ShapeType::cylinder (TODO)
+						//|| shapeComponent->shapeType == ShapeType::capsule (TODO)
+						//|| shapeComponent->shapeType == ShapeType::box (TODO)
+						) {
+						//Transform the ray into the local space of the object and check if a collision occurred
+						Vec3 rayStartInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()) * ray.start;
+						Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(ray.dir, 0.0f));
+
+						GEOMETRY::Ray rayInObjectSpace{ rayStartInObjectSpace, rayDirInObjectSpace }; 
+						GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(rayInObjectSpace);
+
+						if (rayInfo.isIntersected) {
+							std::cout << "You picked: " << actor.first << '\ n';
+							//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
+							//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
+						} 
+					}
 				}
-			}*/
+			}
 		}
 		break;
 
