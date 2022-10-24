@@ -1,10 +1,12 @@
 #include "SoundManager.h"
+#include "Debug.h"
 
 SoundManager::SoundManager() {
 	irrKlangEngine = irrklang::createIrrKlangDevice();
 }
 
 SoundManager::~SoundManager() {
+	Debug::Info("Deleting the SoundManager", __FILE__, __LINE__);
 	irrKlangEngine->drop(); //deletes the engine
 	//delete irrKlangEngine;
 	irrKlangEngine = nullptr;
@@ -44,7 +46,7 @@ void SoundManager::DeleteSound(std::string soundName) {
 	soundGraph.erase(soundName);
 }
 
-void SoundManager::PlaySound2D(std::string soundName) {
+void SoundManager::PlaySound(std::string soundName) {
 	auto id = soundGraph.find(soundName); //this is the find sound, but we do something unique, so i wrote it again
 	if (id == soundGraph.end()) { //if the sound was not in the graph
 		irrKlangEngine->play2D(soundName.c_str(), false, false); //we assume soundName is a file path and we play it once

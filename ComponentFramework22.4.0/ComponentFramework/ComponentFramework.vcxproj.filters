@@ -37,12 +37,6 @@
     <Filter Include="Source Files\Actors">
       <UniqueIdentifier>{0a7af637-3bce-4c10-8a19-5695d69ecae9}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\Loaders">
-      <UniqueIdentifier>{e5fd8b32-1e77-4bde-b55c-b71e25f06a86}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Header Files\Loaders">
-      <UniqueIdentifier>{3e3fd3a3-7437-4b68-8b16-7adf4fa17f10}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\Math\Geometry">
       <UniqueIdentifier>{30d8d010-47ac-4822-9a17-422bb7b31844}</UniqueIdentifier>
     </Filter>
@@ -78,6 +72,12 @@
     </Filter>
     <Filter Include="Header Files\AI\Steering\SteeringBehaviours">
       <UniqueIdentifier>{6ddeab44-c97b-46a6-a353-0845d9fdc180}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\External Libraries">
+      <UniqueIdentifier>{3e3fd3a3-7437-4b68-8b16-7adf4fa17f10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\External Libraries">
+      <UniqueIdentifier>{e5fd8b32-1e77-4bde-b55c-b71e25f06a86}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -121,7 +121,7 @@
       <Filter>Source Files\Math</Filter>
     </ClCompile>
     <ClCompile Include="tinyxml2.cpp">
-      <Filter>Source Files\Loaders</Filter>
+      <Filter>Source Files\External Libraries</Filter>
     </ClCompile>
     <ClCompile Include="Scene4.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -210,6 +210,9 @@
     <ClCompile Include="SoundManager.cpp">
       <Filter>Source Files\Managers</Filter>
     </ClCompile>
+    <ClCompile Include="Scene6.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -267,7 +270,7 @@
       <Filter>Header Files\Actors</Filter>
     </ClInclude>
     <ClInclude Include="tiny_obj_loader.h">
-      <Filter>Header Files\Loaders</Filter>
+      <Filter>Header Files\External Libraries</Filter>
     </ClInclude>
     <ClInclude Include="ShaderComponent.h">
       <Filter>Header Files\Components</Filter>
@@ -279,7 +282,7 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="tinyxml2.h">
-      <Filter>Header Files\Loaders</Filter>
+      <Filter>Header Files\External Libraries</Filter>
     </ClInclude>
     <ClInclude Include="Scene4.h">
       <Filter>Header Files\Scenes</Filter>
@@ -373,6 +376,15 @@
     </ClInclude>
     <ClInclude Include="QuadraticSolution.h">
       <Filter>Header Files\Math\Geometry</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene6.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="jc_voronoi.h">
+      <Filter>Header Files\External Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="jc_voronoi_clip.h">
+      <Filter>Header Files\External Libraries</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

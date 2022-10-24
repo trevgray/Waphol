@@ -19,8 +19,7 @@ public:
 	void DeleteSound(std::string soundName);
 
 	//play sounds
-	void PlaySound2D(std::string soundName);
-	//void PlaySound3D(std::string soundName);
+	void PlaySound(std::string soundName);
 
 	//Resume sounds
 	void ResumeSound(std::string soundName);

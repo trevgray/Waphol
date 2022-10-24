@@ -85,10 +85,10 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 			Vec3 rayWorldStart = Vec3();
 			Vec3 rayWorldDirection = VMath::normalize(rayTransform * mouseCoords);
 
-			GEOMETRY::Ray ray{ rayWorldStart, rayWorldDirection };
+			GEOMETRY::Ray rayWorldSpace{ rayWorldStart, rayWorldDirection };
 
-			/*std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
-			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;*/
+			std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
+			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;
 
 			// Loop through all the actors and check if the ray has collided with them
 			// Pick the one with the smallest positive t value
@@ -106,8 +106,8 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						//|| shapeComponent->shapeType == ShapeType::box (TODO)
 						) {
 						//Transform the ray into the local space of the object and check if a collision occurred
-						Vec3 rayStartInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()) * ray.start;
-						Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(ray.dir, 0.0f));
+						Vec3 rayStartInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()) * rayWorldSpace.start;
+						Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(rayWorldSpace.dir, 0.0f));
 
 						GEOMETRY::Ray rayInObjectSpace{ rayStartInObjectSpace, rayDirInObjectSpace }; 
 						GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(rayInObjectSpace);
