@@ -1,21 +1,7 @@
 #include <glew.h>
 #include <iostream>
 #include <SDL.h>
-#include "Debug.h"
 #include "Scene5.h"
-#include "MMath.h"
-#include "Debug.h"
-#include "TransformComponent.h"
-#include "MeshComponent.h"
-#include "ShaderComponent.h"
-#include "MaterialComponent.h"
-#include "QMath.h"
-#include "SteeringComponent.h"
-#include "Seek.h"
-#include "VelocityMatch.h"
-#include "Arrive.h"
-#include "Align.h"
-#include "FaceVelocity.h"
 
 Scene5::Scene5(): RowX(0), RowY(0), nextRow(0) {
 	Debug::Info("Created Scene5: ", __FILE__, __LINE__);

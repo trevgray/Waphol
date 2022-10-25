@@ -1,10 +1,5 @@
 #pragma once
 #include "Scene.h"
-#include "Vector.h"
-#include "Matrix.h"
-#include "LightActor.h"
-#include "CameraActor.h"
-#include "Actor.h"
 #include "AssetManager.h"
 using namespace MATH;
 

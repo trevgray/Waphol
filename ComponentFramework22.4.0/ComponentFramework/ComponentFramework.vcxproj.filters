@@ -79,6 +79,12 @@
     <Filter Include="Source Files\External Libraries">
       <UniqueIdentifier>{e5fd8b32-1e77-4bde-b55c-b71e25f06a86}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI\Pathfinding">
+      <UniqueIdentifier>{b1be6fe9-8965-4ce5-859c-0429e8c1ed87}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Pathfinding">
+      <UniqueIdentifier>{a14468b3-3447-40a4-9d38-c8151a0a9c64}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -212,6 +218,9 @@
     </ClCompile>
     <ClCompile Include="Scene6.cpp">
       <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="NavigationMesh.cpp">
+      <Filter>Source Files\AI\Pathfinding</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -385,6 +394,9 @@
     </ClInclude>
     <ClInclude Include="jc_voronoi_clip.h">
       <Filter>Header Files\External Libraries</Filter>
+    </ClInclude>
+    <ClInclude Include="NavigationMesh.h">
+      <Filter>Header Files\AI\Pathfinding</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

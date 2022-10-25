@@ -1,21 +1,7 @@
 #include <glew.h>
 #include <iostream>
 #include <SDL.h>
-#include "Debug.h"
 #include "Scene6.h"
-#include "MMath.h"
-#include "Debug.h"
-#include "TransformComponent.h"
-#include "MeshComponent.h"
-#include "ShaderComponent.h"
-#include "MaterialComponent.h"
-#include "QMath.h"
-#include "SteeringComponent.h"
-#include "Seek.h"
-#include "VelocityMatch.h"
-#include "Arrive.h"
-#include "Align.h"
-#include "FaceVelocity.h"
 
 Scene6::Scene6(): RowX(0), RowY(0), nextRow(0) {
 	Debug::Info("Created Scene6: ", __FILE__, __LINE__);
@@ -27,7 +13,7 @@ Scene6::~Scene6() {
 
 bool Scene6::OnCreate() {
 	Debug::Info("Loading assets Scene6: ", __FILE__, __LINE__);
-	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene5");
+	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene6");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
 	return true;
