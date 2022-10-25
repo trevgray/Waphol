@@ -161,12 +161,14 @@
     <ClCompile Include="EngineManager.cpp" />
     <ClCompile Include="FaceVelocity.cpp" />
     <ClCompile Include="Flee.cpp" />
+    <ClCompile Include="Graph.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="LightActor.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
     <ClCompile Include="NavigationMesh.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
+    <ClCompile Include="NodeAndPriority.cpp" />
     <ClCompile Include="PhysicsBodyComponent.cpp" />
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene0.cpp" />
@@ -211,6 +213,7 @@
     <ClInclude Include="Euler.h" />
     <ClInclude Include="FaceVelocity.h" />
     <ClInclude Include="Flee.h" />
+    <ClInclude Include="Graph.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="jc_voronoi.h" />
     <ClInclude Include="jc_voronoi_clip.h" />
@@ -219,6 +222,8 @@
     <ClInclude Include="MeshComponent.h" />
     <ClInclude Include="NavigationMesh.h" />
     <ClInclude Include="NetworkManager.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="NodeAndPriority.h" />
     <ClInclude Include="PhysicsBodyComponent.h" />
     <ClInclude Include="QMath.h" />
     <ClInclude Include="QuadraticSolution.h" />

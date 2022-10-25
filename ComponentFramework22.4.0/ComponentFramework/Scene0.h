@@ -6,8 +6,7 @@
 #include "CameraActor.h"
 #include "AssetManager.h"
 
-struct Scene0 : public Scene
-{
+struct Scene0 : public Scene {
 	bool renderMeshes = true;
 	bool renderCollisionShapes = true;
 	explicit Scene0() {};

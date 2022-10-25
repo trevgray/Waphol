@@ -3,7 +3,7 @@
 #include <SDL.h>
 #include "Scene5.h"
 
-Scene5::Scene5(): RowX(0), RowY(0), nextRow(0) {
+Scene5::Scene5() {
 	Debug::Info("Created Scene5: ", __FILE__, __LINE__);
 }
 

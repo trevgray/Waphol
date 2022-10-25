@@ -222,6 +222,12 @@
     <ClCompile Include="NavigationMesh.cpp">
       <Filter>Source Files\AI\Pathfinding</Filter>
     </ClCompile>
+    <ClCompile Include="Graph.cpp">
+      <Filter>Source Files\AI\Pathfinding</Filter>
+    </ClCompile>
+    <ClCompile Include="NodeAndPriority.cpp">
+      <Filter>Source Files\AI\Pathfinding</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -396,6 +402,15 @@
       <Filter>Header Files\External Libraries</Filter>
     </ClInclude>
     <ClInclude Include="NavigationMesh.h">
+      <Filter>Header Files\AI\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Graph.h">
+      <Filter>Header Files\AI\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="Node.h">
+      <Filter>Header Files\AI\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeAndPriority.h">
       <Filter>Header Files\AI\Pathfinding</Filter>
     </ClInclude>
   </ItemGroup>

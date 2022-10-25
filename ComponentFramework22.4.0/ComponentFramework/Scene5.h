@@ -8,8 +8,7 @@ union SDL_Event;
 
 class Scene5 : public Scene {
 private:
-	int nextRow;
-	float RowX, RowY;
+	
 public:
 	explicit Scene5();
 	virtual ~Scene5();

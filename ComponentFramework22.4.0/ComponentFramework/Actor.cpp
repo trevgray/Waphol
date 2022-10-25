@@ -45,7 +45,7 @@ Matrix4 Actor::GetModelMatrix() {
 		modelMatrix.loadIdentity();
 	}
 	if (parent) {
-		modelMatrix = dynamic_cast<Actor*>(parent)->GetModelMatrix() * modelMatrix;
+		//modelMatrix = dynamic_cast<Actor*>(parent)->GetModelMatrix() * modelMatrix;
 	}
 	return modelMatrix;
 }

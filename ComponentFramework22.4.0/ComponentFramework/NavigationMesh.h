@@ -1,14 +1,20 @@
 #pragma once
-#define JC_VORONOI_IMPLEMENTATION
-#include "jc_voronoi.h"
-#include "jc_voronoi_clip.h"
+#include "Component.h"
+
+#include "Vector.h"
+#include <vector>
+
+#include "Graph.h"
+//#include <iostream>
 
 class NavigationMesh {
 public:
 	NavigationMesh();
 	~NavigationMesh();
 
-	void Initialize();
+	void Initialize(MATH::Vec3 topLeftCorner, MATH::Vec3 bottomRightCorner, std::vector<std::string> ignoreActors);
+
+	Graph GetVoronoiGraph() { return voronoiGraph; }
 private:
-	jcv_diagram diagram;
+	Graph voronoiGraph;
 };

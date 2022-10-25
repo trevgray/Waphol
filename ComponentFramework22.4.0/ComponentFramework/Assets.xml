@@ -379,6 +379,16 @@
 			<Mesh filename = "meshes/Plane.obj"/>
 		</Component>
 
+		<Component name = "ObstacleMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/Cube.obj"/>
+		</Component>
+
+		<Component name = "ObstacleTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/8x8_checkered_board.png"/>
+		</Component>
+
 		<Component name = "RedCheckerTexture">
 			<Type type = "Material"/>
 			<Material filename = "textures/redCheckerPiece.png"/>
@@ -415,6 +425,12 @@
 			<Transform posx="10.0" posy ="5.0" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
 			<Steering name = "SteeringNPC"/>
 		</Actor>
+
+		<Actor name = "ObstacleActor" parent="null">
+			<Mesh name = "ObstacleMesh"/>
+			<Material name = "ObstacleTexture"/>
+		</Actor>
+
 
 		<Camera name = "camera">
 			<Transform posx="0.0" posy ="0.5" posz="-40.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="0.0" scaley ="0.0" scalez="0.0"/>
