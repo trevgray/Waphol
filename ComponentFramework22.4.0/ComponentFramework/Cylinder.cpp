@@ -77,23 +77,41 @@ void Cylinder::generateVerticesAndNormals()
 RayIntersectionInfo GEOMETRY::Cylinder::rayIntersectionInfo(const Ray& ray) const {
 	RayIntersectionInfo rayInfo;
 	rayInfo = CheckInfiniteCylinder(ray);
+
+	RayIntersectionInfo rayEndCapCheck; //this is done so I don't overwrite the t or interaction point
+
 	if (rayInfo.isIntersected == true) {
-		rayInfo = CheckEndCap(ray, rayInfo.t);
+		rayEndCapCheck = CheckEndCap(ray, rayInfo.t);
 	}
+
+	if (rayEndCapCheck.isIntersected == true) {
+		rayInfo.isIntersected = true;
+	}
+	else {
+		rayInfo.isIntersected = false;
+	}
+
 	return rayInfo;
 }
 
 RayIntersectionInfo GEOMETRY::Cylinder::CheckInfiniteCylinder(const Ray& ray) const {
 	RayIntersectionInfo rayInfo;
 	//Solve the quadratic function for this interaction
-	//Used Ray Cylinder Intersections (Game Physics 3)
-	Vec3 AB = capCentrePosA - capCentrePosB;
-	Vec3 AS = capCentrePosA - ray.start;
+	//Used Ray Cylinder Intersections (Game Physics 3) Part A
 
-	const float a = VMath::dot(ray.dir, ray.dir) - (VMath::dot(ray.dir, AB) * VMath::dot(ray.dir, AB));
+	//Set commonly used vectors in the equations
+	Vec3 AB = capCentrePosB - capCentrePosA;
+	AB = VMath::normalize(AB);
+	Vec3 AS = ray.start - capCentrePosA;
+	//Calculating A B C coefficients for quadratic equation to solve for t (algebra explained in Ray Cylinder Intersections Part A)
+	const float a = VMath::dot(ray.dir, ray.dir) - (VMath::dot(ray.dir, AB) * VMath::dot(ray.dir, AB)); //powf(VMath::dot(ray.dir, AB), 2); also works
 	const float b = 2.0f * (VMath::dot(AS, ray.dir) - (VMath::dot(ray.dir, AB) * VMath::dot(AS, AB)));
-	const float c = VMath::dot(AS, AS) - (VMath::dot(AS, AB) * VMath::dot(AS, AB)) - r * r;
+	const float c = VMath::dot(AS, AS) - (VMath::dot(AS, AB) * VMath::dot(AS, AB)) - r * r; //powf(VMath::dot(AS, AB), 2);
+
 	QuadraticSolution soln = soln.SolveQuadratic(a, b, c);
+
+	//Gets the closer interaction point (Explained in Game Physics 3 Ray Sphere Collisions Slide 9)
+	//The smaller t value is where the ray inters the cylinder, and the larger t value is where the ray exits the cylinder.
 	if (soln.numSolutions == NumSolutions::zeroRoots) {
 		rayInfo.isIntersected = false;
 	}
@@ -115,22 +133,50 @@ RayIntersectionInfo GEOMETRY::Cylinder::CheckInfiniteCylinder(const Ray& ray) co
 
 RayIntersectionInfo GEOMETRY::Cylinder::CheckEndCap(const Ray& ray, float t) const {
 	RayIntersectionInfo rayInfo;
-	//Check the end cap
-	Vec3 AB = capCentrePosA - capCentrePosB;
-	Vec3 AS = capCentrePosA - ray.start;
-	Vec3 AP = capCentrePosA - ray.currentPosition(t);
+	rayInfo.isIntersected = false; //set it to false, only update it if the interaction is valid
 
-	float check1 = VMath::dot(AP, AB);
+	//Used Ray Cylinder Intersections (Game Physics 3) Part B
 
-	float check2 = VMath::dot(ray.dir, AB);
+	//Set commonly used vectors in the equations
+	Vec3 AB = capCentrePosB  - capCentrePosA;
+	Vec3 AS = ray.start - capCentrePosA;
+	Vec3 AP = ray.currentPosition(t) - capCentrePosA;
 
-	//float check3 = VMath::mag(AS - (VMath::dot(AS, AB) / VMath::dot(ray.dir, AB)) * ray.dir);
-	float check3 = VMath::mag(AS - t * ray.dir); //t = (VMath::dot(AS, AB) / VMath::dot(ray.dir, AB))
-	if ((check1 < 0) && (check2 > 0) && (check3 <= r)) {
+	//Check the angle between AP and AB
+	//when vector AP, AB are 90 degrees for each other - the dot product = 0 
+	//dot(AP, AB) is < 0 when the angle is greater than 90
+	//dot(AP, AB) is > 0 when the angle is less than 90
+	float aAngleCheck = VMath::dot(AP, AB);
+
+	//Check if the vector is pointing towards the end cap
+	//dot(ray.dir, AB) will be greater than 0 if ray.dir is towards the end cap
+	//because the angle between ray.dir and AB would be acute (<90)
+	float aDirectionCheck = VMath::dot(ray.dir, AB);
+
+	//Check if the point on the circle's plane is within the circle's radius
+	//Check Ray Cylinder Intersections 2 of 2 page 3 (after t equation)
+	float aDistanceCheck = VMath::mag(AS - (VMath::dot(AS, AB) / VMath::dot(ray.dir, AB)) * ray.dir);
+	aDistanceCheck = VMath::mag(AS + t * ray.dir);
+	//float aDistanceCheck = VMath::mag(AS + t * ray.dir); also works because t = -(VMath::dot(AS, AB) / VMath::dot(ray.dir, AB))
+
+	//Do the same thing with the B cap now
+	Vec3 BA = capCentrePosA - capCentrePosB;
+	Vec3 BS = ray.start - capCentrePosB;
+	Vec3 BP = ray.currentPosition(t) - capCentrePosB;
+	float bAngleCheck = VMath::dot(BP, BA);
+	float bDirectionCheck = VMath::dot(ray.dir, BA);
+	float bDistanceCheck = VMath::mag(BS - (VMath::dot(BS, BA) / VMath::dot(ray.dir, BA)) * ray.dir);
+
+	//if both the angle checks are acute (dot product greater than zero) then the intersection is between the end points of the cylinder (on the side of the cylinder)
+	if (aAngleCheck > 0.0f && bAngleCheck > 0.0f) {
 		rayInfo.isIntersected = true;
 	}
-	else {
-		rayInfo.isIntersected = false;
+	//Check if the vector hits the end cap with all the defined variables
+	//Check Ray Cylinder Intersections 2 of 2 page 5
+	else if ((aAngleCheck < 0.0f) && (aDirectionCheck > 0.0f) && (aDistanceCheck <= r) || /*A Cap Check*/
+		(bAngleCheck < 0.0f) && (bDirectionCheck > 0.0f) && (bDistanceCheck <= r)) /*B Cap Check*/ {
+		rayInfo.isIntersected = true;
 	}
-	return rayInfo;
+
+	return rayInfo; //done :)
 }

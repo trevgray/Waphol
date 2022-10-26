@@ -23,7 +23,7 @@ namespace GEOMETRY {
 		}
 
 		QuadraticSolution SolveQuadratic(float a, float b, float c) { //To actually solve the quadratic equation, we don’t need an entire class - just a function
-			QuadraticSolution solution;
+			QuadraticSolution solution; //explain in Game Physics 3 slide 8
 			float discriminant = b * b - 4.0f * a * c;
 
 			if (discriminant < 0.0f) {

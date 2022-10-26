@@ -83,12 +83,13 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 			Matrix4 rayTransform = MMath::inverse(ndc * projection * view);
 
 			Vec3 rayWorldStart = Vec3();
+			//Vec3 rayWorldStart = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition();
 			Vec3 rayWorldDirection = VMath::normalize(rayTransform * mouseCoords);
 
 			GEOMETRY::Ray rayWorldSpace{ rayWorldStart, rayWorldDirection };
 
-			std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
-			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;
+			/*std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
+			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;*/
 
 			// Loop through all the actors and check if the ray has collided with them
 			// Pick the one with the smallest positive t value
@@ -110,11 +111,22 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 						Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(rayWorldSpace.dir, 0.0f));
 
 						GEOMETRY::Ray rayInObjectSpace{ rayStartInObjectSpace, rayDirInObjectSpace }; 
-						std::cout << "Checking: " << actor.first << '\n';
+						//std::cout << "Checking: " << actor.first << '\n';
 						GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(rayInObjectSpace);
 
 						if (rayInfo.isIntersected) {
 							std::cout << "You picked: " << actor.first << '\n';
+
+							Vec3 actorPos = actor.second->GetModelMatrix() * rayInfo.intersectionPoint;
+							
+							std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
+							EngineManager::Instance()->GetActorManager()->AddActor<Actor>("Obstacle", new Actor(nullptr));
+							EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));
+							EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->AddComponent<TransformComponent>(nullptr, actorPos, Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.15f, 0.15f, 0.15f));
+
+							//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->AddComponent<ShaderComponent>();
+							EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->OnCreate();
+
 							//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
 							//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
 						} 
@@ -153,7 +165,9 @@ void Scene0::Render() const
 				actor.second->GetComponent<MeshComponent>()->Render(GL_TRIANGLES);
 			}
 			if (renderCollisionShapes) {
-				actor.second->GetComponent<ShapeComponent>()->Render();
+				if (actor.second->GetComponent<ShapeComponent>() != nullptr) {
+					actor.second->GetComponent<ShapeComponent>()->Render();
+				}
 			}
 		}
 	}

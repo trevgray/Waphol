@@ -59,6 +59,8 @@ void SceneManager::HandleEvents() {
 		}
 		else if (sdlEvent.type == SDL_KEYDOWN) {
 			switch (sdlEvent.key.keysym.scancode) {
+			case SDL_SCANCODE_Q:
+				BuildNewScene(SCENE_NUMBER::SCENE0);
 			case SDL_SCANCODE_ESCAPE:
 			/*case SDL_SCANCODE_Q:
 				isRunning = false;
