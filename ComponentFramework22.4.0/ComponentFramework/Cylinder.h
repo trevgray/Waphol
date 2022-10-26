@@ -35,7 +35,12 @@ namespace GEOMETRY {
 
 		void generateVerticesAndNormals() override;
 
+		// REFERENCE: Real Time Collision Detection by Ericson for all the ray-cylinder stuff. Resist the urge to normalize the ray direction!
 		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
+
+		RayIntersectionInfo CheckInfiniteCylinder(const Ray& ray) const; 
+
+		RayIntersectionInfo CheckEndCap(const Ray& ray, float t) const;
 	};
 }
 

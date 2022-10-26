@@ -1,11 +1,9 @@
-Mon Oct 24 22:59:11 2022
+Tue Oct 25 23:05:35 2022
 [INFO]: Starting the SceneManager
 [INFO]: OpenGL version: 4.6.0 NVIDIA 516.94
 [INFO]: Graphics card vendor NVIDIA Corporation
 [INFO]: Graphics card name NVIDIA GeForce RTX 2070 SUPER/PCIe/SSE2
 [INFO]: GLSL Version 4.60 NVIDIA
-[INFO]: Created Scene6: 
-[INFO]: Loading assets Scene6: 
 [INFO]: Creating values for CameraActor: 
 [INFO]: Uniforms:
 "colour" loc:-1
@@ -16,10 +14,3 @@ Mon Oct 24 22:59:11 2022
 "view" loc:-1
 
 [INFO]: Creating values for CameraActor: 
-[INFO]: Deleting EngineManager: 
-[INFO]: Deleting the SoundManager
-[INFO]: Shutting Down the NetworkManager
-[INFO]: Deleting assets Scene5: 
-[INFO]: Deleted Scene6: 
-[INFO]: Deleting the SceneManager
-[INFO]: Deleting EngineManager: 

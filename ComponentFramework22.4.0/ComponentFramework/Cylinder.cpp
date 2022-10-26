@@ -2,6 +2,8 @@
 #include "Matrix.h"
 #include "MMath.h"
 
+#include "QuadraticSolution.h"
+
 using namespace MATH;
 using namespace GEOMETRY;
 
@@ -72,7 +74,63 @@ void Cylinder::generateVerticesAndNormals()
 	}
 }
 
-RayIntersectionInfo GEOMETRY::Cylinder::rayIntersectionInfo(const Ray& ray) const
-{
-	return RayIntersectionInfo();
+RayIntersectionInfo GEOMETRY::Cylinder::rayIntersectionInfo(const Ray& ray) const {
+	RayIntersectionInfo rayInfo;
+	rayInfo = CheckInfiniteCylinder(ray);
+	if (rayInfo.isIntersected == true) {
+		rayInfo = CheckEndCap(ray, rayInfo.t);
+	}
+	return rayInfo;
+}
+
+RayIntersectionInfo GEOMETRY::Cylinder::CheckInfiniteCylinder(const Ray& ray) const {
+	RayIntersectionInfo rayInfo;
+	//Solve the quadratic function for this interaction
+	//Used Ray Cylinder Intersections (Game Physics 3)
+	Vec3 AB = capCentrePosA - capCentrePosB;
+	Vec3 AS = capCentrePosA - ray.start;
+
+	const float a = VMath::dot(ray.dir, ray.dir) - (VMath::dot(ray.dir, AB) * VMath::dot(ray.dir, AB));
+	const float b = 2.0f * (VMath::dot(AS, ray.dir) - (VMath::dot(ray.dir, AB) * VMath::dot(AS, AB)));
+	const float c = VMath::dot(AS, AS) - (VMath::dot(AS, AB) * VMath::dot(AS, AB)) - r * r;
+	QuadraticSolution soln = soln.SolveQuadratic(a, b, c);
+	if (soln.numSolutions == NumSolutions::zeroRoots) {
+		rayInfo.isIntersected = false;
+	}
+	else if (soln.secondRoot < 0.0f) {
+		rayInfo.isIntersected = true;
+		//ray is going backwards
+		//second root is the smallest absolute value
+		rayInfo.intersectionPoint = ray.currentPosition(soln.secondRoot);
+		rayInfo.t = soln.secondRoot;
+	}
+	else {
+		rayInfo.isIntersected = true;
+		rayInfo.intersectionPoint = ray.currentPosition(soln.firstRoot);
+		rayInfo.t = soln.firstRoot;
+	}
+
+	return rayInfo;
+}
+
+RayIntersectionInfo GEOMETRY::Cylinder::CheckEndCap(const Ray& ray, float t) const {
+	RayIntersectionInfo rayInfo;
+	//Check the end cap
+	Vec3 AB = capCentrePosA - capCentrePosB;
+	Vec3 AS = capCentrePosA - ray.start;
+	Vec3 AP = capCentrePosA - ray.currentPosition(t);
+
+	float check1 = VMath::dot(AP, AB);
+
+	float check2 = VMath::dot(ray.dir, AB);
+
+	//float check3 = VMath::mag(AS - (VMath::dot(AS, AB) / VMath::dot(ray.dir, AB)) * ray.dir);
+	float check3 = VMath::mag(AS - t * ray.dir); //t = (VMath::dot(AS, AB) / VMath::dot(ray.dir, AB))
+	if ((check1 < 0) && (check2 > 0) && (check3 <= r)) {
+		rayInfo.isIntersected = true;
+	}
+	else {
+		rayInfo.isIntersected = false;
+	}
+	return rayInfo;
 }

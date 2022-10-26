@@ -101,15 +101,16 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 					Ref<TransformComponent> transformComponent = actor.second->GetComponent<TransformComponent>();
 					Ref<ShapeComponent> shapeComponent = actor.second->GetComponent<ShapeComponent>();
 					if (shapeComponent->shapeType == ShapeType::sphere
-						//|| shapeComponent->shapeType == ShapeType::cylinder (TODO)
-						//|| shapeComponent->shapeType == ShapeType::capsule (TODO)
-						//|| shapeComponent->shapeType == ShapeType::box (TODO)
+						|| shapeComponent->shapeType == ShapeType::cylinder
+						|| shapeComponent->shapeType == ShapeType::capsule
+						|| shapeComponent->shapeType == ShapeType::box
 						) {
 						//Transform the ray into the local space of the object and check if a collision occurred
 						Vec3 rayStartInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()) * rayWorldSpace.start;
 						Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(rayWorldSpace.dir, 0.0f));
 
 						GEOMETRY::Ray rayInObjectSpace{ rayStartInObjectSpace, rayDirInObjectSpace }; 
+						std::cout << "Checking: " << actor.first << '\n';
 						GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(rayInObjectSpace);
 
 						if (rayInfo.isIntersected) {
