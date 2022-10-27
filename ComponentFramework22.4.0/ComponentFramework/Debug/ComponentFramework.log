@@ -1,2 +1,5 @@
 ﻿  Cylinder.cpp
+  Scene0.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene0.cpp(102,71): warning C4834: discarding return value of function with 'nodiscard' attribute
+  Generating Code...
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

@@ -156,7 +156,6 @@ RayIntersectionInfo GEOMETRY::Cylinder::CheckEndCap(const Ray& ray, float t) con
 	//Check if the point on the circle's plane is within the circle's radius
 	//Check Ray Cylinder Intersections 2 of 2 page 3 (after t equation)
 	float aDistanceCheck = VMath::mag(AS - (VMath::dot(AS, AB) / VMath::dot(ray.dir, AB)) * ray.dir);
-	aDistanceCheck = VMath::mag(AS + t * ray.dir);
 	//float aDistanceCheck = VMath::mag(AS + t * ray.dir); also works because t = -(VMath::dot(AS, AB) / VMath::dot(ray.dir, AB))
 
 	//Do the same thing with the B cap now

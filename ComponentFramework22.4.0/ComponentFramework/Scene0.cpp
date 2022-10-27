@@ -31,6 +31,11 @@ bool Scene0::OnCreate()
 	//	GetActor<Actor>(name)->OnCreate();
 	//}
 
+	EngineManager::Instance()->GetActorManager()->AddActor<Actor>("Obstacle", new Actor(nullptr));
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->AddComponent<TransformComponent>(nullptr, Vec3(-5.0f,0.0f,0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.15f, 0.15f, 0.15f));
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->OnCreate();
+
 	return true;
 }
 
@@ -120,12 +125,8 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 							Vec3 actorPos = actor.second->GetModelMatrix() * rayInfo.intersectionPoint;
 							
 							std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
-							EngineManager::Instance()->GetActorManager()->AddActor<Actor>("Obstacle", new Actor(nullptr));
-							EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));
-							EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->AddComponent<TransformComponent>(nullptr, actorPos, Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.15f, 0.15f, 0.15f));
 
-							//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->AddComponent<ShaderComponent>();
-							EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->OnCreate();
+							EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
 
 							//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
 							//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
