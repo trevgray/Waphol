@@ -99,39 +99,30 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 			// Loop through all the actors and check if the ray has collided with them
 			// Pick the one with the smallest positive t value
 
-			EngineManager::Instance()->GetActorManager()->GetActorGraph().begin();
-
 			for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
-				glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
 				if (actor.second->GetComponent<ShapeComponent>() != nullptr) {
 					Ref<TransformComponent> transformComponent = actor.second->GetComponent<TransformComponent>();
 					Ref<ShapeComponent> shapeComponent = actor.second->GetComponent<ShapeComponent>();
-					if (shapeComponent->shapeType == ShapeType::sphere
-						|| shapeComponent->shapeType == ShapeType::cylinder
-						|| shapeComponent->shapeType == ShapeType::capsule
-						|| shapeComponent->shapeType == ShapeType::box
-						) {
-						//Transform the ray into the local space of the object and check if a collision occurred
-						Vec3 rayStartInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()) * rayWorldSpace.start;
-						Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(rayWorldSpace.dir, 0.0f));
+					//Transform the ray into the local space of the object and check if a collision occurred
+					Vec3 rayStartInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()) * rayWorldSpace.start;
+					Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(rayWorldSpace.dir, 0.0f));
 
-						GEOMETRY::Ray rayInObjectSpace{ rayStartInObjectSpace, rayDirInObjectSpace }; 
-						//std::cout << "Checking: " << actor.first << '\n';
-						GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(rayInObjectSpace);
+					GEOMETRY::Ray rayInObjectSpace{ rayStartInObjectSpace, rayDirInObjectSpace }; 
+					//std::cout << "Checking: " << actor.first << '\n';
+					GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(rayInObjectSpace);
 
-						if (rayInfo.isIntersected) {
-							std::cout << "You picked: " << actor.first << '\n';
+					if (rayInfo.isIntersected) {
+						std::cout << "You picked: " << actor.first << '\n';
 
-							Vec3 actorPos = actor.second->GetModelMatrix() * rayInfo.intersectionPoint;
+						Vec3 actorPos = actor.second->GetModelMatrix() * rayInfo.intersectionPoint;
 							
-							std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
+						std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
 
-							EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
+						EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
 
-							//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
-							//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
-						} 
-					}
+						//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
+						//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
+					} 
 				}
 			}
 		}
