@@ -3,6 +3,7 @@
 #include "MeshComponent.h"
 Actor::Actor(Component* parent_):Component(parent_) {
 	prehab = true;
+	isCreated = false;
 }
 
 Actor::~Actor() {
@@ -74,3 +75,5 @@ void Actor::InheritActor(Ref<Actor> inheritActor) {
 		components.push_back(component);
 	}
 }
+
+//void Actor::SetParent(Ref<Actor>)

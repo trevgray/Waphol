@@ -4,15 +4,19 @@
 class ActorManager {
 private:
 	std::unordered_map <std::string, Ref<Actor>> actorGraph;
+
+	std::vector<Actor*> parentPointers;
 public:
 	ActorManager();
 	~ActorManager();
 
-	void RemoveAllComponents();
+	void RemoveAllActors();
 
 	int GetActorGraphSize() const;
 
 	std::unordered_map<std::string, Ref<Actor>> GetActorGraph() const;
+
+	void AddParentPointer(Actor* parentActor);
 
 	void LoadNonPrehabActors();
 	void UpdateActors(const float deltaTime);

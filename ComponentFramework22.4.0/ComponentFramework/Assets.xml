@@ -116,7 +116,7 @@
 		  <Material name = "RedCheckerTexture"/>
 		  <Shape name ="CheckerCylinderShape"/>
 		  <Transform posx="-4.5" posy="-4.5" posz="5.0"
-			 angleDeg="180.0" axisx="0.0" axisy="1.0" axisz="0.0"
+			 angleDeg="0.0" axisx="0.0" axisy="1.0" axisz="0.0"
 			 scalex="0.15" scaley="0.15" scalez="0.15"/>
 	  </Actor>
 

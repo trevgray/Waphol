@@ -5,16 +5,21 @@
 #include "CameraActor.h"
 #include "LightActor.h"
 #include "EngineManager.h"
-
 ActorManager::ActorManager() {
 }
 
 ActorManager::~ActorManager() {
-	RemoveAllComponents();
+	RemoveAllActors();
 }
 
-void ActorManager::RemoveAllComponents() {
-	for (auto actor : actorGraph) {
+void ActorManager::RemoveAllActors() {
+	//for (Actor* parentPointer : parentPointers) {
+	//	if (parentPointer) { delete parentPointer; }
+	//}
+
+	parentPointers.clear(); //remove all parent pointers in the parentPointer vector
+
+	for (auto actor : actorGraph) { //remove all actors in the hash table
 		actor.second->~Actor();
 	}
 	actorGraph.clear();
@@ -25,13 +30,22 @@ int ActorManager::GetActorGraphSize() const { return actorGraph.size(); }
 std::unordered_map <std::string, Ref<Actor>> ActorManager::GetActorGraph() const { return actorGraph; }
 
 template<typename ActorTemplate, typename ... Args> void ActorManager::AddActor(std::string name, Args&& ... args_) {
-	//RemovePointer(std::forward<Args>(args_)...);
+	AddParentPointer(std::forward<Args>(args_)...); //We store the raw parent pointer so we can deal with it later (for no memory leaks)
 	Ref<ActorTemplate> t = std::make_shared<ActorTemplate>(std::forward<Args>(args_)...);
 	actorGraph[name] = t;
 }
 
-void RemovePointer(Actor* removeActor) {
-	delete removeActor;
+void ActorManager::AddParentPointer(Actor* parentActor) {
+	//This is how we deal with parents
+	//A lot of actors don't have a parent, we don't want to just store a nullptr
+	if (parentActor->GetComponentVector().size() > 0) { //So if the parent has more than 1 component
+		parentPointers.push_back(parentActor); //we add it to a vector to remove it later
+	}
+	else { //Else we remove it because it is probably just a nullptr
+		//BUT if the parent is not created yet, we remove it - so create the parent before creating a child of it
+		if (parentActor) { delete parentActor; }
+	}
+	//if (removeActor) { delete removeActor; }
 	//std::cout << "  " << removeActor << std::endl;
 }
 
