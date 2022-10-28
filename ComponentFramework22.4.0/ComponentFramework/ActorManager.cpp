@@ -25,9 +25,9 @@ int ActorManager::GetActorGraphSize() const { return actorGraph.size(); }
 std::unordered_map <std::string, Ref<Actor>> ActorManager::GetActorGraph() const { return actorGraph; }
 
 template<typename ActorTemplate, typename ... Args> void ActorManager::AddActor(std::string name, Args&& ... args_) {
+	//RemovePointer(std::forward<Args>(args_)...);
 	Ref<ActorTemplate> t = std::make_shared<ActorTemplate>(std::forward<Args>(args_)...);
 	actorGraph[name] = t;
-	RemovePointer(std::forward<Args>(args_)...);
 }
 
 void RemovePointer(Actor* removeActor) {

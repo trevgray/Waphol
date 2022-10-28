@@ -389,9 +389,6 @@
     <ClInclude Include="Ray.h">
       <Filter>Header Files\Math\Geometry</Filter>
     </ClInclude>
-    <ClInclude Include="QuadraticSolution.h">
-      <Filter>Header Files\Math\Geometry</Filter>
-    </ClInclude>
     <ClInclude Include="Scene6.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
@@ -412,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="NodeAndPriority.h">
       <Filter>Header Files\AI\Pathfinding</Filter>
+    </ClInclude>
+    <ClInclude Include="QuadraticSolution.h">
+      <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

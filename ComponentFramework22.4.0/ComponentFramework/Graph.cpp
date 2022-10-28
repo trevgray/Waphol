@@ -56,11 +56,11 @@ void Graph::AddConnectionVector(MATH::Vec3 fromNodePos, MATH::Vec3 toNodePos) {
 		if (fromNodePos.x == nodeIterator.second.GetPos().x && fromNodePos.y == nodeIterator.second.GetPos().y) {
 			fromNode = nodeIterator.second;
 		}
-		else if (toNodePos.x == nodeIterator.second.GetPos().x && toNodePos.y == nodeIterator.second.GetPos().y) {
+		if (toNodePos.x == nodeIterator.second.GetPos().x && toNodePos.y == nodeIterator.second.GetPos().y) {
 			toNode = nodeIterator.second;
 		}
 	}
-	if (fromNode.GetLabel() == -1 || fromNode.GetLabel() == -1) {
+	if (fromNode.GetLabel() == -1 || toNode.GetLabel() == -1) {
 		std::cout << "ERROR: Node not found" << std::endl;
 	}
 	else {

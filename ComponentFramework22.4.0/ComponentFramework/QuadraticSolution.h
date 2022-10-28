@@ -2,7 +2,7 @@
 #include <iostream>
 #include <algorithm>
 
-namespace GEOMETRY {
+namespace MATH {
 	enum class NumSolutions { zeroRoots = 0, oneRoot, twoRoots };
 	struct QuadraticSolution {
 
@@ -10,6 +10,7 @@ namespace GEOMETRY {
 		// I'll use first root as the smallest of the two. Set them both to zero to begin with
 		float firstRoot = 0.0f;
 		float secondRoot = 0.0f;
+
 		void print() { // handy method that prints out the number of solutions and their value(s)
 			if (numSolutions == NumSolutions::zeroRoots) {
 				std::cout << "No roots were found" << std::endl;
@@ -22,7 +23,7 @@ namespace GEOMETRY {
 			}
 		}
 
-		QuadraticSolution SolveQuadratic(float a, float b, float c) { //To actually solve the quadratic equation, we don’t need an entire class - just a function
+		static QuadraticSolution SolveQuadratic(float a, float b, float c) { //To actually solve the quadratic equation, we don’t need an entire class - just a function
 			QuadraticSolution solution; //explain in Game Physics 3 slide 8
 			float discriminant = b * b - 4.0f * a * c;
 

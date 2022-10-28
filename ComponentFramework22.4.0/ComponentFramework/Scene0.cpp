@@ -31,6 +31,13 @@ bool Scene0::OnCreate()
 	//	GetActor<Actor>(name)->OnCreate();
 	//}
 
+	//Vec3 rayStart = Vec3(2.0f, 0.0f, -2.0f);
+	//Vec3 rayDirection = Vec3(0.0f, 1.0f, 0.0f);
+	//GEOMETRY::Ray ray { rayStart, rayDirection };
+	//GEOMETRY::Cylinder cylinder(10.0f, Vec3(0.0f, 5.0f, -2.0f), Vec3(1.0f, 9.0f, -2.0f));
+	//Ref<ShapeComponent> shapeComponent = std::make_shared<ShapeComponent>(new Actor(nullptr), cylinder);
+	//GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(ray);
+
 	EngineManager::Instance()->GetActorManager()->AddActor<Actor>("Obstacle", new Actor(nullptr));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->AddComponent<TransformComponent>(nullptr, Vec3(-5.0f,0.0f,0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.15f, 0.15f, 0.15f));
@@ -116,7 +123,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 
 						Vec3 actorPos = actor.second->GetModelMatrix() * rayInfo.intersectionPoint;
 							
-						std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
+						//std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
 
 						EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
 

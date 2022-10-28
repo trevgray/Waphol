@@ -20,13 +20,16 @@ bool Scene6::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene6");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	Vec3 actorPos[5] {Vec3(5,0,0), Vec3(-5,10,0), Vec3(-18,7,0), Vec3(15,-7,0), Vec3(-10, 12, 0) };
+	Vec3 actorPos[5] {Vec3(-5.0f,-13.0f,0.0f), Vec3(-5.0f,10.0f,0.0f), Vec3(-18.0f,7.0f,0.0f), Vec3(15.0f,-7.0f,0.0f), Vec3(0.0f, 0.0f, 0.0f) };
+
+
 
 	for (int x = 0; x < 5; x++) {
-		EngineManager::Instance()->GetActorManager()->AddActor<Actor>("Obstacle" + std::to_string(x), new Actor(nullptr));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle" + std::to_string(x))->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle" + std::to_string(x))->AddComponent<TransformComponent>(nullptr, actorPos[x], Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle" + std::to_string(x))->OnCreate();
+		std::string obstacleName = "Obstacle" + std::to_string(x);
+		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(obstacleName, new Actor(nullptr));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(obstacleName)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(obstacleName)->AddComponent<TransformComponent>(nullptr, actorPos[x], Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(obstacleName)->OnCreate();
 	}
 
 	std::vector<std::string> test;
@@ -42,6 +45,21 @@ bool Scene6::OnCreate() {
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MaterialComponent>(nullptr, "textures/blackCheckerPiece.png");
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->OnCreate();
 	}
+
+	/*std::vector<int> path;
+	int current = 0;
+
+	int goal = 10;
+
+	std::vector<int> cameFrom = navMesh->GetVoronoiGraph().Dijkstra(goal, 0);
+	while (current != goal) {
+		path.push_back(current);
+		current = cameFrom[current];
+	}
+
+	for (int loop : path) {
+		std::cout << loop << std::endl;
+	}*/
 
 	return true;
 }

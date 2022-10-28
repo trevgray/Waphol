@@ -33,7 +33,7 @@ RayIntersectionInfo GEOMETRY::Sphere::rayIntersectionInfo(const Ray& ray) const 
 	const float a = VMath::dot(ray.dir, ray.dir); //vector dot a vector returns the squared norm of the vector
 	const float b = 2.0f * VMath::dot(sphereToRatStart, ray.dir);
 	const float c = VMath::dot(sphereToRatStart, sphereToRatStart) - r * r;
-	QuadraticSolution soln = soln.SolveQuadratic(a, b, c);
+	QuadraticSolution soln = QuadraticSolution::SolveQuadratic(a, b, c);
 	//Gets the closer interaction point (Explained in Game Physics 3 Ray Sphere Collisions Slide 9)
 	//The smaller t value is where the ray inters the sphere, and the larger t value is where the ray exits the sphere.
 	if (soln.numSolutions == NumSolutions::zeroRoots) {

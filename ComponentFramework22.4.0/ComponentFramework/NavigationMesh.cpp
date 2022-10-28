@@ -38,7 +38,7 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		if (actor.second->GetComponent<MaterialComponent>() != nullptr) { //everything is an actor, so i just check if it has a texture
 			skipActor = false;
-			std::cout << "BRUH" << std::endl;
+			//std::cout << "BRUH" << std::endl;
 			for (std::string ignoreActorName : ignoreActors) {
 				if (actor.first == ignoreActorName) {
 					skipActor = true;
@@ -95,9 +95,26 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 	//push nodes on the graph and create the graph
 	const jcv_edge* edge = jcv_diagram_get_edges(jcvVoronoi.get());
 	while (edge) {
-		graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[0].x, edge->pos[0].y, 0)));
-		nodeLabel++;
-		//std::cout << edge->pos[0].x << " " << edge->pos[0].y << " | " << edge->pos[1].x << " " << edge->pos[1].y << std::endl;
+		bool edge1Check = false;
+		bool edge2Check = false;
+		for (Node node : graphNodes) {
+			if (node.GetPos().x == edge->pos[0].x && node.GetPos().y == edge->pos[0].y) {
+				edge1Check = true;
+			}
+			if (node.GetPos().x == edge->pos[1].x && node.GetPos().y == edge->pos[1].y) {
+				edge2Check = true;
+			}
+		}
+
+		if (edge1Check == false) {
+			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[0].x, edge->pos[0].y, 0.0f)));
+			nodeLabel++;
+		}
+		if (edge2Check == false) {
+			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[1].x, edge->pos[1].y, 0.0f)));
+			nodeLabel++;
+		}
+
 		edge = jcv_diagram_get_next_edge(edge);
 	}
 
