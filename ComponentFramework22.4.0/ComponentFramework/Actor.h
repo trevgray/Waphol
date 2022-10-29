@@ -85,8 +85,9 @@ public:
 	void RemoveAllComponents();
 	void ListComponents() const;
 	void InheritActor(Ref<Actor> inheritActor);
+	void DeleteParent();
 	Matrix4 GetModelMatrix();
-	void setModelMatrix(Matrix4 modelMatrix_) { modelMatrix = modelMatrix_; }
-	void setPrehab(bool setPrehab) { prehab = setPrehab; }
-	bool getPrehab() { return prehab; }
+	void SetModelMatrix(Matrix4 modelMatrix_) { modelMatrix = modelMatrix_; }
+	void SetPrehab(bool setPrehab) { prehab = setPrehab; }
+	bool GetPrehab() { return prehab; }
 };

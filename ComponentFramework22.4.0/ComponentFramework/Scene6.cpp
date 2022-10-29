@@ -60,7 +60,7 @@ bool Scene6::OnCreate() {
 	for (int loop : path) {
 		std::cout << loop << std::endl;
 	}*/
-
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("0");
 	return true;
 }
 

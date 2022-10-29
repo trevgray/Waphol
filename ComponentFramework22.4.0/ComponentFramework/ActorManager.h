@@ -16,7 +16,7 @@ public:
 
 	std::unordered_map<std::string, Ref<Actor>> GetActorGraph() const;
 
-	void AddParentPointer(Actor* parentActor);
+	bool AddParentPointer(Actor* parentActor);
 
 	void LoadNonPrehabActors();
 	void UpdateActors(const float deltaTime);

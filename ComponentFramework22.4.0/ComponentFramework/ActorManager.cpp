@@ -30,20 +30,24 @@ int ActorManager::GetActorGraphSize() const { return actorGraph.size(); }
 std::unordered_map <std::string, Ref<Actor>> ActorManager::GetActorGraph() const { return actorGraph; }
 
 template<typename ActorTemplate, typename ... Args> void ActorManager::AddActor(std::string name, Args&& ... args_) {
-	AddParentPointer(std::forward<Args>(args_)...); //We store the raw parent pointer so we can deal with it later (for no memory leaks)
 	Ref<ActorTemplate> t = std::make_shared<ActorTemplate>(std::forward<Args>(args_)...);
 	actorGraph[name] = t;
+	if (AddParentPointer(std::forward<Args>(args_)...)) { //We store the raw parent pointer so we can deal with it later (for no memory leaks)
+		actorGraph[name]->DeleteParent(); //set the actor to nullptr if it has no parent
+	}
 }
 
-void ActorManager::AddParentPointer(Actor* parentActor) {
+bool ActorManager::AddParentPointer(Actor* parentActor) {
 	//This is how we deal with parents
 	//A lot of actors don't have a parent, we don't want to just store a nullptr
 	if (parentActor->GetComponentVector().size() > 0) { //So if the parent has more than 1 component
 		parentPointers.push_back(parentActor); //we add it to a vector to remove it later
+		return false;
 	}
 	else { //Else we remove it because it is probably just a nullptr
 		//BUT if the parent is not created yet, we remove it - so create the parent before creating a child of it
 		if (parentActor) { delete parentActor; }
+		return true; //tell the actor to set the parent to nullptr inside of it
 	}
 	//if (removeActor) { delete removeActor; }
 	//std::cout << "  " << removeActor << std::endl;
@@ -73,24 +77,25 @@ template<typename ActorTemplate> Ref<ActorTemplate> ActorManager::GetActor(std::
 void ActorManager::LoadNonPrehabActors() {
 	for (auto& component : EngineManager::Instance()->GetAssetManager()->GetComponentGraph()) {
 		Actor* actor = dynamic_cast<Actor*>(component.second.get());
-		if (actor != nullptr && actor->getPrehab() == false) {
+		if (actor != nullptr && actor->GetPrehab() == false) {
 			AddActor<Actor>(component.first, new Actor(nullptr));
 			GetActor<Actor>(component.first)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
 			GetActor<Actor>(component.first)->OnCreate();
 		}
 		actor = dynamic_cast<CameraActor*>(component.second.get());
-		if (actor != nullptr && actor->getPrehab() == false) {
+		if (actor != nullptr && actor->GetPrehab() == false) {
 			AddActor<CameraActor>(component.first, new CameraActor(nullptr));
 			GetActor<CameraActor>(component.first)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
 			GetActor<CameraActor>(component.first)->OnCreate();
 		}
 		actor = dynamic_cast<LightActor*>(component.second.get());
-		if (actor != nullptr && actor->getPrehab() == false) {
+		if (actor != nullptr && actor->GetPrehab() == false) {
 			AddActor<LightActor>(component.first, new CameraActor(nullptr));
 			GetActor<LightActor>(component.first)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
 			GetActor<LightActor>(component.first)->OnCreate();
 		}
 	}
+
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(actorGraph);
 }
 

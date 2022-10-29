@@ -162,7 +162,7 @@ void AssetManager::BuildActors() {
 					QMath::angleAxisRotation(transformElement->FloatAttribute("angleDeg"), Vec3(transformElement->FloatAttribute("axisx"), transformElement->FloatAttribute("axisy"), transformElement->FloatAttribute("axisz"))),
 					//Quaternion(transformElement->FloatAttribute("qw"), transformElement->FloatAttribute("qx"), transformElement->FloatAttribute("qy"), transformElement->FloatAttribute("qz")),  //quaternions
 					Vec3(transformElement->FloatAttribute("scalex"), transformElement->FloatAttribute("scaley"), transformElement->FloatAttribute("scalez"))); //scale
-				GetComponent<Actor>(currentElement->Attribute("name"))->setPrehab(false); //set the object to not be a prehab because it has a custom transform
+				GetComponent<Actor>(currentElement->Attribute("name"))->SetPrehab(false); //set the object to not be a prehab because it has a custom transform
 			}
 			if (currentElement->FirstChildElement("Shape") != nullptr) {
 				currentComponent = currentElement->FirstChildElement("Shape");

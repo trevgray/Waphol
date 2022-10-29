@@ -46,7 +46,9 @@ Matrix4 Actor::GetModelMatrix() {
 		modelMatrix.loadIdentity();
 	}
 	if (parent) {
+		//if (dynamic_cast<Actor*>(parent)->GetComponent<TransformComponent>() != nullptr) {
 		modelMatrix = dynamic_cast<Actor*>(parent)->GetModelMatrix() * modelMatrix;
+		//}
 	}
 	return modelMatrix;
 }
@@ -74,6 +76,10 @@ void Actor::InheritActor(Ref<Actor> inheritActor) {
 	for (auto component : inheritActor->GetComponentVector()) {
 		components.push_back(component);
 	}
+}
+
+void Actor::DeleteParent() {
+	parent = nullptr;
 }
 
 //void Actor::SetParent(Ref<Actor>)
