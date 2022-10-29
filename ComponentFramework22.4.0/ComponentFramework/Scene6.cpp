@@ -40,6 +40,7 @@ bool Scene6::OnCreate() {
 	for (auto node : navMesh->GetVoronoiGraph().GetNodes()) {
 		std::string nodeName = std::to_string(node.second.GetLabel());
 		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(nodeName, new Actor(nullptr));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->DeleteParent();
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<TransformComponent>(nullptr, node.second.GetPos(), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MeshComponent>(nullptr, "meshes/Cube.obj");
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MaterialComponent>(nullptr, "textures/blackCheckerPiece.png");

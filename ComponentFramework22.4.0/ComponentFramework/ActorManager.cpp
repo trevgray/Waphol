@@ -32,9 +32,11 @@ std::unordered_map <std::string, Ref<Actor>> ActorManager::GetActorGraph() const
 template<typename ActorTemplate, typename ... Args> void ActorManager::AddActor(std::string name, Args&& ... args_) {
 	Ref<ActorTemplate> t = std::make_shared<ActorTemplate>(std::forward<Args>(args_)...);
 	actorGraph[name] = t;
-	if (AddParentPointer(std::forward<Args>(args_)...)) { //We store the raw parent pointer so we can deal with it later (for no memory leaks)
-		actorGraph[name]->DeleteParent(); //set the actor to nullptr if it has no parent
-	}
+	AddParentPointer(std::forward<Args>(args_)...);
+
+	//if (AddParentPointer(std::forward<Args>(args_)...)) { //We store the raw parent pointer so we can deal with it later (for no memory leaks)
+	//	actorGraph[name]->DeleteParent(); //set the actor to nullptr if it has no parent
+	//}
 }
 
 bool ActorManager::AddParentPointer(Actor* parentActor) {

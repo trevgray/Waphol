@@ -57,6 +57,24 @@ void CameraActor::UpdateViewMatrix() {
 	glBindBuffer(GL_UNIFORM_BUFFER, 0); //unbind buffer
 }
 
+GEOMETRY::Ray CameraActor::MakeWorldSpaceRayFromMouseCoords(float mouseX, float mouseY) {
+	Vec3 mouseCoords(mouseX, mouseY, 0.0f);
+	//Get a ray pointing into the world
+	//We have the x, y pixel coordinates
+	//Need to convert this into world space to build our ray
+	int viewport[4];
+	glGetIntegerv(GL_VIEWPORT, viewport);
+	Matrix4 ndc = MMath::viewportNDC(viewport[2], viewport[3]);
+	Matrix4 rayTransform = MMath::inverse(ndc * projectionMatrix * viewMatrix);
+
+	Vec3 rayWorldStart = Vec3();
+	//Vec3 rayWorldStart = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition();
+	Vec3 rayWorldDirection = VMath::normalize(rayTransform * mouseCoords);
+
+	GEOMETRY::Ray rayWorldSpace{ rayWorldStart, rayWorldDirection };
+	return rayWorldSpace;
+}
+
 void CameraActor::OnDestroy() {
 	glDeleteBuffers(1, &uboMatricesID); //protect the memory and delete the buffer
 	isCreated = false;

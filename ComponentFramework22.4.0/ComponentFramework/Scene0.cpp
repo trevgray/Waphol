@@ -11,7 +11,8 @@
 #include "ShaderComponent.h"
 #include "MeshComponent.h"
 #include "ShapeComponent.h"
-#include "Ray.h"
+
+#include "Physics.h"
 
 bool Scene0::OnCreate()
 {
@@ -83,54 +84,24 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 		
 	case SDL_MOUSEBUTTONDOWN:
 		if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
-			Vec3 mouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y), 0.0f);
-			// TODO: get a ray pointing into the world
-			// We have the x, y pixel coordinates
-			// Need to convert this into world space to build our ray
-			int viewport[4];
-			glGetIntegerv(GL_VIEWPORT, viewport);
-			Matrix4 ndc = MMath::viewportNDC(viewport[2], viewport[3]);
-			Matrix4 projection = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetProjectionMatrix();
-			Matrix4 view = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetViewMatrix();
-			Matrix4 rayTransform = MMath::inverse(ndc * projection * view);
-
-			Vec3 rayWorldStart = Vec3();
-			//Vec3 rayWorldStart = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition();
-			Vec3 rayWorldDirection = VMath::normalize(rayTransform * mouseCoords);
-
-			GEOMETRY::Ray rayWorldSpace{ rayWorldStart, rayWorldDirection };
-
+			GEOMETRY::Ray rayWorldSpace = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->MakeWorldSpaceRayFromMouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y));
+			
 			/*std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
 			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;*/
 
-			// Loop through all the actors and check if the ray has collided with them
-			// Pick the one with the smallest positive t value
+			Hit hitResult = Physics::LineTrace(rayWorldSpace);
 
-			for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
-				if (actor.second->GetComponent<ShapeComponent>() != nullptr) {
-					Ref<TransformComponent> transformComponent = actor.second->GetComponent<TransformComponent>();
-					Ref<ShapeComponent> shapeComponent = actor.second->GetComponent<ShapeComponent>();
-					//Transform the ray into the local space of the object and check if a collision occurred
-					Vec3 rayStartInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()) * rayWorldSpace.start;
-					Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(rayWorldSpace.dir, 0.0f));
+			if (hitResult.isIntersected) {
+				std::cout << "You picked: " << hitResult.hitActorName << '\n';
 
-					GEOMETRY::Ray rayInObjectSpace{ rayStartInObjectSpace, rayDirInObjectSpace }; 
-					//std::cout << "Checking: " << actor.first << '\n';
-					GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(rayInObjectSpace);
+				Vec3 actorPos = hitResult.hitActor->GetModelMatrix() * hitResult.intersectionPoint;
 
-					if (rayInfo.isIntersected) {
-						std::cout << "You picked: " << actor.first << '\n';
+				//std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
 
-						Vec3 actorPos = actor.second->GetModelMatrix() * rayInfo.intersectionPoint;
-							
-						//std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
 
-						EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
-
-						//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
-						//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
-					} 
-				}
+				//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
+				//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
 			}
 		}
 		break;

@@ -1,6 +1,7 @@
 #pragma once
 #include "Actor.h"
 #include "Matrix.h"
+#include "Ray.h"
 using namespace MATH;
 class CameraActor : public Actor {
 private:
@@ -22,4 +23,6 @@ public:
 	void UpdateViewMatrix();
 
 	GLuint GetMatriciesID() const { return uboMatricesID; }
+
+	GEOMETRY::Ray MakeWorldSpaceRayFromMouseCoords(float mouseX, float mouseY);
 };

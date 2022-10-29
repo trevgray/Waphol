@@ -169,6 +169,7 @@
     <ClCompile Include="NavigationMesh.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="NodeAndPriority.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PhysicsBodyComponent.cpp" />
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene0.cpp" />
@@ -224,6 +225,7 @@
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeAndPriority.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsBodyComponent.h" />
     <ClInclude Include="QMath.h" />
     <ClInclude Include="QuadraticSolution.h" />

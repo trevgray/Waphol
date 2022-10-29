@@ -65,8 +65,10 @@ void PhysicsBodyComponent::ApplyForce(Vec3 force_) {
 
 void PhysicsBodyComponent::Update(float deltaTime) {
     if (vel != Vec3() || accel != Vec3()) {
+
         transform->SetPosition(transform->GetPosition() + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime));
         vel = vel + accel * deltaTime;
+
         // Update orientation
         //transform->setOrientation(QMath::angleAxisRotation(90,Vec3(1.0f,0.0f,0.0f)) * QMath::angleAxisRotation(rotation, Vec3(0.0f, 0.0f, 1.0f))); //IDK YET ABOUT THIS
         ////orientation += rotation * deltaTime;

@@ -228,6 +228,9 @@
     <ClCompile Include="NodeAndPriority.cpp">
       <Filter>Source Files\AI\Pathfinding</Filter>
     </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>Source Files\Math</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -411,6 +414,9 @@
       <Filter>Header Files\AI\Pathfinding</Filter>
     </ClInclude>
     <ClInclude Include="QuadraticSolution.h">
+      <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
   </ItemGroup>
