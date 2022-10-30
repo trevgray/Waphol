@@ -22,6 +22,10 @@ void MaterialComponent::Update(const float deltaTime) {}
 
 void MaterialComponent::Render()const {}
 
+bool MaterialComponent::SetNewTexture(std::string filename) {
+	return LoadImage(filename);
+}
+
 bool MaterialComponent::LoadImage(std::string filename) {
 	glGenTextures(1, &textureID); //generate name id for each texture
 	glBindTexture(GL_TEXTURE_2D, textureID); //connect textureID to be a GL_TEXTURE_2D

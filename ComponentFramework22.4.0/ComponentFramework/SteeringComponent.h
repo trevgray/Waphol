@@ -29,6 +29,16 @@ public:
 	void RunSteering();
 	virtual void Render() const;
 
+	template<typename SteeringTemplate> Ref<SteeringBehaviour> GetSteeringBehaviour() const {
+		for (auto behaviour : steeringBehaviours) {
+			if (dynamic_cast<SteeringTemplate*>(behaviour.get())) {
+				//https://en.cppreference.com/w/cpp/memory/shared_ptr/pointer_cast dynamic cast designed for shared_ptr's
+				return std::dynamic_pointer_cast<SteeringTemplate>(behaviour);
+			}
+		}
+		return Ref<SteeringTemplate>(nullptr);
+	}
+
 private:
 	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
 	SteeringOutput steering;

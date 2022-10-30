@@ -24,5 +24,5 @@ public:
 
 	GLuint GetMatriciesID() const { return uboMatricesID; }
 
-	GEOMETRY::Ray MakeWorldSpaceRayFromMouseCoords(float mouseX, float mouseY);
+	GEOMETRY::Ray WorldSpaceRayFromMouseCoords(float mouseX, float mouseY);
 };

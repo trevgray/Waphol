@@ -16,6 +16,8 @@ public:
 	virtual void Render()const;
 
 	inline GLuint getTextureID() const { return textureID; }
+
+	bool SetNewTexture(std::string filename);
 private:
 	bool LoadImage(std::string filename);
 	GLuint textureID;

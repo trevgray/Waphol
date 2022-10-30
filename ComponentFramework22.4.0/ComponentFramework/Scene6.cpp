@@ -5,6 +5,8 @@
 
 #include "MeshComponent.h"
 #include "MaterialComponent.h"
+#include "SteeringComponent.h"
+#include "FollowPath.h"
 
 Scene6::Scene6() {
 	Debug::Info("Created Scene6: ", __FILE__, __LINE__);
@@ -20,7 +22,7 @@ bool Scene6::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene6");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	Vec3 actorPos[5] {Vec3(-5.0f,-13.0f,0.0f), Vec3(-5.0f,10.0f,0.0f), Vec3(-18.0f,7.0f,0.0f), Vec3(15.0f,-7.0f,0.0f), Vec3(0.0f, 0.0f, 0.0f) };
+	Vec3 actorPos[5] {Vec3(5.0f,-13.0f,0.0f), Vec3(-5.0f,10.0f,0.0f), Vec3(-18.0f,7.0f,0.0f), Vec3(15.0f,-7.0f,0.0f), Vec3(0.0f, 0.0f, 0.0f) };
 
 
 
@@ -42,26 +44,22 @@ bool Scene6::OnCreate() {
 		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(nodeName, new Actor(nullptr));
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->DeleteParent();
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<TransformComponent>(nullptr, node.second.GetPos(), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MeshComponent>(nullptr, "meshes/Cube.obj");
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MaterialComponent>(nullptr, "textures/blackCheckerPiece.png");
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MeshComponent>(nullptr, "meshes/Sphere.obj");
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MaterialComponent>(nullptr, "textures/surface.jpg");
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->OnCreate();
 	}
 
-	/*std::vector<int> path;
-	int current = 0;
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("1")->GetComponent<MaterialComponent>()->SetNewTexture("textures/redCheckerPiece.png");
 
-	int goal = 10;
+	std::vector<Ref<SteeringBehaviour>> npcSteering;
+	npcSteering.push_back(std::make_shared<FollowPath>("Player", 1.0f, 3.0f, 0.1f));
 
-	std::vector<int> cameFrom = navMesh->GetVoronoiGraph().Dijkstra(goal, 0);
-	while (current != goal) {
-		path.push_back(current);
-		current = cameFrom[current];
-	}
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<SteeringComponent>(nullptr, npcSteering);
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->OnCreate();
 
-	for (int loop : path) {
-		std::cout << loop << std::endl;
-	}*/
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("0");
+	dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetNavMesh(navMesh);
+	dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetGoal(1);
+
 	return true;
 }
 

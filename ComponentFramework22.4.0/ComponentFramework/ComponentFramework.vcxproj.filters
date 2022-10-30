@@ -231,6 +231,9 @@
     <ClCompile Include="Physics.cpp">
       <Filter>Source Files\Math</Filter>
     </ClCompile>
+    <ClCompile Include="FollowPath.cpp">
+      <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -418,6 +421,9 @@
     </ClInclude>
     <ClInclude Include="Physics.h">
       <Filter>Header Files\Math</Filter>
+    </ClInclude>
+    <ClInclude Include="FollowPath.h">
+      <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

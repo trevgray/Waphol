@@ -57,7 +57,7 @@ void CameraActor::UpdateViewMatrix() {
 	glBindBuffer(GL_UNIFORM_BUFFER, 0); //unbind buffer
 }
 
-GEOMETRY::Ray CameraActor::MakeWorldSpaceRayFromMouseCoords(float mouseX, float mouseY) {
+GEOMETRY::Ray CameraActor::WorldSpaceRayFromMouseCoords(float mouseX, float mouseY) {
 	Vec3 mouseCoords(mouseX, mouseY, 0.0f);
 	//Get a ray pointing into the world
 	//We have the x, y pixel coordinates
