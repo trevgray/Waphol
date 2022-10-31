@@ -7,6 +7,9 @@
 #include "MaterialComponent.h"
 #include "SteeringComponent.h"
 #include "FollowPath.h"
+#include "ShapeComponent.h"
+#include "Physics.h"
+#include "ShaderComponent.h"
 
 Scene6::Scene6() {
 	Debug::Info("Created Scene6: ", __FILE__, __LINE__);
@@ -22,7 +25,7 @@ bool Scene6::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene6");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	Vec3 actorPos[5] {Vec3(5.0f,-13.0f,0.0f), Vec3(-5.0f,10.0f,0.0f), Vec3(-18.0f,7.0f,0.0f), Vec3(15.0f,-7.0f,0.0f), Vec3(0.0f, 0.0f, 0.0f) };
+	Vec3 actorPos[5] {Vec3(5.0f,-10.0f,40.0f), Vec3(-5.0f,10.0f,-40.0f), Vec3(-18.0f,7.0f,-40.0f), Vec3(15.0f,-5.0f,-40.0f), Vec3(0.0f, 0.0f, -40.0f) };
 
 
 
@@ -39,6 +42,8 @@ bool Scene6::OnCreate() {
 	test.push_back("NPC");
 	navMesh->Initialize(Vec3(-28.0f,-15.0f,0.0f), Vec3(28.0f, 15.0f, 0.0f), test);
 
+	GEOMETRY::Sphere nodeSphere(Vec3(), 1.0f);
+
 	for (auto node : navMesh->GetVoronoiGraph().GetNodes()) {
 		std::string nodeName = std::to_string(node.second.GetLabel());
 		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(nodeName, new Actor(nullptr));
@@ -46,19 +51,20 @@ bool Scene6::OnCreate() {
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<TransformComponent>(nullptr, node.second.GetPos(), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MeshComponent>(nullptr, "meshes/Sphere.obj");
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MaterialComponent>(nullptr, "textures/surface.jpg");
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<ShapeComponent>(nullptr, nodeSphere);
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->OnCreate();
 	}
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("1")->GetComponent<MaterialComponent>()->SetNewTexture("textures/redCheckerPiece.png");
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("9")->GetComponent<MaterialComponent>()->SetNewTexture("textures/redCheckerPiece.png");
 
 	std::vector<Ref<SteeringBehaviour>> npcSteering;
-	npcSteering.push_back(std::make_shared<FollowPath>("Player", 1.0f, 3.0f, 0.1f));
+	npcSteering.push_back(std::make_shared<FollowPath>(0.5f, 1.5f, 0.1f));
 
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<SteeringComponent>(nullptr, npcSteering);
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->OnCreate();
 
 	dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetNavMesh(navMesh);
-	dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetGoal(1);
+	//dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetGoal(9);
 
 	return true;
 }
@@ -69,6 +75,17 @@ void Scene6::OnDestroy() {
 
 void Scene6::HandleEvents(const SDL_Event &sdlEvent) {
 	EngineManager::Instance()->GetInputManager()->HandleInputs(sdlEvent);
+
+	if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
+		GEOMETRY::Ray rayWorldSpace = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->WorldSpaceRayFromMouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y));
+		Hit hitResult = Physics::LineTrace(rayWorldSpace);
+		if (hitResult.isIntersected) {
+			std::cout << "You picked: " << hitResult.hitActorName << '\n';
+
+			dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetGoal(stoi(hitResult.hitActorName));
+		}
+	}
+
 }
 
 void Scene6::Update(const float deltaTime) {
@@ -80,7 +97,30 @@ void Scene6::Update(const float deltaTime) {
 }
 
 void Scene6::Render() const {
-	std::vector<std::string> shaders;
+	/*std::vector<std::string> shaders;
 	shaders.push_back("TextureShader");
-	EngineManager::Instance()->GetActorManager()->RenderActors(shaders);
+	EngineManager::Instance()->GetActorManager()->RenderActors(shaders);*/
+
+	glEnable(GL_DEPTH_TEST);
+	glClearColor(1.0f, 0.6f, 1.0f, 0.0f);
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+	glBindBuffer(GL_UNIFORM_BUFFER, EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetMatriciesID());
+	glBindBuffer(GL_UNIFORM_BUFFER, EngineManager::Instance()->GetActorManager()->GetActor<LightActor>()->GetLightID());
+
+	glUseProgram(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetProgram());
+
+	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+		glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
+		if (actor.second->GetComponent<MaterialComponent>() != nullptr) {
+			glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID());
+				actor.second->GetComponent<MeshComponent>()->Render(GL_TRIANGLES);
+				if (actor.second->GetComponent<ShapeComponent>() != nullptr) {
+					actor.second->GetComponent<ShapeComponent>()->Render();
+				}
+			}
+		}
+
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
 }

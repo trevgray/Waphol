@@ -49,13 +49,16 @@ void Graph::AddWeightConnection(int fromNode, int toNode, float weight) {
 }
 
 void Graph::AddConnectionVector(MATH::Vec3 fromNodePos, MATH::Vec3 toNodePos) {
+
 	Node fromNode;
 	Node toNode;
 	for (auto nodeIterator : node) {
-		//if (fromNodePos == nodeIterator.second.GetPos()) {
+		//if (fromNodePos == nodeIterator.second.GetPos()) { - we break it down in the x and y components
+		//if (fromNodePos.x == nodeIterator.second.GetPos().x && fromNodePos.y == nodeIterator.second.GetPos().y)
 		if (fromNodePos.x == nodeIterator.second.GetPos().x && fromNodePos.y == nodeIterator.second.GetPos().y) {
 			fromNode = nodeIterator.second;
 		}
+		//toNodePos
 		if (toNodePos.x == nodeIterator.second.GetPos().x && toNodePos.y == nodeIterator.second.GetPos().y) {
 			toNode = nodeIterator.second;
 		}

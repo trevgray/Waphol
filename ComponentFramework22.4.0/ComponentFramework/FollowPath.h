@@ -4,7 +4,7 @@
 
 class FollowPath : public Arrive {
 public:
-	FollowPath(std::string targetName_, float targetRadius_, float slowRadius_, float timeToTarget_);
+	FollowPath(float targetRadius_, float slowRadius_, float timeToTarget_);
 	virtual ~FollowPath();
 	bool OnCreate();
 	void SetGoal(int nodeLabel);
@@ -15,5 +15,7 @@ public:
 private:
 	std::vector<int> path;
 	Ref<NavigationMesh> navMesh;
+
+	int currentNode;
 };
 

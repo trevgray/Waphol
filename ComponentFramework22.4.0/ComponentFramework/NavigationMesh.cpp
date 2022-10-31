@@ -93,6 +93,7 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 	std::vector<Node> graphNodes;
 	int nodeLabel = 0;
 	//push nodes on the graph and create the graph
+
 	const jcv_edge* edge = jcv_diagram_get_edges(jcvVoronoi.get());
 	while (edge) {
 		bool edge1Check = false;
@@ -107,13 +108,15 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 		}
 
 		if (edge1Check == false) {
-			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[0].x, edge->pos[0].y, 0.0f)));
+			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[0].x, edge->pos[0].y, -40.0f))); //-40 rn
 			nodeLabel++;
 		}
 		if (edge2Check == false) {
-			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[1].x, edge->pos[1].y, 0.0f)));
+			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[1].x, edge->pos[1].y, -40.0f)));
 			nodeLabel++;
 		}
+		/*graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[0].x, edge->pos[0].y, -40.0f)));
+		nodeLabel++;*/
 
 		edge = jcv_diagram_get_next_edge(edge);
 	}
@@ -124,7 +127,8 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 	edge = jcv_diagram_get_edges(jcvVoronoi.get());
 	while (edge) {
 		//std::cout << edge->pos[0].x << " " << edge->pos[0].y << " | " << edge->pos[1].x << " " << edge->pos[1].y << std::endl;
-		voronoiGraph.AddConnectionVector(Vec3(edge->pos[0].x, edge->pos[0].y, 0.0f), Vec3(edge->pos[1].x, edge->pos[1].y, 0.0f));
+		voronoiGraph.AddConnectionVector(Vec3(edge->pos[0].x, edge->pos[0].y, 0.0f), Vec3(edge->pos[1].x, edge->pos[1].y, -40.0f)); //-40 rn
+		voronoiGraph.AddConnectionVector(Vec3(edge->pos[1].x, edge->pos[1].y, 0.0f), Vec3(edge->pos[0].x, edge->pos[0].y, -40.0f)); //-40 rn
 		edge = jcv_diagram_get_next_edge(edge);
 	}
 

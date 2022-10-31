@@ -2,34 +2,40 @@
 #include "EngineManager.h"
 #include "PhysicsBodyComponent.h"
 
-FollowPath::FollowPath(std::string targetName_, float targetRadius_, float slowRadius_, float timeToTarget_) : Arrive(targetName_, targetRadius_, slowRadius_, timeToTarget_) {
-
+FollowPath::FollowPath(float targetRadius_, float slowRadius_, float timeToTarget_) : Arrive("", targetRadius_, slowRadius_, timeToTarget_) {
+	currentNode = 0;
 }
 
 FollowPath::~FollowPath() {
 }
 
 bool FollowPath::OnCreate() {
+	target = std::make_shared<TransformComponent>(nullptr);
 	//find parent actor
-	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+	/*for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		if (actor.second != nullptr && actor.first == targetName) {
 			target = actor.second->GetComponent<TransformComponent>();
 			break;
 		}
-	}
+	}*/
 	return true;
 }
 
 void FollowPath::SetGoal(int goalNodeLabel) {
-	int current = 0;
+	if (navMesh == nullptr) {
+		std::cout << "Error: Set the NavMesh before setting a goal" << std::endl;
+		return;
+	}
 
-	std::vector<int> cameFrom = navMesh->GetVoronoiGraph().Dijkstra(goalNodeLabel, 0);
+	int current = 0;
+	std::vector<int> cameFrom = navMesh->GetVoronoiGraph().AStar(goalNodeLabel, currentNode);
 	while (current != goalNodeLabel) {
 		path.push_back(current);
 		current = cameFrom[current];
 	}
 	path.push_back(goalNodeLabel);
 	std::reverse(path.begin(), path.end());
+	std::cout << "PATH FOUND" << std::endl;
 }
 
 SteeringOutput FollowPath::GetSteering(Ref<Actor> actor_) {
@@ -46,6 +52,7 @@ SteeringOutput FollowPath::GetSteering(Ref<Actor> actor_) {
 	if (VMath::distance(actor_->GetComponent<TransformComponent>()->GetPosition(), targetPosition) <= targetRadius) {
 		// incremented for next steering request
 		//path->incrementCurrentNode(1);
+		currentNode = path.back();
 		path.pop_back();
 	}
 
