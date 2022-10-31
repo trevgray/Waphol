@@ -23,6 +23,7 @@ bool EngineManager::Initialize() {
 	//open the engine xml here
 	networkManager->Initialize(Offline);
 
+	//start the game loop
 	timer->Start();
 	isRunning = true;
 	if (sceneManager->Initialize("Game Engine", 1280, 720) == false) {

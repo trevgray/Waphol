@@ -25,9 +25,7 @@ bool Scene6::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene6");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	Vec3 actorPos[5] {Vec3(5.0f,-10.0f,40.0f), Vec3(-5.0f,10.0f,-40.0f), Vec3(-18.0f,7.0f,-40.0f), Vec3(15.0f,-5.0f,-40.0f), Vec3(0.0f, 0.0f, -40.0f) };
-
-
+	Vec3 actorPos[5] {Vec3(5.0f,-10.0f,-40.0f), Vec3(-5.0f,10.0f,-40.0f), Vec3(-18.0f,7.0f,-40.0f), Vec3(15.0f,-5.0f,-40.0f), Vec3(0.0f, 0.0f, -40.0f) };
 
 	for (int x = 0; x < 5; x++) {
 		std::string obstacleName = "Obstacle" + std::to_string(x);

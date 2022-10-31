@@ -73,17 +73,32 @@
     <Filter Include="Header Files\AI\Steering\SteeringBehaviours">
       <UniqueIdentifier>{6ddeab44-c97b-46a6-a353-0845d9fdc180}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Header Files\External Libraries">
-      <UniqueIdentifier>{3e3fd3a3-7437-4b68-8b16-7adf4fa17f10}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files\External Libraries">
-      <UniqueIdentifier>{e5fd8b32-1e77-4bde-b55c-b71e25f06a86}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Header Files\AI\Pathfinding">
       <UniqueIdentifier>{b1be6fe9-8965-4ce5-859c-0429e8c1ed87}</UniqueIdentifier>
     </Filter>
     <Filter Include="Source Files\AI\Pathfinding">
       <UniqueIdentifier>{a14468b3-3447-40a4-9d38-c8151a0a9c64}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\External Headers">
+      <UniqueIdentifier>{3e3fd3a3-7437-4b68-8b16-7adf4fa17f10}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\External Headers\imGUI">
+      <UniqueIdentifier>{2fd27a4d-6662-44f0-9882-ed9a9b0a189e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\External CPPs">
+      <UniqueIdentifier>{e5fd8b32-1e77-4bde-b55c-b71e25f06a86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\External Headers\Loaders">
+      <UniqueIdentifier>{178514a2-9529-446c-967f-7e5c7ef452b0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\External CPPs\Loaders">
+      <UniqueIdentifier>{31a6baed-3f0b-41d4-ab2a-f5b3890c9b65}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\External Headers\JCVoronoi">
+      <UniqueIdentifier>{96c3a022-540c-47ea-bed1-0c64d2333ed0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\External CPPs\imGUI">
+      <UniqueIdentifier>{cc85efa4-6f4b-4cbe-b41a-632823212606}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -125,9 +140,6 @@
     </ClCompile>
     <ClCompile Include="EMath.cpp">
       <Filter>Source Files\Math</Filter>
-    </ClCompile>
-    <ClCompile Include="tinyxml2.cpp">
-      <Filter>Source Files\External Libraries</Filter>
     </ClCompile>
     <ClCompile Include="Scene4.cpp">
       <Filter>Source Files\Scenes</Filter>
@@ -234,6 +246,30 @@
     <ClCompile Include="FollowPath.cpp">
       <Filter>Source Files\AI\Steering\SteeringBehaviours</Filter>
     </ClCompile>
+    <ClCompile Include="tinyxml2.cpp">
+      <Filter>Source Files\External CPPs\Loaders</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui.cpp">
+      <Filter>Source Files\External CPPs\imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_demo.cpp">
+      <Filter>Source Files\External CPPs\imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_draw.cpp">
+      <Filter>Source Files\External CPPs\imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_tables.cpp">
+      <Filter>Source Files\External CPPs\imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_widgets.cpp">
+      <Filter>Source Files\External CPPs\imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_opengl3.cpp">
+      <Filter>Source Files\External CPPs\imGUI</Filter>
+    </ClCompile>
+    <ClCompile Include="imgui_impl_sdl.cpp">
+      <Filter>Source Files\External CPPs\imGUI</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -290,9 +326,6 @@
     <ClInclude Include="CameraActor.h">
       <Filter>Header Files\Actors</Filter>
     </ClInclude>
-    <ClInclude Include="tiny_obj_loader.h">
-      <Filter>Header Files\External Libraries</Filter>
-    </ClInclude>
     <ClInclude Include="ShaderComponent.h">
       <Filter>Header Files\Components</Filter>
     </ClInclude>
@@ -301,9 +334,6 @@
     </ClInclude>
     <ClInclude Include="UBO_Padding.h">
       <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="tinyxml2.h">
-      <Filter>Header Files\External Libraries</Filter>
     </ClInclude>
     <ClInclude Include="Scene4.h">
       <Filter>Header Files\Scenes</Filter>
@@ -398,12 +428,6 @@
     <ClInclude Include="Scene6.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="jc_voronoi.h">
-      <Filter>Header Files\External Libraries</Filter>
-    </ClInclude>
-    <ClInclude Include="jc_voronoi_clip.h">
-      <Filter>Header Files\External Libraries</Filter>
-    </ClInclude>
     <ClInclude Include="NavigationMesh.h">
       <Filter>Header Files\AI\Pathfinding</Filter>
     </ClInclude>
@@ -424,6 +448,45 @@
     </ClInclude>
     <ClInclude Include="FollowPath.h">
       <Filter>Header Files\AI\Steering\SteeringBehaviours</Filter>
+    </ClInclude>
+    <ClInclude Include="tiny_obj_loader.h">
+      <Filter>Header Files\External Headers\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="tinyxml2.h">
+      <Filter>Header Files\External Headers\Loaders</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="jc_voronoi.h">
+      <Filter>Header Files\External Headers\JCVoronoi</Filter>
+    </ClInclude>
+    <ClInclude Include="jc_voronoi_clip.h">
+      <Filter>Header Files\External Headers\JCVoronoi</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_opengl3.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_sdl.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imconfig.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_internal.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_rectpack.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_textedit.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imstb_truetype.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="imgui_impl_opengl3_loader.h">
+      <Filter>Header Files\External Headers\imGUI</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -1,7 +1,7 @@
 #include <SDL.h>
 #include "SceneManager.h"
 #include "EngineManager.h"
-
+//
 #include "Window.h"
 #include "Scene0.h"
 #include "Scene4.h"
@@ -24,6 +24,12 @@ SceneManager::~SceneManager() {
 		delete window;
 		window = nullptr;
 	}
+
+	// Cleanup
+	ImGui_ImplOpenGL3_Shutdown();
+	ImGui_ImplSDL2_Shutdown();
+	ImGui::DestroyContext();
+
 	Debug::Info("Deleting the SceneManager", __FILE__, __LINE__);
 }
 
@@ -36,16 +42,40 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 	}
 
 	/********************************   Default first scene   ***********************/
-	BuildNewScene(SCENE_NUMBER::SCENE6);
+	BuildNewScene(SCENE_NUMBER::SCENE0);
+
+	//Setup ImGui context
+	IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
+
+	//Setup ImGui style
+	ImGui::StyleColorsDark();
+	//ImGui::StyleColorsLight();
+
+	//Setup Platform/Renderer backends for imGUI
+	ImGui_ImplSDL2_InitForOpenGL(window->getWindow(), window->GetContext()); //OpenGL setup
+	ImGui_ImplOpenGL3_Init("#version 450"); //hard code OpenGL code
 	
 	return true;
 }
 
 /// This is the whole game
 void SceneManager::Run() {
+
+	ImGui_ImplOpenGL3_NewFrame();
+	ImGui_ImplSDL2_NewFrame();
+	ImGui::NewFrame();
+
 	currentScene->Update(EngineManager::Instance()->GetTimer()->GetDeltaTime());
 	currentScene->Render();
 	HandleEvents();
+
+	//This swaps the window to the next frame
+	ImGui::Render();
+	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 	SDL_GL_SwapWindow(window->getWindow());
 	SDL_Delay(EngineManager::Instance()->GetTimerSleepTime());
 }
@@ -53,13 +83,16 @@ void SceneManager::Run() {
 void SceneManager::HandleEvents() {
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent)) {
+
+		ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
+
 		if (sdlEvent.type == SDL_EventType::SDL_QUIT) {
 			EngineManager::Instance()->SetIsRunning(false);
 			return;
 		}
 		else if (sdlEvent.type == SDL_KEYDOWN) {
 			switch (sdlEvent.key.keysym.scancode) {
-			case SDL_SCANCODE_ESCAPE:
+			//case SDL_SCANCODE_ESCAPE:
 			/*case SDL_SCANCODE_Q:
 				isRunning = false;
 				return;

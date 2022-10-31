@@ -4,7 +4,7 @@
   <Scene0>
 	  <Component name = "SkullSphereShape">
 		  <Type type = "Shape"/>
-		  <Sphere radius ="1.0" centreX="0.0" centreY="0.0" centreZ="0.0"/>
+		  <Sphere radius ="1.5" centreX="0.0" centreY="0.0" centreZ="0.0"/>
 	  </Component>
 
 	  <Component name = "CheckerCylinderShape">
