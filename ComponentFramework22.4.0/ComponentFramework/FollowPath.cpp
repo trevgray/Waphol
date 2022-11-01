@@ -26,10 +26,12 @@ void FollowPath::SetGoal(int goalNodeLabel) {
 		std::cout << "Error: Set the NavMesh before setting a goal" << std::endl;
 		return;
 	}
+	path.clear();
 
-	int current = 0;
+	int current = currentNode;
 	std::vector<int> cameFrom = navMesh->GetVoronoiGraph().AStar(goalNodeLabel, currentNode);
 	while (current != goalNodeLabel) {
+		//std::cout << current << " " << goalNodeLabel << std::endl;
 		path.push_back(current);
 		current = cameFrom[current];
 	}
