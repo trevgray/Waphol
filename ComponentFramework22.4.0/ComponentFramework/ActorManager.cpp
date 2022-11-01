@@ -99,6 +99,7 @@ void ActorManager::LoadNonPrehabActors() {
 	}
 
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(actorGraph);
+	//probably set authority for actors right here
 }
 
 void ActorManager::UpdateActors(const float deltaTime) {

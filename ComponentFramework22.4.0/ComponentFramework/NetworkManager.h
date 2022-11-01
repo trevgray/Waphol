@@ -16,9 +16,16 @@
 #define DEFAULT_BUFFER_LENGTH 512
 
 #include <mutex>
+#include "Vector.h"
 
 enum NetworkNode {
 	Offline, Server, Client
+};
+
+struct ActorBuffer {
+	ActorBuffer() { numOfActors = 0; }
+	int numOfActors;
+	MATH::Vec3 actorPos[3];
 };
 
 class NetworkManager {
