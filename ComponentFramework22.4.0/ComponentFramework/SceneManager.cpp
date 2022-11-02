@@ -4,6 +4,7 @@
 //
 #include "Window.h"
 #include "Scene0.h"
+#include "Scene3.h"
 #include "Scene4.h"
 #include "Scene5.h"
 #include "Scene6.h"
@@ -42,7 +43,7 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 	}
 
 	/********************************   Default first scene   ***********************/
-	BuildNewScene(SCENE_NUMBER::SCENE5);
+	BuildNewScene(SCENE_NUMBER::SCENE3);
 
 	//Setup ImGui context
 	IMGUI_CHECKVERSION();
@@ -138,10 +139,10 @@ void SceneManager::BuildNewScene(SCENE_NUMBER scene) {
 	//	currentScene = new Scene2();
 	//	status = currentScene->OnCreate();
 	//	break;
-	//case SCENE_NUMBER::SCENE3:
-	//	currentScene = new Scene3();
-	//	status = currentScene->OnCreate();
-	//	break;
+	case SCENE_NUMBER::SCENE3:
+		currentScene = new Scene3();
+		status = currentScene->OnCreate();
+		break;
 	case SCENE_NUMBER::SCENE4:
 		currentScene = new Scene4();
 		status = currentScene->OnCreate();

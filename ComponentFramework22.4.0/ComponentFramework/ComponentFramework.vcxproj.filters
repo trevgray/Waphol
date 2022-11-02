@@ -270,6 +270,9 @@
     <ClCompile Include="imgui_impl_sdl.cpp">
       <Filter>Source Files\External CPPs\imGUI</Filter>
     </ClCompile>
+    <ClCompile Include="Scene3.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Debug.h">
@@ -487,6 +490,9 @@
     </ClInclude>
     <ClInclude Include="imgui_impl_opengl3_loader.h">
       <Filter>Header Files\External Headers\imGUI</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene3.h">
+      <Filter>Header Files\Scenes</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

@@ -43,8 +43,8 @@ NetworkManager::~NetworkManager() {
 }
 
 void NetworkManager::Run() {
-	int pingIteration = 0;
-	std::string message;
+	/*int pingIteration = 0;
+	std::string message;*/
 
 	while (EngineManager::Instance()->GetIsRunning() == true) {
 		if (networkMode == Server) {
@@ -79,19 +79,23 @@ void NetworkManager::Run() {
 			//receive until the peer shutdown the connect
 			ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
 
-			iResult = recv(connectSocket, recvbuf, DEFAULT_BUFFER_LENGTH, 0);
+			iResult = recv(connectSocket, (char*)&recvBuffer, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
-				std::cout << "Received string: " << recvbuf << std::endl;
+
+				//std::unique_lock<std::mutex> lock(transformUpdateMutex);
+				printf("%f %f %f\n", recvBuffer.actorPos[0].x, recvBuffer.actorPos[0].y, recvBuffer.actorPos[0].z);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(recvBuffer.actorPos[0]);
+				//lock.unlock();
 
 				/*message = "Server Ping " + std::to_string(pingIteration);
 				pingIteration++;*/
 
 				//Vec3 f = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 
-				ActorBuffer buffer;
-				buffer.actorPos[0] = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
+				//ActorBuffer sendBuffer;
+				sendBuffer.actorPos[0] = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 				
-				sendbuf = (char*)&buffer; //binary representation 
+				sendbuf = (char*)&sendBuffer; //binary representation 
 
 				iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
 				if (iResult == SOCKET_ERROR) {
@@ -116,10 +120,15 @@ void NetworkManager::Run() {
 		}
 		else if (networkMode == Client) {
 			//Receive until the peer closes connection
-			message = "Client Ping " + std::to_string(pingIteration);
-			pingIteration++;
+			sendBuffer.actorPos[0] = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
+
+			/*message = "Client Ping " + std::to_string(pingIteration);
+			pingIteration++;*/
+
 			//Send an initial buffer
-			iResult = send(connectSocket, message.c_str(), strlen(message.c_str()), 0);
+			sendbuf = (char*)&sendBuffer; //binary representation 
+
+			iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
 			if (iResult == SOCKET_ERROR) {
 				std::cout << "Send failed with error: " << iResult << std::endl;
 				closesocket(connectSocket);
@@ -130,16 +139,14 @@ void NetworkManager::Run() {
 
 			ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
 
-			ActorBuffer buffer;
-
-			iResult = recv(connectSocket, (char*)&buffer, DEFAULT_BUFFER_LENGTH, 0);
+			iResult = recv(connectSocket, (char*)&recvBuffer, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
 
 				//float f = atof(recvbuf);
-				std::unique_lock<std::mutex> lock(transformUpdateMutex);
-				printf("%f %f %f\n", buffer.actorPos[0].x, buffer.actorPos[0].y, buffer.actorPos[0].z);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->SetPosition(buffer.actorPos[0]);
-				lock.unlock();
+				//std::unique_lock<std::mutex> lock(transformUpdateMutex);
+				printf("%f %f %f\n", recvBuffer.actorPos[0].x, recvBuffer.actorPos[0].y, recvBuffer.actorPos[0].z);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(recvBuffer.actorPos[0]);
+				//lock.unlock();
 
 				//std::cout << "Received string: " << recvbuf << std::endl;
 			}

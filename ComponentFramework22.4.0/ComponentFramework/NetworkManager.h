@@ -24,8 +24,10 @@ enum NetworkNode {
 
 struct ActorBuffer {
 	ActorBuffer() { numOfActors = 0; }
+	//~ActorBuffer() {}
 	int numOfActors;
 	MATH::Vec3 actorPos[3];
+	//std::string actorName[3];
 };
 
 class NetworkManager {
@@ -35,6 +37,9 @@ public:
 	void Run();
 	bool Initialize(NetworkNode networkMode_);
 private:
+	ActorBuffer recvBuffer;
+	ActorBuffer sendBuffer;
+
 	NetworkNode networkMode;
 
 	WSADATA wsaData; //https://learn.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-wsadata
