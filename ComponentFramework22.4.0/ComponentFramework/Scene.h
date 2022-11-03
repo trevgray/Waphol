@@ -16,4 +16,6 @@ public:
 	virtual void Update(const float deltaTime) = 0;
 	virtual void Render() const = 0;
 	virtual void HandleEvents(const SDL_Event &sdlEvent) = 0;
+
+	virtual void UpdateGUI() = 0;
 };

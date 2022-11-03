@@ -117,8 +117,54 @@ void Scene4::HandleEvents(const SDL_Event &sdlEvent) {
     }
 }
 
+void Scene4::UpdateGUI() {
+	/*bool show_demo_window = true;
+	ImGui::ShowDemoWindow(&show_demo_window);*/
+
+	{
+		static float rotation = 0.0f;
+		static Vec3 position = Vec3(0.0f, 0.0f, -13.0f);
+
+		ImGui::Begin("Camera Controls"); // Create a window and append into it.
+		ImGui::Text("This controls the camera."); // Display some text (you can use a format strings too)
+		ImGui::SliderFloat("Rotation", &rotation, 0.0f, 360.0f); // a slider from 0.0f to 1.0f
+		EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->setOrientation(QMath::angleAxisRotation(rotation, Vec3(0.0f, 1.0f, 0.0f)));
+		ImGui::Text("Position: %f %f %f", position.x, position.y, position.z);
+		if (ImGui::Button("X+")) { //Buttons return true when clicked (most widgets return true when edited/activated)
+			position.x = position.x + 1.0f;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Y+")) {
+			position.y = position.y + 0.5f;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Z+")) {
+			position.z = position.z + 1.0f;
+		}
+
+		if (ImGui::Button("X-")) { //Buttons return true when clicked (most widgets return true when edited/activated)
+			position.x = position.x - 1.0f;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Y-")) {
+			position.y = position.y - 0.5f;
+		}
+		ImGui::SameLine();
+		if (ImGui::Button("Z-")) {
+			position.z = position.z - 1.0f;
+		}
+
+		EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->SetPosition(position);
+
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::End();
+	}
+	EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->UpdateViewMatrix();
+}
+
 void Scene4::Update(const float deltaTime) {
 	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
+	UpdateGUI();
 }
 
 void Scene4::Render() const {

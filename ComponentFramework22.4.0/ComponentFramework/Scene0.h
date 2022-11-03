@@ -18,6 +18,7 @@ struct Scene0 : public Scene {
 	virtual void Render() const;
 	virtual void HandleEvents(const SDL_Event& sdlEvent);
 
+	virtual void UpdateGUI();
 	// We'll use a ray to click on our geometry objects 
 	// GEOMETRY::RayIntersectionInfo rayInfo; (TODO)
 };

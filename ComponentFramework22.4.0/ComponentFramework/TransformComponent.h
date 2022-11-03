@@ -21,7 +21,7 @@ public:
 	inline Quaternion GetQuaternion() { return orientation; }
 	Matrix4 GetTransformMatrix() const;
 	void SetTransform(Vec3 pos_, Quaternion orientation_, Vec3 scale_ = Vec3(1.0f, 1.0f, 1.0f)) {
-		pos - pos_;
+		pos = pos_;
 		orientation = orientation_;
 		scale = scale_;
 	}
