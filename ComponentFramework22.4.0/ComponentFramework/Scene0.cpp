@@ -32,12 +32,12 @@ bool Scene0::OnCreate()
 	//	GetActor<Actor>(name)->OnCreate();
 	//}
 
-	//Vec3 rayStart = Vec3(2.0f, 0.0f, -2.0f);
-	//Vec3 rayDirection = Vec3(0.0f, 1.0f, 0.0f);
-	//GEOMETRY::Ray ray { rayStart, rayDirection };
-	//GEOMETRY::Cylinder cylinder(10.0f, Vec3(0.0f, 5.0f, -2.0f), Vec3(1.0f, 9.0f, -2.0f));
-	//Ref<ShapeComponent> shapeComponent = std::make_shared<ShapeComponent>(new Actor(nullptr), cylinder);
-	//GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(ray);
+	/*Vec3 rayStart = Vec3(3.0f, -10.0f, -3.0f);
+	Vec3 rayDirection = Vec3(0.0f, 1.0f, 0.0f);
+	GEOMETRY::Ray ray { rayStart, rayDirection };
+	GEOMETRY::Capsule capsule(7.0f, Vec3(0.0f, 4.0f, -3.0f), Vec3(1.0f, 8.0f, -3.0f));
+	Ref<ShapeComponent> shapeComponent = std::make_shared<ShapeComponent>(new Actor(nullptr), capsule);
+	GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(ray);*/
 
 	EngineManager::Instance()->GetActorManager()->AddActor<Actor>("Obstacle", new Actor(nullptr));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));

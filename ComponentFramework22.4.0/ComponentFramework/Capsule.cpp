@@ -1,6 +1,8 @@
 #include "Capsule.h"
 #include "Matrix.h"
 #include "MMath.h"
+#include "Sphere.h"
+#include "Cylinder.h"
 
 using namespace MATH;
 using namespace GEOMETRY;
@@ -31,7 +33,7 @@ void GEOMETRY::Capsule::generateVerticesAndNormals() {
 
 	Vec3 circle(0.0f, 0.0f, 0.0f); //make a vector to represent the circles in the visuals
 
-	//put a vertex in the center of the top and the bottom of the cylinder
+	//put a vertex in the center of the top and the bottom of the cylinder part of the Capsule
 	vertices.push_back(sphereCentrePosA);
 	normals.push_back(sphereCentrePosA);
 	vertices.push_back(sphereCentrePosB);
@@ -58,7 +60,6 @@ void GEOMETRY::Capsule::generateVerticesAndNormals() {
 		}
 	}
 
-
 	//Capsule wall 
 	for (float currentLayer = 0.0f; currentLayer <= height; currentLayer += deltaHeight) { //run 10 times and move the circles z by the deltaHeight
 		for (float thetaDeg = 0.0f; thetaDeg <= 360.0f; thetaDeg += deltaTheta) { //this can changed to any loop that loops 180 times and update thetaDeg
@@ -73,7 +74,57 @@ void GEOMETRY::Capsule::generateVerticesAndNormals() {
 	}
 }
 
-RayIntersectionInfo GEOMETRY::Capsule::rayIntersectionInfo(const Ray& ray) const
-{
-	return RayIntersectionInfo();
+RayIntersectionInfo GEOMETRY::Capsule::rayIntersectionInfo(const Ray& ray) const {
+	RayIntersectionInfo rayInfo;
+
+	rayInfo = checkEndSphere(sphereCentrePosA, ray);
+	if (rayInfo.isIntersected == true) { //If we intersected
+		rayInfo = checkHalfSphere(rayInfo, sphereCentrePosA, sphereCentrePosB); //check if it is the wrong part of the sphere
+		if (rayInfo.isIntersected == true) { //if not
+			return rayInfo; //return the point
+		}
+	}
+	rayInfo = checkEndSphere(sphereCentrePosB, ray);
+	if (rayInfo.isIntersected == true) { //If we intersected
+		rayInfo = checkHalfSphere(rayInfo, sphereCentrePosB, sphereCentrePosA); //check if it is the wrong part of the sphere
+		if (rayInfo.isIntersected == true) { //if not
+			return rayInfo; //return the point
+		}
+	}
+	//If we it didn't intersect a cap, check the main cylinder
+	GEOMETRY::Cylinder cylinder(r, sphereCentrePosA, sphereCentrePosB);
+	rayInfo = cylinder.rayIntersectionInfo(ray);
+
+	return rayInfo;
+}
+
+RayIntersectionInfo GEOMETRY::Capsule::checkEndSphere(MATH::Vec3 sphereCentre, const Ray& ray) const {
+	RayIntersectionInfo rayInfo;
+	GEOMETRY::Sphere endCapSphere(sphereCentre, r);
+	rayInfo = endCapSphere.rayIntersectionInfo(ray); //Reuse the sphere intersection point code
+	return rayInfo;
+}
+
+RayIntersectionInfo GEOMETRY::Capsule::checkHalfSphere(const RayIntersectionInfo& rayInfoFullSphere, const MATH::Vec3& sphereCentre, const MATH::Vec3& sphereOtherCentre) const {
+	RayIntersectionInfo rayInfo; //Transfer the relevant info to the new rayInfo
+	rayInfo.t = rayInfoFullSphere.t;
+	rayInfo.intersectionPoint = rayInfoFullSphere.intersectionPoint;
+	
+	MATH::Vec3 normalizedVector; //Get the normal in the direction of the sphereCentre
+	normalizedVector.x = sphereCentre.x - sphereOtherCentre.x;
+	normalizedVector.y = sphereCentre.y - sphereOtherCentre.y;
+	normalizedVector.z = sphereCentre.z - sphereOtherCentre.z;
+
+	Vec3 AP = rayInfoFullSphere.intersectionPoint - sphereCentre; //Get the vector from the sphereCentre to the intersectionPoint
+	
+	//Get the angle between the AP vector and the normal
+	//if the angle is greater than 90, then the pointer is intersecting the bottom of the 
+	if (VMath::dot(AP, normalizedVector) < 0) {
+		rayInfo.isIntersected = false;
+	}
+	else {
+		rayInfo.isIntersected = true;
+	}
+
+	return rayInfo;
 }

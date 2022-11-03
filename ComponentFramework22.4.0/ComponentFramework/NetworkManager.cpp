@@ -82,10 +82,10 @@ void NetworkManager::Run() {
 			iResult = recv(connectSocket, (char*)&recvBuffer, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
 
-				//std::unique_lock<std::mutex> lock(transformUpdateMutex);
+				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", recvBuffer.actorPos[0].x, recvBuffer.actorPos[0].y, recvBuffer.actorPos[0].z);
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(recvBuffer.actorPos[0]);
-				//lock.unlock();
+				lock.unlock();
 
 				/*message = "Server Ping " + std::to_string(pingIteration);
 				pingIteration++;*/
@@ -143,10 +143,10 @@ void NetworkManager::Run() {
 			if (iResult > 0) {
 
 				//float f = atof(recvbuf);
-				//std::unique_lock<std::mutex> lock(transformUpdateMutex);
+				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", recvBuffer.actorPos[0].x, recvBuffer.actorPos[0].y, recvBuffer.actorPos[0].z);
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(recvBuffer.actorPos[0]);
-				//lock.unlock();
+				lock.unlock();
 
 				//std::cout << "Received string: " << recvbuf << std::endl;
 			}

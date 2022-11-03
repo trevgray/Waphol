@@ -21,7 +21,7 @@ EngineManager::~EngineManager() {
 
 bool EngineManager::Initialize() {
 	//open the engine xml here
-	networkManager->Initialize(Server);
+	networkManager->Initialize(Offline);
 
 	//start the game loop
 	timer->Start();

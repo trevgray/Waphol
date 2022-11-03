@@ -35,5 +35,8 @@ namespace GEOMETRY {
 		void generateVerticesAndNormals() override;
 
 		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
+
+		RayIntersectionInfo checkEndSphere(MATH::Vec3 sphereCentre, const Ray& ray) const; 
+		RayIntersectionInfo checkHalfSphere(const RayIntersectionInfo& rayInfoFullSphere, const MATH::Vec3& sphereCentre, const MATH::Vec3& sphereOtherCentre) const;
 	};
 }
