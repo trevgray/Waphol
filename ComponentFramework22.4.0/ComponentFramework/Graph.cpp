@@ -54,12 +54,15 @@ void Graph::AddConnectionVector(MATH::Vec3 fromNodePos, MATH::Vec3 toNodePos) {
 	Node toNode;
 	for (auto nodeIterator : node) {
 		//if (fromNodePos == nodeIterator.second.GetPos()) { - we break it down in the x and y components
-		//if (fromNodePos.x == nodeIterator.second.GetPos().x && fromNodePos.y == nodeIterator.second.GetPos().y)
 		if (fromNodePos.x == nodeIterator.second.GetPos().x && fromNodePos.y == nodeIterator.second.GetPos().y) {
+		//if (fromNodePos.x > nodeIterator.second.GetPos().x - 0.01 && fromNodePos.x < nodeIterator.second.GetPos().x + 0.01 /*X*/ &&
+		//	fromNodePos.y > nodeIterator.second.GetPos().y - 0.01 && fromNodePos.y < nodeIterator.second.GetPos().y + 0.01 /*Y*/) { //fix floating point precision errors
 			fromNode = nodeIterator.second;
 		}
 		//toNodePos
 		if (toNodePos.x == nodeIterator.second.GetPos().x && toNodePos.y == nodeIterator.second.GetPos().y) {
+		//if (toNodePos.x > nodeIterator.second.GetPos().x - 0.01 && toNodePos.x < nodeIterator.second.GetPos().x + 0.01 /*X*/ &&
+		//	toNodePos.y > nodeIterator.second.GetPos().y - 0.01 && toNodePos.y < nodeIterator.second.GetPos().y + 0.01 /*Y*/) {
 			toNode = nodeIterator.second;
 		}
 	}

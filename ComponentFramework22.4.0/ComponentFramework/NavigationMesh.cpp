@@ -64,27 +64,6 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 		pointIterator++;
 	}
 
-	/*points[0].x = 0.0f;
-	points[0].y = -5.0f;
-
-	points[1].x = 5.0f;
-	points[1].y = 20.0f;
-
-	points[2].x = 10.0f;
-	points[2].y = -5.0f;
-
-	points[3].x = -10.0f;
-	points[3].y = 5.0f;
-
-	points[4].x = 20.0f;
-	points[4].y = 5.0f;
-
-	points[5].x = 5.0f;
-	points[5].y = 5.0f;
-
-	points[6].x = -15.0f;
-	points[6].y = 10.0f;*/
-
 	jcv_clipper* clipper = 0;
 
 	jcv_diagram_generate(num_points, points, rect, clipper, jcvVoronoi.get());
@@ -99,20 +78,24 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 		bool edge1Check = false;
 		bool edge2Check = false;
 		for (Node node : graphNodes) {
-			if (node.GetPos().x == edge->pos[0].x && node.GetPos().y == edge->pos[0].y) {
+			if (std::round(node.GetPos().x) == std::round(edge->pos[0].x) && std::round(node.GetPos().y) == std::round(edge->pos[0].y)) {
+			//if (node.GetPos().x < edge->pos[0].x - 0.01 && node.GetPos().x > edge->pos[0].x + 0.01 /*X*/ &&
+			//	node.GetPos().x < edge->pos[0].y - 0.01 && node.GetPos().x > edge->pos[0].y + 0.01 /*Y*/) { //fix floating point precision errors
 				edge1Check = true;
 			}
-			if (node.GetPos().x == edge->pos[1].x && node.GetPos().y == edge->pos[1].y) {
+			if (std::round(node.GetPos().x) == std::round(edge->pos[1].x) && std::round(node.GetPos().y) == std::round(edge->pos[1].y)) {
+			//if (node.GetPos().x < edge->pos[1].x - 0.01 && node.GetPos().x > edge->pos[1].x + 0.01 /*X*/ &&
+			//	node.GetPos().x < edge->pos[1].y - 0.01 && node.GetPos().x > edge->pos[1].y + 0.01 /*Y*/) {
 				edge2Check = true;
 			}
 		}
 
 		if (edge1Check == false) {
-			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[0].x, edge->pos[0].y, -40.0f))); //-40 rn
+			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(std::round(edge->pos[0].x), std::round(edge->pos[0].y), -40.0f))); //-40 rn
 			nodeLabel++;
 		}
 		if (edge2Check == false) {
-			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[1].x, edge->pos[1].y, -40.0f)));
+			graphNodes.push_back(Node(nodeLabel, MATH::Vec3(std::round(edge->pos[1].x), std::round(edge->pos[1].y), -40.0f)));
 			nodeLabel++;
 		}
 		/*graphNodes.push_back(Node(nodeLabel, MATH::Vec3(edge->pos[0].x, edge->pos[0].y, -40.0f)));
@@ -127,8 +110,8 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 	edge = jcv_diagram_get_edges(jcvVoronoi.get());
 	while (edge) {
 		//std::cout << edge->pos[0].x << " " << edge->pos[0].y << " | " << edge->pos[1].x << " " << edge->pos[1].y << std::endl;
-		voronoiGraph.AddConnectionVector(Vec3(edge->pos[0].x, edge->pos[0].y, 0.0f), Vec3(edge->pos[1].x, edge->pos[1].y, -40.0f)); //-40 rn
-		voronoiGraph.AddConnectionVector(Vec3(edge->pos[1].x, edge->pos[1].y, 0.0f), Vec3(edge->pos[0].x, edge->pos[0].y, -40.0f)); //-40 rn
+		voronoiGraph.AddConnectionVector(Vec3(std::round(edge->pos[0].x), std::round(edge->pos[0].y), 0.0f), Vec3(std::round(edge->pos[1].x), std::round(edge->pos[1].y), 0.0f)); //z does not matter
+		voronoiGraph.AddConnectionVector(Vec3(std::round(edge->pos[1].x), std::round(edge->pos[1].y), 0.0f), Vec3(std::round(edge->pos[0].x), std::round(edge->pos[0].y), 0.0f));
 		edge = jcv_diagram_get_next_edge(edge);
 	}
 

@@ -71,6 +71,7 @@ void SceneManager::Run() {
 	ImGui::NewFrame();
 
 	currentScene->Update(EngineManager::Instance()->GetTimer()->GetDeltaTime());
+	currentScene->UpdateGUI();
 	currentScene->Render();
 	HandleEvents();
 

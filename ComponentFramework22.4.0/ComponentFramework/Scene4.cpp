@@ -164,7 +164,6 @@ void Scene4::UpdateGUI() {
 
 void Scene4::Update(const float deltaTime) {
 	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
-	UpdateGUI();
 }
 
 void Scene4::Render() const {
