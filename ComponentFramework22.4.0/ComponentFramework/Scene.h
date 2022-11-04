@@ -1,5 +1,4 @@
 #pragma once
-
 #include "Actor.h"
 #include "EngineManager.h"
 #include "CameraActor.h"

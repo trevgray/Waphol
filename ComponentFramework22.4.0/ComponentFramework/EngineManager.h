@@ -53,6 +53,7 @@ public:
 	unsigned int GetFPS() { return fps; }
 	unsigned int GetTimerSleepTime() { return timer->GetSleepTime(fps); }
 
+	Ref<SceneManager> GetSceneManager() { return sceneManager; }
 	Ref<AssetManager> GetAssetManager() { return assetManager; }
 	Ref<ActorManager> GetActorManager() { return actorManager; }
 	Ref<InputManager> GetInputManager() { return inputManager; }

@@ -1,15 +1,12 @@
 #pragma once
 #include "Scene.h"
 #include "AssetManager.h"
-#include "NavigationMesh.h"
 using namespace MATH;
 
 /// Forward declarations 
 union SDL_Event;
 
 class Scene6 : public Scene {
-private:
-	Ref<NavigationMesh> navMesh;
 public:
 	explicit Scene6();
 	virtual ~Scene6();

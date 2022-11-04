@@ -87,11 +87,9 @@ std::vector<int> Graph::AStar(int startNode, int goalNode) {
 	int current;
 
 	//declare current NodeAndPriority
-	NodeAndPriority* currentNodeAndPriority; //missing node and priority
-	currentNodeAndPriority = new NodeAndPriority(&node[startNode], 0.0f);
 	//set up priority queue for frontier of nodes
 	std::priority_queue<NodeAndPriority, std::deque<NodeAndPriority>, ComparePriority> frontier;
-	frontier.push(*currentNodeAndPriority);
+	frontier.push(NodeAndPriority(&node[startNode], 0.0f));
 	//track solution path
 	std::vector<int> cameFrom;
 	cameFrom.resize(NumNodes());

@@ -13,7 +13,6 @@
 
 Scene6::Scene6() {
 	Debug::Info("Created Scene6: ", __FILE__, __LINE__);
-	navMesh = std::make_shared<NavigationMesh>();
 }
 
 Scene6::~Scene6() {
@@ -22,8 +21,9 @@ Scene6::~Scene6() {
 
 bool Scene6::OnCreate() {
 	Debug::Info("Loading assets Scene6: ", __FILE__, __LINE__);
+	EngineManager::Instance()->GetActorManager()->SetNavigationMesh(std::make_shared<NavigationMesh>());
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene6");
-	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
+	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors(); //Put load nav mesh in here (when i put it in XML)
 
 	Vec3 actorPos[5] {Vec3(5.0f,-10.0f,-40.0f), Vec3(-5.0f,10.0f,-40.0f), Vec3(-18.0f,7.0f,-40.0f), Vec3(15.0f,-5.0f,-40.0f), Vec3(0.0f, 0.0f, -40.0f) };
 
@@ -38,11 +38,11 @@ bool Scene6::OnCreate() {
 	std::vector<std::string> test;
 	test.push_back("Player");
 	test.push_back("NPC");
-	navMesh->Initialize(Vec3(-28.0f,-15.0f,0.0f), Vec3(28.0f, 15.0f, 0.0f), test);
+	EngineManager::Instance()->GetActorManager()->GetNavigationMesh()->Initialize(Vec3(-28.0f, -15.0f, 0.0f), Vec3(28.0f, 15.0f, 0.0f), test);
 
 	GEOMETRY::Sphere nodeSphere(Vec3(), 1.0f);
 
-	for (auto node : navMesh->GetVoronoiGraph().GetNodes()) {
+	for (auto node : EngineManager::Instance()->GetActorManager()->GetNavigationMesh()->GetVoronoiGraph().GetNodes()) {
 		std::string nodeName = std::to_string(node.second.GetLabel());
 		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(nodeName, new Actor(nullptr));
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->DeleteParent();
@@ -53,15 +53,13 @@ bool Scene6::OnCreate() {
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->OnCreate();
 	}
 
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("9")->GetComponent<MaterialComponent>()->SetNewTexture("textures/redCheckerPiece.png");
-
-	std::vector<Ref<SteeringBehaviour>> npcSteering;
+	/*std::vector<Ref<SteeringBehaviour>> npcSteering;
 	npcSteering.push_back(std::make_shared<FollowPath>(0.5f, 1.5f, 0.1f));
 
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<SteeringComponent>(nullptr, npcSteering);
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->OnCreate();
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->OnCreate();*/
 
-	dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetNavMesh(navMesh);
+	//dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetNavMesh(navMesh);
 	//dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetGoal(9);
 
 	return true;
@@ -80,7 +78,7 @@ void Scene6::HandleEvents(const SDL_Event &sdlEvent) {
 		if (hitResult.isIntersected) {
 			std::cout << "You picked: " << hitResult.hitActorName << '\n';
 
-			dynamic_cast<FollowPath*>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>().get())->SetGoal(stoi(hitResult.hitActorName));
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>()->SetGoal(stoi(hitResult.hitActorName));
 		}
 	}
 

@@ -1,11 +1,15 @@
 #pragma once
 #include <unordered_map>
 #include "Actor.h"
+
+#include "NavigationMesh.h"
 class ActorManager {
 private:
 	std::unordered_map <std::string, Ref<Actor>> actorGraph;
 
 	std::vector<Actor*> parentPointers;
+
+	Ref<NavigationMesh> navMesh;
 public:
 	ActorManager();
 	~ActorManager();
@@ -26,4 +30,8 @@ public:
 
 	template<typename ActorTemplate> Ref<ActorTemplate> GetActor() const;
 	template<typename ActorTemplate> Ref<ActorTemplate> GetActor(std::string name);
+
+	//Nav Mesh
+	Ref<NavigationMesh> GetNavigationMesh() { return navMesh; }
+	void SetNavigationMesh(Ref<NavigationMesh> navMesh_) { navMesh = navMesh_; }
 };

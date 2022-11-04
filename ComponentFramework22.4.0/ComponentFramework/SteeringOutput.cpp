@@ -3,7 +3,7 @@
 
 SteeringOutput::SteeringOutput() {
 	linear = Vec3();
-	rotation = Quaternion();
+	rotation = Quaternion(-1, Vec3(0.0f, 0.0f, 0.0f));
 	weight = 1.0f;
 }
 

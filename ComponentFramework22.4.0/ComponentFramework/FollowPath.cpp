@@ -11,6 +11,7 @@ FollowPath::~FollowPath() {
 
 bool FollowPath::OnCreate() {
 	target = std::make_shared<TransformComponent>(nullptr);
+	navMesh = EngineManager::Instance()->GetActorManager()->GetNavigationMesh();
 	//find parent actor
 	/*for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		if (actor.second != nullptr && actor.first == targetName) {

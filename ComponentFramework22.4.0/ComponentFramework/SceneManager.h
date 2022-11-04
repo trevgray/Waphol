@@ -7,6 +7,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include <string>
+
 class SceneManager  {
 public:
 	
@@ -16,7 +17,7 @@ public:
 	bool Initialize(std::string name_, int width_, int height_);
 	void HandleEvents();
 	
-	
+	class Scene* GetCurrentScene() { return currentScene; }
 private:
 	enum class SCENE_NUMBER {
 		SCENE0 = 0,

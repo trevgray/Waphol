@@ -12,6 +12,7 @@
 #include "PhysicsBodyComponent.h"
 #include "ControllerComponent.h"
 #include "SteeringComponent.h"
+#include "FollowPath.h"
 
 AssetManager::AssetManager() : sceneRoot(nullptr), currentElement(nullptr) {}
 
@@ -270,6 +271,12 @@ void AssetManager::BuildSteeringComponent() {
 			steeringBehaviours.push_back(std::make_shared<VelocityMatch>(steeringArguments[steeringArgumentsIterator],
 				std::stof(steeringArguments[steeringArgumentsIterator + 1])));
 			steeringArgumentsIterator += 2;
+		}
+		else if (behaviour == "FollowPath") {
+			steeringBehaviours.push_back(std::make_shared<FollowPath>(std::stof(steeringArguments[steeringArgumentsIterator]),
+				std::stof(steeringArguments[steeringArgumentsIterator + 1]),
+				std::stof(steeringArguments[steeringArgumentsIterator + 2])));
+			steeringArgumentsIterator += 3;
 		}
 		steeringBehaviours.back()->SetWeight(weights[weightIterator]);
 		weightIterator++;
