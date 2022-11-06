@@ -17,17 +17,19 @@
 
 #include <mutex>
 #include "Vector.h"
+#include <unordered_map>
+
+#include "Actor.h"
 
 enum NetworkNode {
 	Offline, Server, Client
 };
 
 struct ActorBuffer {
-	ActorBuffer() { numOfActors = 0; }
-	//~ActorBuffer() {}
-	int numOfActors;
-	MATH::Vec3 actorPos[3];
-	//std::string actorName[3];
+	ActorBuffer() { position = MATH::Vec3(); orientation = Quaternion(); }
+	const char* name;
+	MATH::Vec3 position;
+	MATH::Quaternion orientation;
 };
 
 class NetworkManager {
@@ -37,18 +39,29 @@ public:
 	void Run();
 	bool Initialize(NetworkNode networkMode_);
 private:
-	ActorBuffer actorBuffer;
+	//Client Variables & Functions
+	void GetServerActorName();
+	std::string actorName;
 
+	//Server Variables & Functions
+	void AddClientActor();
+	std::string clientActorTemplateName;
+
+	std::unordered_map<std::string, Ref<Actor>> clientActors;
+
+	//server socket
+	SOCKET listenSocket;
+
+	//General Networking Variables
+	ActorBuffer actorBuffer;
 	NetworkNode networkMode;
 
 	WSADATA wsaData; //https://learn.microsoft.com/en-us/windows/win32/api/winsock/ns-winsock-wsadata
 	int iResult; //check if the start up failed
 
 	struct addrinfo* result, * ptr, hints;
-	
-	//server sockets
-	SOCKET listenSocket;
-	//connection sockets
+
+	//connection socket
 	SOCKET connectSocket;
 
 	std::mutex transformUpdateMutex;
