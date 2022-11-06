@@ -16,7 +16,7 @@ NetworkManager::NetworkManager() {
 	//client sockets
 	connectSocket = INVALID_SOCKET;
 
-	ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
+	actorBuffer = ActorBuffer();
 }
 
 NetworkManager::~NetworkManager() {
@@ -43,9 +43,6 @@ NetworkManager::~NetworkManager() {
 }
 
 void NetworkManager::Run() {
-	/*int pingIteration = 0;
-	std::string message;*/
-
 	while (EngineManager::Instance()->GetIsRunning() == true) {
 		if (networkMode == Server) {
 			if (connectSocket == INVALID_SOCKET) { //when the listen socket is null
@@ -76,26 +73,17 @@ void NetworkManager::Run() {
 				closesocket(listenSocket);
 			}
 
-			//receive until the peer shutdown the connect
-			ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
-
-			iResult = recv(connectSocket, (char*)&recvBuffer, DEFAULT_BUFFER_LENGTH, 0);
+			iResult = recv(connectSocket, (char*)&actorBuffer, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
 
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
-				printf("%f %f %f\n", recvBuffer.actorPos[0].x, recvBuffer.actorPos[0].y, recvBuffer.actorPos[0].z);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(recvBuffer.actorPos[0]);
+				printf("%f %f %f\n", actorBuffer.actorPos[0].x, actorBuffer.actorPos[0].y, actorBuffer.actorPos[0].z);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(actorBuffer.actorPos[0]);
 				lock.unlock();
 
-				/*message = "Server Ping " + std::to_string(pingIteration);
-				pingIteration++;*/
-
-				//Vec3 f = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
-
-				//ActorBuffer sendBuffer;
-				sendBuffer.actorPos[0] = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
+				actorBuffer.actorPos[0] = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 				
-				sendbuf = (char*)&sendBuffer; //binary representation 
+				sendbuf = (char*)&actorBuffer; //binary representation 
 
 				iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
 				if (iResult == SOCKET_ERROR) {
@@ -120,13 +108,10 @@ void NetworkManager::Run() {
 		}
 		else if (networkMode == Client) {
 			//Receive until the peer closes connection
-			sendBuffer.actorPos[0] = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
-
-			/*message = "Client Ping " + std::to_string(pingIteration);
-			pingIteration++;*/
+			actorBuffer.actorPos[0] = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 
 			//Send an initial buffer
-			sendbuf = (char*)&sendBuffer; //binary representation 
+			sendbuf = (char*)&actorBuffer; //binary representation 
 
 			iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
 			if (iResult == SOCKET_ERROR) {
@@ -137,15 +122,13 @@ void NetworkManager::Run() {
 				return;
 			}
 
-			ZeroMemory(recvbuf, DEFAULT_BUFFER_LENGTH);
-
-			iResult = recv(connectSocket, (char*)&recvBuffer, DEFAULT_BUFFER_LENGTH, 0);
+			iResult = recv(connectSocket, (char*)&actorBuffer, DEFAULT_BUFFER_LENGTH, 0);
 			if (iResult > 0) {
 
 				//float f = atof(recvbuf);
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
-				printf("%f %f %f\n", recvBuffer.actorPos[0].x, recvBuffer.actorPos[0].y, recvBuffer.actorPos[0].z);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(recvBuffer.actorPos[0]);
+				printf("%f %f %f\n", actorBuffer.actorPos[0].x, actorBuffer.actorPos[0].y, actorBuffer.actorPos[0].z);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(actorBuffer.actorPos[0]);
 				lock.unlock();
 
 				//std::cout << "Received string: " << recvbuf << std::endl;

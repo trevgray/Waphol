@@ -37,8 +37,7 @@ public:
 	void Run();
 	bool Initialize(NetworkNode networkMode_);
 private:
-	ActorBuffer recvBuffer;
-	ActorBuffer sendBuffer;
+	ActorBuffer actorBuffer;
 
 	NetworkNode networkMode;
 
@@ -54,7 +53,6 @@ private:
 
 	std::mutex transformUpdateMutex;
 
-	char recvbuf[DEFAULT_BUFFER_LENGTH];
 	char* sendbuf;
 	int iSendResult;
 };
