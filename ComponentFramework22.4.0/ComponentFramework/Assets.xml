@@ -531,7 +531,6 @@
 			<Mesh name = "CheckerPieceMesh"/>
 			<Material name = "BlackCheckerTexture"/>
 			<PhysicsBody name = "PhysicsBodyNPC"/>
-			<Transform posx="12.5" posy ="7.5" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
 		</Actor>
 
 		<Camera name = "camera">

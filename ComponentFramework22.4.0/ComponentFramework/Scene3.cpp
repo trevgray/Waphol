@@ -4,23 +4,22 @@
 #include "Scene3.h"
 
 Scene3::Scene3() {
-	Debug::Info("Created Scene5: ", __FILE__, __LINE__);
+	Debug::Info("Created Scene3: ", __FILE__, __LINE__);
 }
 
 Scene3::~Scene3() {
-	Debug::Info("Deleted Scene5: ", __FILE__, __LINE__);
+	Debug::Info("Deleted Scene3: ", __FILE__, __LINE__);
 }
 
 bool Scene3::OnCreate() {
-	Debug::Info("Loading assets Scene5: ", __FILE__, __LINE__);
+	Debug::Info("Loading assets Scene3: ", __FILE__, __LINE__);
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene3");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
-
 	return true;
 }
 
 void Scene3::OnDestroy() {
-	Debug::Info("Deleting assets Scene5: ", __FILE__, __LINE__);
+	Debug::Info("Deleting assets Scene3: ", __FILE__, __LINE__);
 }
 
 void Scene3::HandleEvents(const SDL_Event &sdlEvent) {

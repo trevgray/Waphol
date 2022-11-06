@@ -26,8 +26,8 @@ enum NetworkNode {
 };
 
 struct ActorBuffer {
-	ActorBuffer() { position = MATH::Vec3(); orientation = Quaternion(); }
-	const char* name;
+	ActorBuffer() { name = "NULL"; position = MATH::Vec3(); orientation = Quaternion(); }
+	std::string name;
 	MATH::Vec3 position;
 	MATH::Quaternion orientation;
 };
