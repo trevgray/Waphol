@@ -85,7 +85,6 @@ void SceneManager::Run() {
 void SceneManager::HandleEvents() {
 	SDL_Event sdlEvent;
 	while (SDL_PollEvent(&sdlEvent)) {
-
 		ImGui_ImplSDL2_ProcessEvent(&sdlEvent);
 
 		if (sdlEvent.type == SDL_EventType::SDL_QUIT) {

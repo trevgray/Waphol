@@ -44,7 +44,7 @@ void CameraActor::UpdateProjectionMatrix(const float fovy, const float aspectRat
 void CameraActor::UpdateViewMatrix() {
 	Ref<TransformComponent> transformComponent = GetComponent<TransformComponent>();
 	if (transformComponent == nullptr) {
-		viewMatrix = MMath::lookAt(Vec3(0.0f, 0.0f, 5.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
+		viewMatrix = MMath::lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, 1.0f, 0.0f));
 	}
 	else {
 		Quaternion orientation = transformComponent->GetQuaternion();
@@ -68,7 +68,7 @@ GEOMETRY::Ray CameraActor::WorldSpaceRayFromMouseCoords(float mouseX, float mous
 	Matrix4 rayTransform = MMath::inverse(ndc * projectionMatrix * viewMatrix);
 
 	Vec3 rayWorldStart = Vec3();
-	//Vec3 rayWorldStart = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetComponent<TransformComponent>()->GetPosition();
+	//Vec3 rayWorldStart = GetComponent<TransformComponent>()->GetPosition();
 	Vec3 rayWorldDirection = VMath::normalize(rayTransform * mouseCoords);
 
 	GEOMETRY::Ray rayWorldSpace{ rayWorldStart, rayWorldDirection };

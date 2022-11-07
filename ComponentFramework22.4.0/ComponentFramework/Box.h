@@ -37,6 +37,5 @@ namespace GEOMETRY {
 		void generateVerticesAndNormals() override;
 
 		RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const override;
-		bool isInside(MATH::Vec3 p) const;
 	};
 }
