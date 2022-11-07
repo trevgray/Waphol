@@ -9,6 +9,7 @@
 #include "MMath.h"
 #include "ShapeComponent.h"
 #include "EngineManager.h"
+#include "CameraActor.h"
 
 void Physics::SimpleNewtonMotion(Ref<Actor> object, const float deltaTime) {
 	Ref<TransformComponent> actorTransform = object->GetComponent<TransformComponent>();
@@ -197,6 +198,10 @@ Hit Physics::LineTrace(GEOMETRY::Ray rayWorldSpace) {
 		if (actor.second->GetComponent<ShapeComponent>() != nullptr) {
 			Ref<TransformComponent> transformComponent = actor.second->GetComponent<TransformComponent>();
 			Ref<ShapeComponent> shapeComponent = actor.second->GetComponent<ShapeComponent>();
+			//And just use the camera view matrix for building the transform to get the ray into the object space of the shape you are trying to intersect with.So something like this:
+			
+			//Matrix4 worldToObjectTransform = MMath::inverse(EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetViewMatrix() * actor.second->GetModelMatrix());
+
 			//Transform the ray into the local space of the object and check if a collision occurred
 			Vec3 rayStartInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()) * rayWorldSpace.start;
 			Vec3 rayDirInObjectSpace = MMath::inverse(actor.second->GetModelMatrix()).multiplyWithoutDividingOutW(Vec4(rayWorldSpace.dir, 0.0f));

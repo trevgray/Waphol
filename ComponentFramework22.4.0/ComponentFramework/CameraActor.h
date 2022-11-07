@@ -9,6 +9,12 @@ private:
 	Matrix4 viewMatrix;
 	GLuint uboMatricesID; //matrixID
 	const GLuint bindingPoint = 0; //must be unique to the camera - so = 0, lights will be = 1
+
+	//Frustum Culling
+	//have the camera hold all 6 planes
+	//make the planes out of the matrix of perspective * view
+	//then check against some point (lets start with the center point of the actor to start), in PMath check the distance to the point
+	//if the point is negative, then the point is outside - otherwise the object is in the field of view
 public:
 	CameraActor(Component* parent_);
 	virtual ~CameraActor();

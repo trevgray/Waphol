@@ -58,14 +58,14 @@ void CameraActor::UpdateViewMatrix() {
 }
 
 GEOMETRY::Ray CameraActor::WorldSpaceRayFromMouseCoords(float mouseX, float mouseY) {
-	Vec3 mouseCoords(mouseX, mouseY, 0.0f);
+	Vec3 mouseCoords(mouseX, mouseY, 1.0f);
 	//Get a ray pointing into the world
 	//We have the x, y pixel coordinates
 	//Need to convert this into world space to build our ray
 	int viewport[4];
 	glGetIntegerv(GL_VIEWPORT, viewport);
 	Matrix4 ndc = MMath::viewportNDC(viewport[2], viewport[3]);
-	Matrix4 rayTransform = MMath::inverse(ndc * projectionMatrix * viewMatrix);
+	Matrix4 rayTransform = MMath::inverse(ndc * projectionMatrix);
 
 	Vec3 rayWorldStart = Vec3();
 	//Vec3 rayWorldStart = GetComponent<TransformComponent>()->GetPosition();

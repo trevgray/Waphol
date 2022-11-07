@@ -69,18 +69,6 @@ namespace  MATH {
 			if (comment) printf("%s\n", comment);
 			printf("%f %f %f %f\n", x, y, z, d);
 		}
-	
-		//float distance(Ref<Actor> body) {
-		//	float distance = 0.0f;
-		//	Vec3 bodyPos = body->GetComponent<TransformComponent>()->GetPosition();
-
-		//	Vec4 body4dPos(bodyPos.x, bodyPos.y, bodyPos.z, 1.0f);
-		//	//Plane plane(x, y, z, d);
-		//	//distance = plane.Dot(body4dPos) - body.getRadius();
-
-		//	//distance = ((x * body4dPos.x) + (y * body4dPos.y) + (z * body4dPos.z) + (d * body4dPos.w)) - body.getRadius();
-		//	return (distance);
-		//}
 	};
 }
 
