@@ -1,1 +1,84 @@
-﻿
+﻿  Actor.cpp
+  ActorManager.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Align.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Arrive.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  AssetManager.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Box.cpp
+  CameraActor.cpp
+  Capsule.cpp
+  ControllerComponent.cpp
+  Cylinder.cpp
+  Debug.cpp
+  EMath.cpp
+  EngineManager.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  FaceVelocity.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Flee.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  FollowPath.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Graph.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Graph.cpp(79,20): warning C4018: '<': signed/unsigned mismatch
+  imgui.cpp
+  imgui_demo.cpp
+  imgui_draw.cpp
+  Compiling...
+  imgui_impl_opengl3.cpp
+  imgui_impl_sdl.cpp
+  imgui_tables.cpp
+  imgui_widgets.cpp
+  InputManager.cpp
+  LightActor.cpp
+  MaterialComponent.cpp
+  MeshComponent.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\tiny_obj_loader.h(1665,27): warning C4018: '<': signed/unsigned mismatch
+  NavigationMesh.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  NetworkManager.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  NodeAndPriority.cpp
+  Physics.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  PhysicsBodyComponent.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  QMath.cpp
+  Scene0.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Scene3.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Scene4.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Scene5.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Scene6.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  SceneManager.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Compiling...
+  Main.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  MMath.cpp
+  Seek.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  ShaderComponent.cpp
+  Shape.cpp
+  ShapeComponent.cpp
+  SoundManager.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  Sphere.cpp
+  SteeringBehaviour.cpp
+  SteeringComponent.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  SteeringOutput.cpp
+  Timer.cpp
+  tinyxml2.cpp
+  TransformComponent.cpp
+  VelocityMatch.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SoundManager.h(2,10): fatal  error C1083: Cannot open include file: 'irrKlang.h': No such file or directory
+  VMath.cpp
+  Window.cpp

@@ -101,6 +101,7 @@ void NetworkManager::Run() {
 			}
 			else if (iResult == 0) {
 				std::cout << "Connection closing..." << std::endl;
+				//actorBuffer.name.~basic_string();
 				break;
 			}
 			else {
