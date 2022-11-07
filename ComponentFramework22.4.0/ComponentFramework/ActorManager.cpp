@@ -96,6 +96,8 @@ void ActorManager::LoadNonPrehabActors() {
 			GetActor<LightActor>(component.first)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
 			GetActor<LightActor>(component.first)->OnCreate();
 		}
+		//Set up nav mesh
+		SetNavigationMesh(std::make_shared<NavigationMesh>());
 	}
 
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(actorGraph);

@@ -14,6 +14,8 @@ public:
 
 	void Initialize(MATH::Vec3 topLeftCorner, MATH::Vec3 bottomRightCorner, std::vector<std::string> ignoreActors);
 
+	void DebugDraw();
+
 	Graph GetVoronoiGraph() { return voronoiGraph; }
 private:
 	Graph voronoiGraph;

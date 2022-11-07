@@ -6,6 +6,9 @@
 #include "jc_voronoi.h"
 #include "jc_voronoi_clip.h"
 
+#include "MeshComponent.h"
+#include "ShapeComponent.h"
+
 NavigationMesh::NavigationMesh() {
 	//memset(&diagram, 0, sizeof(jcv_diagram));
 	//voronoiDiagram = std::make_shared<jcv_diagram>();
@@ -123,4 +126,18 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 
 	free(points); //used malloc
 	free(borders);
+}
+
+void NavigationMesh::DebugDraw() {
+	GEOMETRY::Sphere nodeSphere(Vec3(), 1.0f);
+	for (auto node : EngineManager::Instance()->GetActorManager()->GetNavigationMesh()->GetVoronoiGraph().GetNodes()) {
+		std::string nodeName = std::to_string(node.second.GetLabel());
+		EngineManager::Instance()->GetActorManager()->AddActor<Actor>(nodeName, new Actor(nullptr));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->DeleteParent();
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<TransformComponent>(nullptr, node.second.GetPos(), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(1.0f, 1.0f, 1.0f));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MeshComponent>(nullptr, "meshes/Sphere.obj");
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<MaterialComponent>(nullptr, "textures/surface.jpg");
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->AddComponent<ShapeComponent>(nullptr, nodeSphere);
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeName)->OnCreate();
+	}
 }
