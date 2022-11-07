@@ -1,5 +1,6 @@
 #include "Box.h"
 #include "QMath.h"
+#include <array>
 
 void GEOMETRY::Box::generateVerticesAndNormals() {
 	//vertex points
@@ -149,7 +150,98 @@ void GEOMETRY::Box::generateVerticesAndNormals() {
 	normals.push_back(bottomRightFront);
 }
 
-GEOMETRY::RayIntersectionInfo GEOMETRY::Box::rayIntersectionInfo(const Ray& ray) const
-{
-	return RayIntersectionInfo();
+GEOMETRY::RayIntersectionInfo GEOMETRY::Box::rayIntersectionInfo(const Ray& ray) const {
+	RayIntersectionInfo rayInfo;
+
+	std::array<GEOMETRY::Slab, 3> slabs = {
+		GEOMETRY::Slab{MATH::Vec3(1.0f, 0.0f, 0.0f), -halfExtent.x, halfExtent.x},
+		GEOMETRY::Slab{MATH::Vec3(0.0f, 1.0f, 0.0f), -halfExtent.y, halfExtent.y},
+		GEOMETRY::Slab{MATH::Vec3(0.0f, 0.0f, 1.0f), -halfExtent.z, halfExtent.z} 
+	};
+
+	float tx, ty, tz;
+	//X Intersection
+	if (ray.dir.x == 0) { //Slide 9
+		tx = NULL;
+	}
+	else if (ray.dir.x > 0) {
+		tx = (slabs[0].distNear - ray.start.x) / ray.dir.x;
+	}
+	else if (ray.dir.x < 0) {
+		tx = (slabs[0].distFar - ray.start.x) / ray.dir.x;
+	}
+	//tx check
+	if (tx < 0 || tx == 0) { //Slide 10 | This is checking t to see if the ray is facing the plane or inside the place
+		tx = NULL;
+	}
+	//Y Intersection
+	if (ray.dir.y == 0) {
+		ty = NULL;
+	}
+	else if (ray.dir.y > 0) {
+		ty = (slabs[1].distNear - ray.start.y) / ray.dir.y;
+	}
+	else if (ray.dir.y < 0) {
+		ty = (slabs[1].distFar - ray.start.y) / ray.dir.y;
+	}
+	//ty check
+	if (ty < 0 || ty == 0) {
+		ty = NULL;
+	}
+	//Z Intersection
+	if (ray.dir.z == 0) {
+		tz = NULL;
+	}
+	else if (ray.dir.z > 0) {
+		tz = (slabs[2].distNear - ray.start.z) / ray.dir.z;
+	}
+	else if (ray.dir.z < 0) {
+		tz = (slabs[2].distFar - ray.start.z) / ray.dir.z;
+	}
+	//tz check
+	if (tz < 0 || tz == 0) {
+		tz = NULL;
+	}
+	MATH::Vec3 p = MATH::Vec3();
+	//Ray Checks
+	if (tx != NULL) {
+		p = ray.currentPosition(tx);
+		if (isInside(p) == true) {
+			rayInfo.isIntersected = true;
+			rayInfo.t = tx;
+			rayInfo.intersectionPoint = p;
+			return rayInfo;
+		}
+	}
+	else if (ty != NULL) {
+		p = ray.currentPosition(ty);
+		if (isInside(p) == true) {
+			rayInfo.isIntersected = true;
+			rayInfo.t = ty;
+			rayInfo.intersectionPoint = p;
+			return rayInfo;
+		}
+	}
+	else if (tz != NULL) {
+		p = ray.currentPosition(tz);
+		if (isInside(p) == true) {
+			rayInfo.isIntersected = true;
+			rayInfo.t = tz;
+			rayInfo.intersectionPoint = p;
+			return rayInfo;
+		}
+	}
+
+	return rayInfo;
+}
+
+bool GEOMETRY::Box::isInside(MATH::Vec3 p) const { //Slide 11 | If either of these conditions fails, then no intersection takes place within the face.
+	if (-halfExtent.x <= p.x && p.x <= halfExtent.x && 
+		-halfExtent.y <= p.y && p.y <= halfExtent.y &&
+		-halfExtent.z <= p.z && p.x <= halfExtent.z) {
+		return true;
+	}
+	else {
+		return false;
+	}
 }
