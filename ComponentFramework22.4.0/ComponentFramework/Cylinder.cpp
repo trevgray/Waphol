@@ -127,7 +127,7 @@ RayIntersectionInfo GEOMETRY::Cylinder::CheckEndCap(const Ray& ray, float t) con
 	rayInfo.t = t;
 	rayInfo.isIntersected = false; //set it to false, only update it if the interaction is valid
 
-	//Used Ray Cylinder Intersections (Game Physics 3) Part B
+	//Used Ray Cylinder Intersections (Game Physics 3) Part B for this part
 
 	//Set commonly used vectors in the equations
 	Vec3 AB = capCentrePosB  - capCentrePosA;
@@ -135,7 +135,7 @@ RayIntersectionInfo GEOMETRY::Cylinder::CheckEndCap(const Ray& ray, float t) con
 	Vec3 AP = ray.currentPosition(t) - capCentrePosA;
 
 	//Check the angle between AP and AB
-	//when vector AP, AB are 90 degrees for each other - the dot product = 0 
+	//when vector AP, AB are 90 degrees for each other, the dot product = 0 
 	//dot(AP, AB) is < 0 when the angle is greater than 90
 	//dot(AP, AB) is > 0 when the angle is less than 90
 	float aAngleCheck = VMath::dot(AP, AB);

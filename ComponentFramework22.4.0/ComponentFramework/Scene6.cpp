@@ -34,12 +34,7 @@ bool Scene6::OnCreate() {
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>(obstacleName)->OnCreate();
 	}
 
-	std::vector<std::string> ignoreActors;
-	ignoreActors.push_back("Player");
-	ignoreActors.push_back("NPC");
-	EngineManager::Instance()->GetActorManager()->GetNavigationMesh()->Initialize(Vec3(-28.0f, -15.0f, 0.0f), Vec3(28.0f, 15.0f, 0.0f), ignoreActors);
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<SteeringComponent>()->GetSteeringBehaviour<FollowPath>()->SetNavMesh(EngineManager::Instance()->GetActorManager()->GetNavigationMesh());
-
+	EngineManager::Instance()->GetActorManager()->GetNavigationMesh()->OnCreate();
 	EngineManager::Instance()->GetActorManager()->GetNavigationMesh()->DebugDraw();
 	return true;
 }

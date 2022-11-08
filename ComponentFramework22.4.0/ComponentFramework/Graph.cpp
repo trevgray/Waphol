@@ -15,6 +15,7 @@ Graph::~Graph() {}
 
 bool Graph::OnCreate(std::vector<Node> nodes_) {
 	//ASSUMPTION: node_ vector has the node with label "i" in the "i" position of the vector
+	node.clear();
 
 	//given a list of nodes
 	//initialize a matrix of costs

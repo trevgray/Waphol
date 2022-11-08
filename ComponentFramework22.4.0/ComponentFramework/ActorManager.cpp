@@ -96,12 +96,10 @@ void ActorManager::LoadNonPrehabActors() {
 			GetActor<LightActor>(component.first)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(component.first.c_str()));
 			GetActor<LightActor>(component.first)->OnCreate();
 		}
-		//Set up nav mesh
-		SetNavigationMesh(std::make_shared<NavigationMesh>());
 	}
 
+	//navMesh->OnCreate();
 	EngineManager::Instance()->GetInputManager()->SetControllerActors(actorGraph);
-	//probably set authority for actors right here
 }
 
 void ActorManager::UpdateActors(const float deltaTime) {

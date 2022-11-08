@@ -54,9 +54,28 @@ void AssetManager::BuildSceneAssets(std::string XMLFile_, std::string SceneName_
 	BuildLightActors();
 	BuildComponents();
 	BuildActors();
+
+	BuildNavigationMesh();
 	
 	//set everything to null
 	sceneRoot = nullptr; currentElement = nullptr;
+}
+
+void AssetManager::BuildNavigationMesh() {
+	currentElement = sceneRoot->FirstChildElement("NavigationMesh");
+	if (currentElement != nullptr) {
+		std::vector<std::string> ignoreActors;
+		//Set up nav mesh
+		EngineManager::Instance()->GetActorManager()->SetNavigationMesh(std::make_shared<NavigationMesh>());
+
+		for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("IgnoreActors")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
+			ignoreActors.push_back(a->Value()); //add all the arguments
+		}
+
+		EngineManager::Instance()->GetActorManager()->GetNavigationMesh()->Initialize(Vec3(currentElement->FirstChildElement("TopLeftCorner")->FloatAttribute("x"), currentElement->FirstChildElement("TopLeftCorner")->FloatAttribute("y"), currentElement->FirstChildElement("TopLeftCorner")->FloatAttribute("z")), /*TopLeftCorner*/
+			Vec3(currentElement->FirstChildElement("BottomRightCorner")->FloatAttribute("x"), currentElement->FirstChildElement("BottomRightCorner")->FloatAttribute("y"), currentElement->FirstChildElement("BottomRightCorner")->FloatAttribute("z")), /*BottomRightCorner*/
+			ignoreActors);
+	}
 }
 
 void AssetManager::BuildCameraActor() {

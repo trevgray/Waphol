@@ -18,7 +18,13 @@ NavigationMesh::~NavigationMesh() {
 	//jcv_diagram_free(&diagram);
 }
 
-void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRightCorner, std::vector<std::string> ignoreActors) {
+void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner_, MATH::Vec3 topRightCorner_, std::vector<std::string> ignoreActors_) {
+	bottomLeftCorner = bottomLeftCorner_;
+	topRightCorner = topRightCorner_;
+	ignoreActors = ignoreActors_;
+}
+
+void NavigationMesh::OnCreate() {
 	//JCV Voronoi Generation
 	Ref<jcv_diagram> jcvVoronoi;
 	jcvVoronoi = std::make_shared<jcv_diagram>();
@@ -34,7 +40,7 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 
 	rect->min = jcv_point(borders[0]);
 	rect->max = jcv_point(borders[1]);
-	
+
 	std::vector<Vec3> actorPositions;
 	bool skipActor;
 
@@ -70,7 +76,7 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 	jcv_clipper* clipper = 0;
 
 	jcv_diagram_generate(num_points, points, rect, clipper, jcvVoronoi.get());
-	
+
 	//TURN THE JCV EDGES AND POINTS INTO GRAPH POINTS
 	std::vector<Node> graphNodes;
 	int nodeLabel = 0;
@@ -82,13 +88,13 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 		bool edge2Check = false;
 		for (Node node : graphNodes) {
 			if (std::round(node.GetPos().x) == std::round(edge->pos[0].x) && std::round(node.GetPos().y) == std::round(edge->pos[0].y)) {
-			//if (node.GetPos().x < edge->pos[0].x - 0.01 && node.GetPos().x > edge->pos[0].x + 0.01 /*X*/ &&
-			//	node.GetPos().x < edge->pos[0].y - 0.01 && node.GetPos().x > edge->pos[0].y + 0.01 /*Y*/) { //fix floating point precision errors
+				//if (node.GetPos().x < edge->pos[0].x - 0.01 && node.GetPos().x > edge->pos[0].x + 0.01 /*X*/ &&
+				//	node.GetPos().x < edge->pos[0].y - 0.01 && node.GetPos().x > edge->pos[0].y + 0.01 /*Y*/) { //fix floating point precision errors
 				edge1Check = true;
 			}
 			if (std::round(node.GetPos().x) == std::round(edge->pos[1].x) && std::round(node.GetPos().y) == std::round(edge->pos[1].y)) {
-			//if (node.GetPos().x < edge->pos[1].x - 0.01 && node.GetPos().x > edge->pos[1].x + 0.01 /*X*/ &&
-			//	node.GetPos().x < edge->pos[1].y - 0.01 && node.GetPos().x > edge->pos[1].y + 0.01 /*Y*/) {
+				//if (node.GetPos().x < edge->pos[1].x - 0.01 && node.GetPos().x > edge->pos[1].x + 0.01 /*X*/ &&
+				//	node.GetPos().x < edge->pos[1].y - 0.01 && node.GetPos().x > edge->pos[1].y + 0.01 /*Y*/) {
 				edge2Check = true;
 			}
 		}
@@ -109,7 +115,7 @@ void NavigationMesh::Initialize(MATH::Vec3 bottomLeftCorner, MATH::Vec3 topRight
 
 	voronoiGraph.OnCreate(graphNodes);
 
-	 //Create connections
+	//Create connections
 	edge = jcv_diagram_get_edges(jcvVoronoi.get());
 	while (edge) {
 		//std::cout << edge->pos[0].x << " " << edge->pos[0].y << " | " << edge->pos[1].x << " " << edge->pos[1].y << std::endl;

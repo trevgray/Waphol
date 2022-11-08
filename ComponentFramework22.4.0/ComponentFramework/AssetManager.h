@@ -18,6 +18,9 @@ private:
 	//std::vector<std::string> componentTypes; //idea for the future - loop through all the component types in the BuildComponents() and BuildActors() check the currentComponent - then add them - use XML to add the componentTypes
 	//Build Component Functions
 	void BuildSceneAssets(std::string XMLFile_, std::string SceneName_);
+
+	void BuildNavigationMesh();
+
 	void BuildCameraActor();
 	void BuildLightActors();
 	void BuildComponents();
@@ -30,6 +33,7 @@ public:
 	AssetManager();
 	~AssetManager();
 	bool OnCreate();
+
 	void LoadAssets(std::string XMLFile_, std::string SceneName_);
 	void RemoveAllComponents();
 

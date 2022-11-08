@@ -32,13 +32,6 @@ bool Scene0::OnCreate()
 	//	GetActor<Actor>(name)->OnCreate();
 	//}
 
-	/*Vec3 rayStart = Vec3(3.0f, -10.0f, -3.0f);
-	Vec3 rayDirection = Vec3(0.0f, 1.0f, 0.0f);
-	GEOMETRY::Ray ray { rayStart, rayDirection };
-	GEOMETRY::Capsule capsule(7.0f, Vec3(0.0f, 4.0f, -3.0f), Vec3(1.0f, 8.0f, -3.0f));
-	Ref<ShapeComponent> shapeComponent = std::make_shared<ShapeComponent>(new Actor(nullptr), capsule);
-	GEOMETRY::RayIntersectionInfo rayInfo = shapeComponent->shape->rayIntersectionInfo(ray);*/
-
 	EngineManager::Instance()->GetActorManager()->AddActor<Actor>("Obstacle", new Actor(nullptr));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->AddComponent<TransformComponent>(nullptr, Vec3(-5.0f,0.0f,0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(0.15f, 0.15f, 0.15f));

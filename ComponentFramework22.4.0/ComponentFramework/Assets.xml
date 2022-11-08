@@ -351,6 +351,12 @@
 	</Scene5>
 
 	<Scene6>
+		<NavigationMesh>
+			<TopLeftCorner x="-28.0" y ="-15.0" z="0.0"/>
+			<BottomRightCorner x="28.0" y ="15.0" z="0.0"/>
+			<IgnoreActors actor1="Player" actor2="NPC"/>
+		</NavigationMesh>
+
 		<Component name = "PhysicsBodyCharacter">
 			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
