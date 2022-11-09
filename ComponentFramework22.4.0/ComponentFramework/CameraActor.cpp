@@ -35,6 +35,9 @@ bool CameraActor::OnCreate() {
 
 void CameraActor::UpdateProjectionMatrix(const float fovy, const float aspectRatio, const float near, const float far) {
 	projectionMatrix = MMath::perspective(fovy, aspectRatio, near, far);
+
+	CalculateFrustumPlanes();
+
 	//buffer update
 	glBindBuffer(GL_UNIFORM_BUFFER, uboMatricesID); //I'm talking to you uboMatricesID
 	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Matrix4), projectionMatrix); //offset = 0 because it is the start of the buffer
@@ -51,6 +54,9 @@ void CameraActor::UpdateViewMatrix() {
 		Vec3 position = transformComponent->GetPosition();
 		viewMatrix = MMath::translate(position) * QMath::toMatrix4(orientation);
 	}
+
+	CalculateFrustumPlanes();
+
 	//buffer update
 	glBindBuffer(GL_UNIFORM_BUFFER, uboMatricesID); //I'm talking to you uboMatricesID
 	glBufferSubData(GL_UNIFORM_BUFFER, UBO_PADDING::MAT4, sizeof(Matrix4), viewMatrix); //offset = sizeof(Matrix4) because we put the projection in before
@@ -73,6 +79,50 @@ GEOMETRY::Ray CameraActor::WorldSpaceRayFromMouseCoords(float mouseX, float mous
 
 	GEOMETRY::Ray rayWorldSpace{ rayWorldStart, rayWorldDirection };
 	return rayWorldSpace;
+}
+
+void CameraActor::CalculateFrustumPlanes() {
+	//make the planes out of the matrix of perspective * view
+	Matrix4 cameraMatrix = projectionMatrix * viewMatrix;
+
+	//http://apollo.humber.ca/~fielder/Literature/fast-extraction-viewing-frustum-planes-from-world-view-projection-matrix.pdf
+	Plane plane;
+	//left clipping plane
+	plane.x = cameraMatrix.m[3] + cameraMatrix.m[0];
+	plane.y = cameraMatrix.m[7] + cameraMatrix.m[4];
+	plane.z = cameraMatrix.m[11] + cameraMatrix.m[8];
+	plane.d = cameraMatrix.m[15] + cameraMatrix.m[12];
+	frustumPlanes[0] = plane;
+	//right clipping plane
+	plane.x = cameraMatrix.m[3] - cameraMatrix.m[0];
+	plane.y = cameraMatrix.m[7] - cameraMatrix.m[4];
+	plane.z = cameraMatrix.m[11] - cameraMatrix.m[8];
+	plane.d = cameraMatrix.m[15] - cameraMatrix.m[12];
+	frustumPlanes[1] = plane;
+	//bottom clipping plane
+	plane.x = cameraMatrix.m[3] + cameraMatrix.m[1];
+	plane.y = cameraMatrix.m[7] + cameraMatrix.m[5];
+	plane.z = cameraMatrix.m[11] + cameraMatrix.m[9];
+	plane.d = cameraMatrix.m[15] + cameraMatrix.m[13];
+	frustumPlanes[2] = plane;
+	//top clipping plane
+	plane.x = cameraMatrix.m[3] - cameraMatrix.m[1];
+	plane.y = cameraMatrix.m[7] - cameraMatrix.m[5];
+	plane.z = cameraMatrix.m[11] - cameraMatrix.m[9];
+	plane.d = cameraMatrix.m[15] - cameraMatrix.m[13];
+	frustumPlanes[3] = plane;
+	//near clipping plane
+	plane.x = cameraMatrix.m[3] + cameraMatrix.m[2];
+	plane.y = cameraMatrix.m[7] + cameraMatrix.m[6];
+	plane.z = cameraMatrix.m[11] + cameraMatrix.m[10];
+	plane.d = cameraMatrix.m[15] + cameraMatrix.m[14];
+	frustumPlanes[4] = plane;
+	//far clipping plane
+	plane.x = cameraMatrix.m[3] - cameraMatrix.m[2];
+	plane.y = cameraMatrix.m[7] - cameraMatrix.m[6];
+	plane.z = cameraMatrix.m[11] - cameraMatrix.m[10];
+	plane.d = cameraMatrix.m[15] - cameraMatrix.m[14];
+	frustumPlanes[5] = plane;
 }
 
 void CameraActor::OnDestroy() {

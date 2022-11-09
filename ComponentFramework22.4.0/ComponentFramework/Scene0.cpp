@@ -14,6 +14,8 @@
 
 #include "Physics.h"
 
+#include "PMath.h"
+
 bool Scene0::OnCreate()
 {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene0");
@@ -162,7 +164,45 @@ void Scene0::Render() const
 
 	glUseProgram(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetProgram());
 
+	///////////////////////////////////////////////
+	std::vector<Ref<Actor>> actorTest;
 	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+		if (actor.second->GetComponent<MaterialComponent>() != nullptr) {
+			bool insideViewFrustum = true;
+			for (Plane frustumPlane : EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetFrustumPlanes()) {
+				if (PMath::distance(actor.second->GetWorldPosition(), frustumPlane) < 0) {
+					insideViewFrustum = false;
+				}
+			}
+			if (insideViewFrustum == true) {
+				std::cout << actor.first << std::endl;
+				actorTest.push_back(actor.second);
+			}
+		}
+	}
+
+	///////////////////
+
+	for (auto actor : actorTest) {
+		glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor->GetModelMatrix());
+		if (actor->GetComponent<MaterialComponent>() != nullptr) {
+			glBindTexture(GL_TEXTURE_2D, actor->GetComponent<MaterialComponent>()->getTextureID());
+			if (renderMeshes) {
+				actor->GetComponent<MeshComponent>()->Render(GL_TRIANGLES);
+			}
+			if (renderCollisionShapes) {
+				if (actor->GetComponent<ShapeComponent>() != nullptr) {
+					actor->GetComponent<ShapeComponent>()->Render();
+				}
+			}
+		}
+	}
+	glBindTexture(GL_TEXTURE_2D, 0);
+	glUseProgram(0);
+
+	///////////////////////////////////////////////
+
+	/*for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
 		if (actor.second->GetComponent<MaterialComponent>() != nullptr) {
 			glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); 
@@ -177,6 +217,6 @@ void Scene0::Render() const
 		}
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);
+	glUseProgram(0);*/
 }
 

@@ -1,4 +1,40 @@
-﻿  ActorManager.cpp
+﻿  Actor.cpp
+  ActorManager.cpp
+  Align.cpp
+  Arrive.cpp
+  AssetManager.cpp
+  CameraActor.cpp
+  EngineManager.cpp
+  FaceVelocity.cpp
+  Flee.cpp
+  FollowPath.cpp
+  InputManager.cpp
+  LightActor.cpp
+  Main.cpp
+  NavigationMesh.cpp
+  NetworkManager.cpp
+  Physics.cpp
+  PhysicsBodyComponent.cpp
+  Scene0.cpp
+  Scene3.cpp
+  Scene4.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
+  Compiling...
+  Scene5.cpp
   Scene6.cpp
+  SceneManager.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SceneManager.cpp(103,4): warning C4065: switch statement contains 'default' but no 'case' labels
+  Seek.cpp
+  SteeringBehaviour.cpp
+  SteeringComponent.cpp
+  VelocityMatch.cpp
   Generating Code...
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

@@ -24,6 +24,8 @@ public:
 	void Update(const float deltaTime_);
 	void Render() const;
 
+	Vec3 GetWorldPosition();
+
 	template<typename ComponentTemplate, typename ... Args> void AddComponent(Args&& ... args_) {
 		/// before you add the component, ask if you have the component in the list already,
 		/// if so - don't add a second one. 

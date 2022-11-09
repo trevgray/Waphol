@@ -82,4 +82,21 @@ void Actor::DeleteParent() {
 	parent = nullptr;
 }
 
+Vec3 Actor::GetWorldPosition() {
+	Vec3 pos;
+	Ref<TransformComponent> transform = GetComponent<TransformComponent>();
+	if (transform.get()) {
+		pos = transform->GetPosition();
+	}
+	else {
+		pos = Vec3();
+	}
+	if (parent) {
+		//if (dynamic_cast<Actor*>(parent)->GetComponent<TransformComponent>() != nullptr) {
+		pos = dynamic_cast<Actor*>(parent)->GetComponent<TransformComponent>()->GetPosition() + transform->GetPosition();
+		//}
+	}
+	return pos;
+}
+
 //void Actor::SetParent(Ref<Actor>)

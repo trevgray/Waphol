@@ -179,6 +179,7 @@
     <ClCompile Include="NodeAndPriority.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PhysicsBodyComponent.cpp" />
+    <ClCompile Include="PMath.cpp" />
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene0.cpp" />
     <ClCompile Include="Scene3.cpp" />
@@ -246,6 +247,7 @@
     <ClInclude Include="NodeAndPriority.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsBodyComponent.h" />
+    <ClInclude Include="PMath.h" />
     <ClInclude Include="QMath.h" />
     <ClInclude Include="QuadraticSolution.h" />
     <ClInclude Include="Quaternion.h" />

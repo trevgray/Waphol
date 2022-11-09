@@ -16,7 +16,9 @@ private:
 	//Frustum Culling
 	//have the camera hold all 6 planes
 	std::array<Plane, 6> frustumPlanes;
-	//make the planes out of the matrix of perspective * view
+
+	void CalculateFrustumPlanes();
+
 	//then check against some point (lets start with the center point of the actor to start), in PMath check the distance to the point
 	//if the point is negative, then the point is outside - otherwise the object is in the field of view
 public:
@@ -28,6 +30,8 @@ public:
 
 	Matrix4 GetProjectionMatrix() const { return projectionMatrix; }
 	Matrix4 GetViewMatrix() const { return viewMatrix; }
+
+	std::array<Plane, 6> GetFrustumPlanes() { return frustumPlanes; }
 
 	void UpdateProjectionMatrix(const float fovy, const float aspectRatio, const float near, const float far);
 	void UpdateViewMatrix();
