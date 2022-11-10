@@ -8,12 +8,13 @@ NetworkManager::NetworkManager() {
 	iResult = true;
 	iSendResult = true;
 
-	server = sockaddr_in();
-	client = sockaddr_in();
+	result = nullptr;
+	ptr = nullptr;
+	hints = addrinfo();
 	//server sockets
-	in = INVALID_SOCKET;
+	listenSocket = INVALID_SOCKET;
 	//client sockets
-	out = INVALID_SOCKET;
+	connectSocket = INVALID_SOCKET;
 
 	sendbuf = NULL;
 
@@ -26,10 +27,19 @@ NetworkManager::~NetworkManager() {
 		return;
 	}
 	else {
+		//shutdown the connection on our end
+		iResult = shutdown(connectSocket, SD_SEND);
+		if (iResult == SOCKET_ERROR) {
+			std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
+			closesocket(listenSocket);
+			WSACleanup();
+			//system("pause");
+			return;
+		}
+
 		std::cout << "Connection closed" << std::endl;
 
-		closesocket(in);
-		closesocket(out);
+		closesocket(connectSocket);
 		WSACleanup();
 	}
 }
@@ -37,20 +47,38 @@ NetworkManager::~NetworkManager() {
 void NetworkManager::Run() {
 	while (EngineManager::Instance()->GetIsRunning() == true) {
 		if (networkMode == Server) {
-			int bytesIn = recvfrom(in, (char*)&actorBuffer, sizeof(ActorBuffer), 0, (sockaddr*)&client, &clientLength);
-			if (bytesIn == SOCKET_ERROR) {
-				std::cout << "Error receiving from client " << WSAGetLastError() << std::endl;
-				continue;
-			}
-			if (actorBuffer.ID == -1) {
+			if (connectSocket == INVALID_SOCKET) { //when the listen socket is null
+				//listen
+				iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
+				if (iResult == SOCKET_ERROR) {
+					std::cout << "Listen Socket failed with error: " << WSAGetLastError() << std::endl;
+					closesocket(listenSocket);
+					WSACleanup();
+					system("pause");
+					return;
+				}
+
+				std::cout << "Waiting for connection request..." << std::endl;
+
+				//Accept a client socket
+				connectSocket = accept(listenSocket, nullptr, nullptr);
+				if (connectSocket == INVALID_SOCKET) {
+					std::cout << "Accept failed with error: " << WSAGetLastError() << std::endl;
+					closesocket(listenSocket);
+					WSACleanup();
+					system("pause");
+					return;
+				}
+
+				std::cout << "Connected to client" << std::endl;
+
 				AddClientActor();
-				continue;
+
+				closesocket(listenSocket);
 			}
 
-
-			std::cout << actorBuffer.position.x << std::endl;
-
-			if (bytesIn > 0) {
+			iResult = recv(connectSocket, (char*)&actorBuffer, sizeof(ActorBuffer), 0);
+			if (iResult > 0) {
 
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", actorBuffer.position.x, actorBuffer.position.y, actorBuffer.position.z);
@@ -61,35 +89,63 @@ void NetworkManager::Run() {
 				//actorBuffer.name = actorName.c_str();
 				
 				sendbuf = (char*)&actorBuffer; //binary representation 
+
+				iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
+				if (iResult == SOCKET_ERROR) {
+					std::cout << "Send failed with error: " << iResult << std::endl;
+					closesocket(connectSocket);
+					WSACleanup();
+					system("pause");
+					return;
+				}
+			}
+			else if (iResult == 0) {
+				std::cout << "Connection closing..." << std::endl;
+				//actorBuffer.name.~basic_string();
+				break;
 			}
 			else {
 				std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
-				this->~NetworkManager();
+				closesocket(listenSocket);
+				WSACleanup();
+				system("pause");
 				return;
 			}
 		}
 		else if (networkMode == Client) {
+
+			//Receive until the peer closes connection
 			actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 			actorBuffer.ID = actorID;
 
+			//Send an initial buffer
 			sendbuf = (char*)&actorBuffer; //binary representation 
 
-			int sendOk = sendto(out, sendbuf, sizeof(ActorBuffer), 0, (sockaddr*)&server, sizeof(server));
-			if (sendOk == SOCKET_ERROR) {
-				std::cout << "Send Error: " << WSAGetLastError() << std::endl;
+			iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
+			if (iResult == SOCKET_ERROR) {
+				std::cout << "Send failed with error: " << iResult << std::endl;
+				closesocket(connectSocket);
+				WSACleanup();
+				system("pause");
+				return;
 			}
 
-			if (sendOk > 0) {
+			iResult = recv(connectSocket, (char*)&actorBuffer, sizeof(ActorBuffer), 0);
+			if (iResult > 0) {
+
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", actorBuffer.position.x, actorBuffer.position.y, actorBuffer.position.z);
-				//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
 				lock.unlock();
 			}
 			else {
 				std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
-				this->~NetworkManager();
+				closesocket(listenSocket);
+				WSACleanup();
+				system("pause");
 				return;
 			}
+			//std::cout << "Bytes sent: " << iResult << std::endl;
 		}
 		else if (networkMode == Offline) { //we are not using networking - do nothing
 			return;
@@ -114,67 +170,117 @@ bool NetworkManager::Initialize(NetworkNode networkMode_) {
 	}
 
 	else if (networkMode == Server) { //set up the instance as a server
-		// Create a socket, notice that it is a user datagram socket (UDP)
-		in = socket(AF_INET, SOCK_DGRAM, 0); //SOCK_DGRAM is what makes it a udp socket
+		//hints define the connection type and the address that will be used
+		ZeroMemory(&hints, sizeof(hints));
+		hints.ai_family = AF_INET;
+		hints.ai_socktype = SOCK_STREAM; //TCP works like a stream
+		hints.ai_protocol = IPPROTO_TCP;
+		hints.ai_flags = AI_PASSIVE;
 
-		// Create a server hint structure for the server
-		server.sin_addr.S_un.S_addr = ADDR_ANY; // Us any IP address available on the machine
-		server.sin_family = AF_INET; // Address format is IPv4
-		server.sin_port = htons(5400); //big endian system - most machines are big endian
-
-		//Try and bind the socket to the IP and port
-		if (bind(in, (sockaddr*)&server, sizeof(server)) == SOCKET_ERROR) { //bind the socket
-			std::cout << "Can't bind to socket " << WSAGetLastError() << std::endl;
+		//Resolve the server address and port
+		iResult = getaddrinfo(nullptr, DEFAULT_PORT, &hints, &result);
+		if (iResult != 0) {
+			std::cout << "getaddrinfo failed with error: " << iResult << std::endl;
+			WSACleanup();
+			system("pause");
+			return false;
 		}
 
-		std::cout << "Server Up!" << std::endl;
+		//Create a socket for connecting to the server
+		listenSocket = socket(result->ai_family, result->ai_socktype, result->ai_protocol);
+		if (listenSocket == INVALID_SOCKET) {
+			std::cout << "Error at socket(): " << WSAGetLastError() << std::endl;
+			freeaddrinfo(result);
+			WSACleanup();
+			system("pause");
+			return false;
+		}
 
-		clientLength = sizeof(client); // The size of the client information
+		//Setup the TCP listening socket
+		iResult = bind(listenSocket, result->ai_addr, (int)result->ai_addrlen);
+		if (iResult == SOCKET_ERROR) {
+			std::cout << "Bind failed with error: " << WSAGetLastError() << std::endl;
+			freeaddrinfo(result);
+			closesocket(listenSocket);
+			WSACleanup();
+			system("pause");
+			return false;
+		}
+		freeaddrinfo(result);
 	}
 	else if (networkMode == Client) {
-		out = socket(AF_INET, SOCK_DGRAM, 0);
+		//hints define the connection type and the address that will be used
+		ZeroMemory(&hints, sizeof(hints));
+		hints.ai_family = AF_UNSPEC; //don't specificity the address family (IVP6 / IVP 4)
+		hints.ai_socktype = SOCK_STREAM; //TCP works like a stream
+		hints.ai_protocol = IPPROTO_TCP;
 
-		// Create a hint structure for the server
-		serverLength = sizeof(server);
-		server.sin_family = AF_INET; // AF_INET = IPv4 addresses
-		server.sin_port = htons(5400); // Little to big endian conversion
-		inet_pton(AF_INET, "127.0.0.1", &server.sin_addr); //"127.0.0.1" is your own ip - Convert from string to byte array
+		//Resolve the server address and port
+		iResult = getaddrinfo("localhost", DEFAULT_PORT, &hints, &result); //localhost connections be to the own computer - this is where you enter the ip
+		{ //result gets full of how to connection to the computer
+			if (iResult != 0) {
+				std::cout << "getaddrinfo failed with error: " << iResult << std::endl;
+				WSACleanup();
+				system("pause");
+				return 1;
+			}
+		}
 
-		GetServerActorName();
+		for (ptr = result; ptr != NULL; ptr = ptr->ai_next) { //move addresses till one succeeds
+			//Create a socket for connecting to the server
+			connectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol); //find a open socket
+			if (connectSocket == INVALID_SOCKET) {
+				std::cout << "Socket failed with error: " << iResult << std::endl;
+				WSACleanup();
+				system("pause");
+				return 1;
+			}
+
+			//Connect to the server
+			iResult = connect(connectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+			if (iResult == SOCKET_ERROR) {
+				closesocket(connectSocket);
+				connectSocket = INVALID_SOCKET;
+				continue;
+			}
+			std::cout << "Connected to server" << std::endl;
+
+			GetServerActorName();
+
+			break;
+		}
+
+		freeaddrinfo(result);
+		if (connectSocket == INVALID_SOCKET) {
+			std::cout << "Unable to connect to the server: " << iResult << std::endl;
+			WSACleanup();
+			system("pause");
+			return 1;
+		}
 	}
 	return true;
 }
 
 void NetworkManager::GetServerActorName() {
-	actorBuffer.ID = -1;
-
-	//Send an initial buffer
-	sendbuf = (char*)&actorBuffer; //binary representation 
-
-	int sendOk = sendto(out, sendbuf, sizeof(ActorBuffer), 0, (sockaddr*)&server, sizeof(server));
-	if (sendOk == SOCKET_ERROR) {
-		std::cout << "Send Error: " << WSAGetLastError() << std::endl;
-	}
-
 	char actorNameBuffer[DEFAULT_BUFFER_LENGTH];
 
 	ZeroMemory(actorNameBuffer, DEFAULT_BUFFER_LENGTH);
 
-	while (true) {
-		int bytesIn = recvfrom(out, actorNameBuffer, 1, 0, (sockaddr*)&server, &serverLength);
-		if (bytesIn == SOCKET_ERROR) {
-			std::cout << "Error receiving from client " << WSAGetLastError() << std::endl;
-		}
-		if (bytesIn > 0 && actorNameBuffer != "-1") {
-			break;
-		}
+	iResult = recv(connectSocket, actorNameBuffer, DEFAULT_BUFFER_LENGTH, 0);
+	if (iResult > 0) {
+		actorID = (int)actorNameBuffer[0] - 48;
 	}
-	actorID = (int)actorNameBuffer[0] - 48;
-	std::cout << actorID << std::endl;
+	else {
+		std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
+		closesocket(connectSocket);
+		WSACleanup();
+		system("pause");
+		return;
+	}
 }
 
 void NetworkManager::AddClientActor() {
-	std::string clientName = std::to_string(clientActors.size());
+	std::string clientName = "Client" + std::to_string(clientActors.size());
 
 	std::unique_lock<std::mutex> lock(transformUpdateMutex);
 	EngineManager::Instance()->GetActorManager()->AddActor<Actor>(clientName, new Actor(nullptr));
@@ -189,14 +295,13 @@ void NetworkManager::AddClientActor() {
 	//ZeroMemory(sendbuf, sizeof(ActorBuffer));
 
 	sendbuf = (char*)clientName.c_str();
-	while (true) {
-		int sendOk = sendto(in, sendbuf, clientName.size(), 0, (sockaddr*)&client, sizeof(client));
-		if (sendOk == SOCKET_ERROR) {
-			std::cout << "Send Error: " << WSAGetLastError() << std::endl;
-		}
-		else {
-			break;
-		}
-	}
 
+	iResult = send(connectSocket, sendbuf, clientName.size(), 0);
+	if (iResult == SOCKET_ERROR) {
+		std::cout << "Send failed with error: " << iResult << std::endl;
+		closesocket(connectSocket);
+		WSACleanup();
+		system("pause");
+		return;
+	}
 }
