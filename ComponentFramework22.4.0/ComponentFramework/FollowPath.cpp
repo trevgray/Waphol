@@ -38,7 +38,6 @@ void FollowPath::SetGoal(int goalNodeLabel) {
 	}
 	path.push_back(goalNodeLabel);
 	std::reverse(path.begin(), path.end());
-	std::cout << "PATH FOUND" << std::endl;
 }
 
 SteeringOutput FollowPath::GetSteering(Ref<Actor> actor_) {
