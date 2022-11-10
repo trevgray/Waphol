@@ -26,8 +26,8 @@ enum NetworkNode {
 };
 
 struct ActorBuffer {
-	ActorBuffer() { name = "NULL"; position = MATH::Vec3(); orientation = Quaternion(); }
-	std::string name;
+	ActorBuffer() { ID = -1; position = MATH::Vec3(); orientation = Quaternion(); }
+	unsigned int ID;
 	MATH::Vec3 position;
 	MATH::Quaternion orientation;
 };
@@ -41,7 +41,7 @@ public:
 private:
 	//Client Variables & Functions
 	void GetServerActorName();
-	std::string actorName;
+	unsigned int actorID;
 
 	//Server Variables & Functions
 	void AddClientActor();

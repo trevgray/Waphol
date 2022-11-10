@@ -82,10 +82,10 @@ void NetworkManager::Run() {
 
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", actorBuffer.position.x, actorBuffer.position.y, actorBuffer.position.z);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(actorBuffer.name)->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(actorBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
 				lock.unlock();
 
-				actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>(actorBuffer.name)->GetComponent<TransformComponent>()->GetPosition();
+				actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(actorBuffer.ID))->GetComponent<TransformComponent>()->GetPosition();
 				//actorBuffer.name = actorName.c_str();
 				
 				sendbuf = (char*)&actorBuffer; //binary representation 
@@ -116,7 +116,7 @@ void NetworkManager::Run() {
 
 			//Receive until the peer closes connection
 			actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
-			actorBuffer.name = actorName;
+			actorBuffer.ID = actorID;
 
 			//Send an initial buffer
 			sendbuf = (char*)&actorBuffer; //binary representation 
@@ -268,7 +268,7 @@ void NetworkManager::GetServerActorName() {
 
 	iResult = recv(connectSocket, actorNameBuffer, DEFAULT_BUFFER_LENGTH, 0);
 	if (iResult > 0) {
-		actorName = actorNameBuffer;
+		actorID = (int)actorNameBuffer[0] - 48;
 	}
 	else {
 		std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
