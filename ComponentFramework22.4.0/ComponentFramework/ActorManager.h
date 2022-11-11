@@ -28,6 +28,8 @@ public:
 
 	template<typename ActorTemplate, typename ...Args> void AddActor(std::string name, Args && ...args_);
 
+	void RemoveActor(std::string name);
+
 	template<typename ActorTemplate> Ref<ActorTemplate> GetActor() const;
 	template<typename ActorTemplate> Ref<ActorTemplate> GetActor(std::string name);
 

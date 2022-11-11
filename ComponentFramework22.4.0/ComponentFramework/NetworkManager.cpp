@@ -85,9 +85,9 @@ void NetworkManager::Run() {
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(actorBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
 				lock.unlock();
 
-				actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(actorBuffer.ID))->GetComponent<TransformComponent>()->GetPosition();
+				actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 				//actorBuffer.name = actorName.c_str();
-				
+
 				sendbuf = (char*)&actorBuffer; //binary representation 
 
 				iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
@@ -101,7 +101,9 @@ void NetworkManager::Run() {
 			}
 			else if (iResult == 0) {
 				std::cout << "Connection closing..." << std::endl;
-				//actorBuffer.name.~basic_string();
+
+				EngineManager::Instance()->GetActorManager()->RemoveActor(std::to_string(actorBuffer.ID));
+
 				break;
 			}
 			else {
@@ -113,6 +115,40 @@ void NetworkManager::Run() {
 			}
 		}
 		else if (networkMode == Client) {
+
+			if (connectSocket == INVALID_SOCKET) {
+				for (ptr = result; ptr != NULL; ptr = ptr->ai_next) { //move addresses till one succeeds
+					//Create a socket for connecting to the server
+					connectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol); //find a open socket
+					if (connectSocket == INVALID_SOCKET) {
+						std::cout << "Socket failed with error: " << iResult << std::endl;
+						WSACleanup();
+						system("pause");
+						return;
+					}
+
+					//Connect to the server
+					iResult = connect(connectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
+					if (iResult == SOCKET_ERROR) {
+						closesocket(connectSocket);
+						connectSocket = INVALID_SOCKET;
+						continue;
+					}
+					std::cout << "Connected to server" << std::endl;
+
+					GetServerActorName();
+
+					break;
+				}
+
+				freeaddrinfo(result);
+				if (connectSocket == INVALID_SOCKET) {
+					std::cout << "Unable to connect to the server: " << iResult << std::endl;
+					WSACleanup();
+					system("pause");
+					return;
+				}
+			}
 
 			//Receive until the peer closes connection
 			actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
@@ -135,7 +171,7 @@ void NetworkManager::Run() {
 
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", actorBuffer.position.x, actorBuffer.position.y, actorBuffer.position.z);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
 				lock.unlock();
 			}
 			else {
@@ -225,38 +261,6 @@ bool NetworkManager::Initialize(NetworkNode networkMode_) {
 				return 1;
 			}
 		}
-
-		for (ptr = result; ptr != NULL; ptr = ptr->ai_next) { //move addresses till one succeeds
-			//Create a socket for connecting to the server
-			connectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol); //find a open socket
-			if (connectSocket == INVALID_SOCKET) {
-				std::cout << "Socket failed with error: " << iResult << std::endl;
-				WSACleanup();
-				system("pause");
-				return 1;
-			}
-
-			//Connect to the server
-			iResult = connect(connectSocket, ptr->ai_addr, (int)ptr->ai_addrlen);
-			if (iResult == SOCKET_ERROR) {
-				closesocket(connectSocket);
-				connectSocket = INVALID_SOCKET;
-				continue;
-			}
-			std::cout << "Connected to server" << std::endl;
-
-			GetServerActorName();
-
-			break;
-		}
-
-		freeaddrinfo(result);
-		if (connectSocket == INVALID_SOCKET) {
-			std::cout << "Unable to connect to the server: " << iResult << std::endl;
-			WSACleanup();
-			system("pause");
-			return 1;
-		}
 	}
 	return true;
 }
@@ -268,7 +272,15 @@ void NetworkManager::GetServerActorName() {
 
 	iResult = recv(connectSocket, actorNameBuffer, DEFAULT_BUFFER_LENGTH, 0);
 	if (iResult > 0) {
-		actorID = (int)actorNameBuffer[0] - 48;
+		actorID = (unsigned int)actorNameBuffer[0] - 48;
+
+		std::unique_lock<std::mutex> lock(transformUpdateMutex);
+		EngineManager::Instance()->GetActorManager()->AddActor<Actor>("ServerActor", new Actor(nullptr));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(clientActorTemplateName.c_str()));
+		//maybe make a spawn point actor? Just a though
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->AddComponent<TransformComponent>(nullptr, Vec3(12.5f, 7.5f, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(3.0f, 3.0f, 3.0f));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->OnCreate();
+		lock.unlock();
 	}
 	else {
 		std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
@@ -280,19 +292,17 @@ void NetworkManager::GetServerActorName() {
 }
 
 void NetworkManager::AddClientActor() {
-	std::string clientName = "Client" + std::to_string(clientActors.size());
+	std::string clientName = std::to_string(clientActors.size());
 
 	std::unique_lock<std::mutex> lock(transformUpdateMutex);
 	EngineManager::Instance()->GetActorManager()->AddActor<Actor>(clientName, new Actor(nullptr));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>(clientName)->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(clientActorTemplateName.c_str()));
 	//maybe make a spawn point actor? Just a though
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>(clientName)->AddComponent<TransformComponent>(nullptr, Vec3(12.5f, 7.5f, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(3.0f,3.0f,3.0f));
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>(clientName)->AddComponent<TransformComponent>(nullptr, Vec3(12.5f, 7.5f, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(3.0f, 3.0f, 3.0f));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>(clientName)->OnCreate();
 	lock.unlock();
 
 	clientActors[clientName] = EngineManager::Instance()->GetActorManager()->GetActor<Actor>(clientName);
-
-	//ZeroMemory(sendbuf, sizeof(ActorBuffer));
 
 	sendbuf = (char*)clientName.c_str();
 

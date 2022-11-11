@@ -39,6 +39,10 @@ template<typename ActorTemplate, typename ... Args> void ActorManager::AddActor(
 	//}
 }
 
+void ActorManager::RemoveActor(std::string name) {
+	actorGraph.erase(name);
+}
+
 bool ActorManager::AddParentPointer(Actor* parentActor) {
 	//This is how we deal with parents
 	//A lot of actors don't have a parent, we don't want to just store a nullptr
