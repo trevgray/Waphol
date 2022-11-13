@@ -83,9 +83,11 @@ void NetworkManager::Run() {
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", actorBuffer.position.x, actorBuffer.position.y, actorBuffer.position.z);
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(actorBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(actorBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(actorBuffer.orientation);
 				lock.unlock();
 
 				actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
+				actorBuffer.orientation = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion();
 				//actorBuffer.name = actorName.c_str();
 
 				sendbuf = (char*)&actorBuffer; //binary representation 
@@ -152,6 +154,7 @@ void NetworkManager::Run() {
 
 			//Receive until the peer closes connection
 			actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
+			actorBuffer.orientation = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion();
 			actorBuffer.ID = actorID;
 
 			//Send an initial buffer
@@ -172,6 +175,7 @@ void NetworkManager::Run() {
 				std::unique_lock<std::mutex> lock(transformUpdateMutex);
 				printf("%f %f %f\n", actorBuffer.position.x, actorBuffer.position.y, actorBuffer.position.z);
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->GetComponent<TransformComponent>()->setOrientation(actorBuffer.orientation);
 				lock.unlock();
 			}
 			else {
