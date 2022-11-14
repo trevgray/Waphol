@@ -12,6 +12,9 @@ namespace GEOMETRY {
 			r = r_;
 			generateVerticesAndNormals();
 			StoreMeshData(GL_POINTS);
+
+			//calculate furthest point
+			furthestPoint = r;
 		}
 
 		Sphere() = default;

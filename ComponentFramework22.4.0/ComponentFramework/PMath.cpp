@@ -8,7 +8,7 @@ Plane PMath::normalize(const Plane &p) {
 		p.d / mag);
 }
 
-float PMath::distance(const Vec3 &v, const Plane &p) {
+float PMath::distance(const Vec3 &v, const Plane &p) { //https://mathinsight.org/distance_point_plane#:~:text=The%20shortest%20distance%20from%20a,as%20a%20gray%20line%20segment
 	Vec3 n = p;
 	float mag = VMath::mag(n);
 	return (p.x*v.x + p.y*v.y + p.z*v.z + p.d) / mag;

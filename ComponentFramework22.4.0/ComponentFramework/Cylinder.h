@@ -12,6 +12,9 @@ namespace GEOMETRY {
 			r = r_;
 			generateVerticesAndNormals(); //generate visual for the primitive
 			StoreMeshData(GL_POINTS);
+
+			//calculate furthest point
+			furthestPoint = (r < this->calculateHeight()) ? this->calculateHeight() : r;
 		}
 
 		//Default constructor sets the center position of sphere endA to something other than zero, generates the vertices and normal for the shape, and stores the mesh data in order to render

@@ -28,6 +28,9 @@ namespace GEOMETRY {
 		size_t dataLength = 0;
 		GLenum drawmode = GL_POINTS;
 
+		//Used in frustum culling for checking if the object is inside any of the planes
+		float furthestPoint;
+
 		// Anything that can be hit by a ray needs to be part of this class hierarchy
 		virtual RayIntersectionInfo rayIntersectionInfo(const Ray& ray) const = 0;
 	};

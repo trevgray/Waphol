@@ -166,12 +166,12 @@ void Scene0::Render() const
 
 	///////////////////////////////////////////////
 
-	/*std::vector<Ref<Actor>> actorTest;
+	std::vector<Ref<Actor>> actorTest;
 	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
-		if (actor.second->GetComponent<MaterialComponent>() != nullptr) {
+		if (actor.second->GetComponent<ShapeComponent>() != nullptr) {
 			bool insideViewFrustum = true;
 			for (Plane frustumPlane : EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->GetFrustumPlanes()) {
-				if (PMath::distance(actor.second->GetWorldPosition(), frustumPlane) < 0) {
+				if (PMath::distance(actor.second->GetWorldPosition(), frustumPlane) < -actor.second->GetComponent<ShapeComponent>()->shape->furthestPoint) {
 					insideViewFrustum = false;
 					break;
 				}
@@ -200,11 +200,11 @@ void Scene0::Render() const
 		}
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);*/
+	glUseProgram(0);
 
 	///////////////////////////////////////////////
 
-	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+	/*for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>("TextureShader")->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
 		if (actor.second->GetComponent<MaterialComponent>() != nullptr) {
 			glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); 
@@ -219,6 +219,6 @@ void Scene0::Render() const
 		}
 	}
 	glBindTexture(GL_TEXTURE_2D, 0);
-	glUseProgram(0);
+	glUseProgram(0);*/
 }
 

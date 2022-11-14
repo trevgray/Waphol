@@ -1,6 +1,7 @@
 #pragma once
 #include "Shape.h"
 #include "Quaternion.h"
+
 namespace GEOMETRY {
 	struct Slab {
 		//REFERENCE: Ch. 4 Real Time Collision Detection by Ericson
@@ -31,6 +32,10 @@ namespace GEOMETRY {
 			orientation = orientation_;
 			generateVerticesAndNormals(); //generate visual for the primitive
 			StoreMeshData(GL_TRIANGLES);
+
+			//calculate furthest point
+			furthestPoint = (halfExtent.x < halfExtent.y) ? halfExtent.y : halfExtent.x;
+			furthestPoint = (furthestPoint < halfExtent.z) ? halfExtent.z : furthestPoint;
 		}
 
 		// Fill the vertices and normals list with Vec3's to represent a box

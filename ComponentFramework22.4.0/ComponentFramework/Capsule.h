@@ -12,6 +12,9 @@ namespace GEOMETRY {
 			r = r_;
 			generateVerticesAndNormals(); //generate visual for the primitive
 			StoreMeshData(GL_POINTS);
+
+			//calculate furthest point
+			furthestPoint = this->calculateHeight() + (r * 2);
 		}
 
 		//Default constructor sets the centre position of cap A to something other than zero, generates the vertices and normal for the shape, and stores the mesh data in order to render
