@@ -152,26 +152,30 @@ void GEOMETRY::Box::generateVerticesAndNormals() {
 }
 
 GEOMETRY::RayIntersectionInfo GEOMETRY::Box::rayIntersectionInfo(const Ray& ray) const {
+	//https://www.sciencedirect.com/topics/computer-science/aligned-bounding-box
 	RayIntersectionInfo rayInfo = RayIntersectionInfo();
-
+	//the origin is 0,0,0 for the box
 	std::array<GEOMETRY::Slab, 3> slabs = {
+		//imagine the box is just made up of three infinite slabs
 		GEOMETRY::Slab{MATH::Vec3(1.0f, 0.0f, 0.0f), -halfExtent.x, halfExtent.x},
 		GEOMETRY::Slab{MATH::Vec3(0.0f, 1.0f, 0.0f), -halfExtent.y, halfExtent.y},
 		GEOMETRY::Slab{MATH::Vec3(0.0f, 0.0f, 1.0f), -halfExtent.z, halfExtent.z} 
 	};
 
-	float tmin = 0, tmax = FLT_MAX;
+	float tmin = 0.0f, tmax = FLT_MAX;
 	int slabIterator = 0;
 	for (GEOMETRY::Slab slab : slabs) {
-		float t1 = (slabs[slabIterator].distNear - ray.start[slabIterator]) / ray.dir[slabIterator];
-		float t2 = (slabs[slabIterator].distFar - ray.start[slabIterator]) / ray.dir[slabIterator];
+		float t1 = (slab.distNear - ray.start[slabIterator]) / ray.dir[slabIterator]; //P = S + Vt // sub for t // t = (P-S) / V
+		float t2 = (slab.distFar - ray.start[slabIterator]) / ray.dir[slabIterator]; //[] is overload for vectors, making it an array of 3 floats
 		slabIterator++;
 		if (t1 > t2) {
-			std::swap(t1, t2);
+			std::swap(t1, t2); //make t1 the closer intersection (smaller value)
 		}
 		//tmin = t1 > tmin ? t1 : tmin;
-		tmin = std::max(t1, tmin);
-		tmax = std::min(t2, tmax);
+		tmin = std::max(t1, tmin); //if t1 < 0 -- tmin = t1 -- else t1 = 0
+		tmax = std::min(t2, tmax); //if t2 > max float -- tmax = max float -- else tmax = t2
+
+		//if the closer intersection is greater than the further one - then the intersection point is invalid, the ray missed entirely
 		if (tmin > tmax) {
 			return rayInfo;
 		}

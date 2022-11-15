@@ -58,7 +58,7 @@ void MeshComponent::LoadModel(const char* filename) {
     }
 }
 
-void MeshComponent::StoreMeshData(GLenum drawmode_) {
+void MeshComponent::StoreMeshData(GLenum drawmode_) { //made a vertex buffer for opengl
     drawmode = drawmode_;
     /// These just make the code easier for me to read
 #define VERTEX_LENGTH 	(vertices.size() * (sizeof(Vec3)))
@@ -114,7 +114,7 @@ void MeshComponent::Render() const {
 
 void MeshComponent::Render(GLenum drawmode_) const {
     glBindVertexArray(vao);
-    glDrawArrays(drawmode_, 0, dateLength);
+    glDrawArrays(drawmode_, 0, dateLength); //record command buffers
     glBindVertexArray(0); // Unbind the VAO
 }
 
