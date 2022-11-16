@@ -5,13 +5,14 @@
 
 #include "Plane.h"
 #include <array>
+
 using namespace MATH;
 class CameraActor : public Actor {
 private:
 	Matrix4 projectionMatrix;
 	Matrix4 viewMatrix;
-	GLuint uboMatricesID; //matrixID
-	const GLuint bindingPoint = 0; //must be unique to the camera - so = 0, lights will be = 1
+	unsigned int uboMatricesID; //matrixID
+	const unsigned int bindingPoint = 0; //must be unique to the camera - so = 0, lights will be = 1
 
 	//Frustum Culling
 	//have the camera hold all 6 planes
@@ -36,7 +37,7 @@ public:
 	void UpdateProjectionMatrix(const float fovy, const float aspectRatio, const float near, const float far);
 	void UpdateViewMatrix();
 
-	GLuint GetMatriciesID() const { return uboMatricesID; }
+	uint64_t GetMatriciesID() const { return uboMatricesID; }
 
 	GEOMETRY::Ray WorldSpaceRayFromMouseCoords(float mouseX, float mouseY);
 };

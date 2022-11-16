@@ -1,6 +1,8 @@
 #pragma once
 #include "Actor.h"
 #include "Vector.h"
+
+#include <glew.h>
 using namespace MATH;
 
 enum class LightStyle { 
@@ -30,5 +32,5 @@ public:
 	Vec3 getPosition() const { return pos; }
 	bool OnCreate() override;
 	void OnDestroy() override;
-	GLuint GetLightID() const { return uboLightDataID; }
+	uint64_t GetLightID() const { return uboLightDataID; }
 };

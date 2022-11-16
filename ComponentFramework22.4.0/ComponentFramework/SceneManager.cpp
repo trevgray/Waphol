@@ -2,7 +2,6 @@
 #include "SceneManager.h"
 #include "EngineManager.h"
 //
-#include "Window.h"
 #include "Scene0.h"
 #include "Scene3.h"
 #include "Scene4.h"
@@ -10,7 +9,7 @@
 #include "Scene6.h"
 
 SceneManager::SceneManager(): 
-	currentScene(nullptr), window(nullptr) {
+	currentScene(nullptr) {
 	Debug::Info("Starting the SceneManager", __FILE__, __LINE__);
 }
 
@@ -19,11 +18,6 @@ SceneManager::~SceneManager() {
 		currentScene->OnDestroy();
 		delete currentScene;
 		currentScene = nullptr;
-	}
-
-	if (window) {
-		delete window;
-		window = nullptr;
 	}
 
 	// Cleanup
@@ -35,15 +29,17 @@ SceneManager::~SceneManager() {
 }
 
 bool SceneManager::Initialize(std::string name_, int width_, int height_) {
+	EngineManager::Instance()->GetRenderer()->CreateSDLWindow(name_, width_, height_);
+	EngineManager::Instance()->GetRenderer()->OnCreate();
 
-	window = new Window();
+	/*window = new Window();
 	if (!window->OnCreate(name_, width_, height_)) {
 		Debug::FatalError("Failed to initialize Window object", __FILE__, __LINE__);
 		return false;
-	}
+	}*/
 
 	/********************************   Default first scene   ***********************/
-	BuildNewScene(SCENE_NUMBER::SCENE3);
+	BuildNewScene(SCENE_NUMBER::SCENE0);
 
 	//Setup ImGui context
 	IMGUI_CHECKVERSION();
@@ -57,8 +53,10 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 	//ImGui::StyleColorsLight();
 
 	//Setup Platform/Renderer backends for imGUI
-	ImGui_ImplSDL2_InitForOpenGL(window->getWindow(), window->GetContext()); //OpenGL setup
-	ImGui_ImplOpenGL3_Init("#version 450"); //hard code OpenGL code
+	if (EngineManager::Instance()->GetRenderer()->getRendererType() == RendererType::OPENGL) { //OpenGL setup
+		ImGui_ImplSDL2_InitForOpenGL(static_cast<OpenGLRenderer*>(EngineManager::Instance()->GetRenderer().get())->getWindow(), static_cast<OpenGLRenderer*>(EngineManager::Instance()->GetRenderer().get())->GetContext()); //this will create two leaks
+		ImGui_ImplOpenGL3_Init("#version 450"); //hard code OpenGL code
+	}
 	
 	return true;
 }
@@ -78,7 +76,7 @@ void SceneManager::Run() {
 	//This swaps the window to the next frame
 	ImGui::Render();
 	ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-	SDL_GL_SwapWindow(window->getWindow());
+	SDL_GL_SwapWindow(static_cast<OpenGLRenderer*>(EngineManager::Instance()->GetRenderer().get())->getWindow());
 	SDL_Delay(EngineManager::Instance()->GetTimerSleepTime());
 }
 

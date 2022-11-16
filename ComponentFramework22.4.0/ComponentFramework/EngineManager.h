@@ -7,6 +7,9 @@
 #include "NetworkManager.h"
 #include "SoundManager.h"
 //
+#include "Renderer.h"
+#include "OpenGLRenderer.h"
+//
 #include "Timer.h"
 //
 #include <memory>
@@ -23,6 +26,8 @@ private:
 	unsigned int fps;
 	bool isRunning;
 	bool fullScreen;
+	//renderer
+	Ref<Renderer> renderer;
 	//game managers
 	Ref<SceneManager> sceneManager;
 	Ref<AssetManager> assetManager;
@@ -58,4 +63,5 @@ public:
 	Ref<ActorManager> GetActorManager() { return actorManager; }
 	Ref<InputManager> GetInputManager() { return inputManager; }
 	Ref<SoundManager> GetSoundManager() { return soundManager; }
+	Ref<Renderer> GetRenderer() { return renderer; }
 };

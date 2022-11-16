@@ -177,6 +177,7 @@
     <ClCompile Include="NavigationMesh.cpp" />
     <ClCompile Include="NetworkManager.cpp" />
     <ClCompile Include="NodeAndPriority.cpp" />
+    <ClCompile Include="OpenGLRenderer.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="PhysicsBodyComponent.cpp" />
     <ClCompile Include="PMath.cpp" />
@@ -203,7 +204,6 @@
     <ClCompile Include="TransformComponent.cpp" />
     <ClCompile Include="VelocityMatch.cpp" />
     <ClCompile Include="VMath.cpp" />
-    <ClCompile Include="Window.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Actor.h" />
@@ -245,6 +245,7 @@
     <ClInclude Include="NetworkManager.h" />
     <ClInclude Include="Node.h" />
     <ClInclude Include="NodeAndPriority.h" />
+    <ClInclude Include="OpenGLRenderer.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="PhysicsBodyComponent.h" />
     <ClInclude Include="PMath.h" />
@@ -252,6 +253,7 @@
     <ClInclude Include="QuadraticSolution.h" />
     <ClInclude Include="Quaternion.h" />
     <ClInclude Include="Ray.h" />
+    <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene0.h" />
     <ClInclude Include="Scene3.h" />
     <ClInclude Include="Scene4.h" />
@@ -279,7 +281,6 @@
     <ClInclude Include="Vector.h" />
     <ClInclude Include="VelocityMatch.h" />
     <ClInclude Include="VMath.h" />
-    <ClInclude Include="Window.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="GameEngineLog.txt" />

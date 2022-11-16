@@ -32,7 +32,6 @@ private:
 
 	class Scene* currentScene;
 	//class Timer* timer;
-	class Window* window;
 
 	/*unsigned int fps;
 	bool isRunning;

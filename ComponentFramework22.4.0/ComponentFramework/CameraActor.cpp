@@ -1,10 +1,10 @@
-#include <glew.h>
 #include "CameraActor.h"
 #include "TransformComponent.h"
 #include "MMath.h"
 #include "QMath.h"
 #include "Debug.h"
 #include "UBO_Padding.h"
+#include "EngineManager.h"
 
 CameraActor::CameraActor(Component* parent_):Actor(parent_) {
 	prehab = false;
@@ -20,12 +20,8 @@ bool CameraActor::OnCreate() {
 	Debug::Info("Creating values for CameraActor: ", __FILE__, __LINE__);
 	//buffer
 	size_t bufferSize = 2 * UBO_PADDING::MAT4; //*2 because we want both projectionMatrix & viewMatrix
-	glGenBuffers(1, &uboMatricesID); //generate a buffer
-	glBindBuffer(GL_UNIFORM_BUFFER, uboMatricesID); //I'm talking to you uboMatricesID
-	glBufferData(GL_UNIFORM_BUFFER, bufferSize, nullptr, GL_STATIC_DRAW); //generate the size, allocate memory - GL_STATIC_DRAW is one way to the gpu
-	glBindBuffer(GL_UNIFORM_BUFFER, 0); //I'm no longer talking to uboMatricesID - every ubo has a unique ID, 0 is nothing
-	//binding - https://www.khronos.org/opengl/wiki/Uniform_Buffer_Object
-	glBindBufferBase(GL_UNIFORM_BUFFER, bindingPoint, uboMatricesID); //giving it a binding point, so it can be found later by gpu
+
+	EngineManager::Instance()->GetRenderer()->CreateUniformBuffer(uboMatricesID, bindingPoint, bufferSize);
 
 	UpdateProjectionMatrix(45.0f, (16.0f / 9.0f), 0.5f, 100.0f);
 	UpdateViewMatrix();
@@ -33,15 +29,13 @@ bool CameraActor::OnCreate() {
 	return isCreated;
 }
 
-void CameraActor::UpdateProjectionMatrix(const float fovy, const float aspectRatio, const float near, const float far) {
-	projectionMatrix = MMath::perspective(fovy, aspectRatio, near, far);
+void CameraActor::UpdateProjectionMatrix(const float fovy, const float aspectRatio, const float nearF, const float farF) {
+	projectionMatrix = MMath::perspective(fovy, aspectRatio, nearF, farF);
 
 	CalculateFrustumPlanes();
 
 	//buffer update
-	glBindBuffer(GL_UNIFORM_BUFFER, uboMatricesID); //I'm talking to you uboMatricesID
-	glBufferSubData(GL_UNIFORM_BUFFER, 0, sizeof(Matrix4), projectionMatrix); //offset = 0 because it is the start of the buffer
-	glBindBuffer(GL_UNIFORM_BUFFER, 0); //unbind buffer
+	EngineManager::Instance()->GetRenderer()->UpdateUniformBuffer(uboMatricesID, 0, sizeof(Matrix4), projectionMatrix);
 }
 
 void CameraActor::UpdateViewMatrix() {
@@ -58,9 +52,7 @@ void CameraActor::UpdateViewMatrix() {
 	CalculateFrustumPlanes();
 
 	//buffer update
-	glBindBuffer(GL_UNIFORM_BUFFER, uboMatricesID); //I'm talking to you uboMatricesID
-	glBufferSubData(GL_UNIFORM_BUFFER, UBO_PADDING::MAT4, sizeof(Matrix4), viewMatrix); //offset = sizeof(Matrix4) because we put the projection in before
-	glBindBuffer(GL_UNIFORM_BUFFER, 0); //unbind buffer
+	EngineManager::Instance()->GetRenderer()->UpdateUniformBuffer(uboMatricesID, UBO_PADDING::MAT4, sizeof(Matrix4), viewMatrix); //offset = sizeof(Matrix4) because we put the projection in before
 }
 
 GEOMETRY::Ray CameraActor::WorldSpaceRayFromMouseCoords(float mouseX, float mouseY) {
@@ -68,8 +60,7 @@ GEOMETRY::Ray CameraActor::WorldSpaceRayFromMouseCoords(float mouseX, float mous
 	//Get a ray pointing into the world
 	//We have the x, y pixel coordinates
 	//Need to convert this into world space to build our ray
-	int viewport[4];
-	glGetIntegerv(GL_VIEWPORT, viewport);
+	std::array<int, 4> viewport = EngineManager::Instance()->GetRenderer()->GetViewPort();
 	Matrix4 ndc = MMath::viewportNDC(viewport[2], viewport[3]);
 	Matrix4 rayTransform = MMath::inverse(ndc * projectionMatrix);
 
@@ -126,6 +117,6 @@ void CameraActor::CalculateFrustumPlanes() {
 }
 
 void CameraActor::OnDestroy() {
-	glDeleteBuffers(1, &uboMatricesID); //protect the memory and delete the buffer
+	EngineManager::Instance()->GetRenderer()->DeleteBuffers(1, uboMatricesID); //protect the memory and delete the buffer
 	isCreated = false;
 }
