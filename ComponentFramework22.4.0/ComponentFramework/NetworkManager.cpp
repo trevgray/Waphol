@@ -88,7 +88,6 @@ void NetworkManager::Run() {
 
 				actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 				actorBuffer.orientation = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion();
-				//actorBuffer.name = actorName.c_str();
 
 				sendbuf = (char*)&actorBuffer; //binary representation 
 
