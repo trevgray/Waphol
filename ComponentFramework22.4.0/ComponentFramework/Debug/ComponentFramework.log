@@ -1,4 +1,3 @@
-﻿  Scene0.cpp
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene0.cpp(161,119): warning C4244: 'argument': conversion from 'uint64_t' to 'GLuint', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene0.cpp(162,114): warning C4244: 'argument': conversion from 'uint64_t' to 'GLuint', possible loss of data
+﻿  Graph.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Graph.cpp(81,20): warning C4018: '<': signed/unsigned mismatch
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

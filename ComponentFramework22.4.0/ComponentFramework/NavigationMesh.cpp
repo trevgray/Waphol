@@ -47,7 +47,6 @@ void NavigationMesh::OnCreate() {
 	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		if (actor.second->GetComponent<MaterialComponent>() != nullptr) { //everything is an actor, so i just check if it has a texture
 			skipActor = false;
-			//std::cout << "BRUH" << std::endl;
 			for (std::string ignoreActorName : ignoreActors) {
 				if (actor.first == ignoreActorName) {
 					skipActor = true;

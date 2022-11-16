@@ -1,6 +1,7 @@
 #include "Graph.h"
 #include "NodeAndPriority.h"
 #include <iostream>
+#include "VMath.h"
 
 struct ComparePriority {
 	bool operator()(NodeAndPriority const& lhs, NodeAndPriority const& rhs) {
@@ -71,7 +72,7 @@ void Graph::AddConnectionVector(MATH::Vec3 fromNodePos, MATH::Vec3 toNodePos) {
 		std::cout << "ERROR: Node not found" << std::endl;
 	}
 	else {
-		AddWeightConnection(fromNode.GetLabel(), toNode.GetLabel(), 1.0f);
+		AddWeightConnection(fromNode.GetLabel(), toNode.GetLabel(), MATH::VMath::distance(fromNodePos, toNodePos));
 	}
 }
 
@@ -118,8 +119,8 @@ std::vector<int> Graph::AStar(int startNode, int goalNode) {
 			//if neighbor is not in costSoFar or newCost is lower
 			if (costSoFar[nextNode] == 0.0f || newCost < costSoFar[nextNode]) {
 				//found a better path so update structure (look at pseudo code algorithm)
-				costSoFar[nextNode] = newCost + Heuristic(nextNode, goalNode); //+ Heuristic
-				frontier.push(NodeAndPriority(&node[nextNode], newCost));
+				costSoFar[nextNode] = newCost;
+				frontier.push(NodeAndPriority(&node[nextNode], newCost + Heuristic(nextNode, goalNode))); //+ Heuristic
 				cameFrom[nextNode] = current;
 			}
 		}
@@ -134,7 +135,7 @@ float Graph::Heuristic(int startNode, int goalNode) {
 	float D = 1;
 
 	//return D * sqrt(dx * dx + dy * dy); //Euclidean distance - http://theory.stanford.edu/~amitp/GameProgramming/Heuristics.html
-	return D * (dx * dx + dy * dy); //avoid the expensive square root in the Euclidean distance by using distance-squared
+	return D * sqrt(dx * dx + dy * dy); //avoid the expensive square root in the Euclidean distance by using distance-squared
 }
 
 std::vector<int> Graph::Dijkstra(int startNode, int goalNode) {
