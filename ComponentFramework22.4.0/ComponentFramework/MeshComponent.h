@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include <glew.h>
 #include <vector>
 #include "Vector.h"
 using namespace MATH;
@@ -13,16 +12,11 @@ class MeshComponent : public Component {
 
 private:
 	std::string filename;
-	std::vector<Vec3> vertices;
-	std::vector<Vec3> normals;
-	std::vector<Vec2> uvCoords;
-	size_t dateLength;
-	GLenum drawmode;
 
 	/// Private helper methods
 	void LoadModel(const char* filename);
-	void StoreMeshData(GLenum drawmode_);
-	GLuint vao, vbo;
+	unsigned int vao, vbo;
+	size_t dateLength;
 public:
 
 	MeshComponent(Component* parent_, std::string filename_);
@@ -31,6 +25,6 @@ public:
 	void OnDestroy();
 	void Update(const float deltaTime);
 	void Render() const;
-	void Render(GLenum drawmode) const;
+	void Render(unsigned int drawmode) const;
 
 };

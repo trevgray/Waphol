@@ -8,6 +8,9 @@
 
 #include <array>
 
+#define TINYOBJLOADER_IMPLEMENTATION
+#include "tiny_obj_loader.h"
+
 OpenGLRenderer::OpenGLRenderer(){
 	setRendererType(RendererType::OPENGL);
 }
@@ -84,6 +87,114 @@ void OpenGLRenderer::UpdateUniformBuffer(unsigned int& bufferID, unsigned int of
 
 void OpenGLRenderer::DeleteBuffers(int numberOfBuffers, unsigned int& bufferID) {
 	glDeleteBuffers(numberOfBuffers, &bufferID); //protect the memory and delete the buffer
+}
+
+void OpenGLRenderer::DeleteVertexArrays(int numberOfBuffers, unsigned int& bufferID) {
+	glDeleteVertexArrays(numberOfBuffers, &bufferID);
+}
+
+void OpenGLRenderer::LoadModel(std::string modelPath, unsigned int& vao, unsigned int& vbo, size_t& dateLength) {
+	tinyobj::attrib_t attrib;
+	std::vector<tinyobj::shape_t> shapes;
+	std::vector<tinyobj::material_t> materials;
+	std::string warn, err;
+
+	std::vector<MATH::Vec3> vertices;
+	std::vector<MATH::Vec3> normals;
+	std::vector<MATH::Vec2> uvCoords;
+	vertices.clear();
+	normals.clear();
+	uvCoords.clear();
+
+	if (!tinyobj::LoadObj(&attrib, &shapes, &materials, &warn, &err, modelPath.c_str())) {
+		throw std::runtime_error(warn + err);
+	}
+	for (const auto& shape : shapes) {
+		for (const auto& index : shape.mesh.indices) {
+			MATH::Vec3 vertex{};
+			vertex.x = attrib.vertices[3 * index.vertex_index + 0];
+			vertex.y = attrib.vertices[3 * index.vertex_index + 1];
+			vertex.z = attrib.vertices[3 * index.vertex_index + 2];
+
+			MATH::Vec3 normal{};
+			normal.x = attrib.normals[3 * index.normal_index + 0];
+			normal.y = attrib.normals[3 * index.normal_index + 1];
+			normal.z = attrib.normals[3 * index.normal_index + 2];
+
+			MATH::Vec2 uvCoord{};
+			uvCoord.x = attrib.texcoords[2 * index.texcoord_index + 0];
+			uvCoord.y = attrib.texcoords[2 * index.texcoord_index + 1];
+
+			vertices.push_back(vertex);
+			normals.push_back(normal);
+			uvCoords.push_back(uvCoord);
+		}
+	}
+
+	StoreMeshData(vao, vbo, dateLength, vertices, normals, uvCoords);
+}
+
+void OpenGLRenderer::RenderModel(unsigned int vao, size_t dateLength, unsigned int drawmode) {
+	glBindVertexArray(vao);
+	glDrawArrays(drawmode, 0, dateLength);
+	glBindVertexArray(0); // Unbind the VAO
+}
+
+void OpenGLRenderer::StoreMeshData(unsigned int& vao, unsigned int& vbo, size_t& dateLength,
+	std::vector<MATH::Vec3> vertices, std::vector<MATH::Vec3> normals, std::vector<MATH::Vec2> uvCoords) { //made a vertex buffer for opengl
+
+	/// These just make the code easier for me to read
+#define VERTEX_LENGTH 	(vertices.size() * (sizeof(MATH::Vec3)))
+#define NORMAL_LENGTH 	(normals.size() * (sizeof(MATH::Vec3)))
+#define TEXCOORD_LENGTH (uvCoords.size() * (sizeof(MATH::Vec2)))
+
+	const int verticiesLayoutLocation = 0;
+	const int normalsLayoutLocation = 1;
+	const int uvCoordsLayoutLocation = 2;
+
+	/// create and bind the VOA
+	glGenVertexArrays(1, &vao);
+	glBindVertexArray(vao);
+	/// Create and initialize vertex buffer object VBO
+	glGenBuffers(1, &vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, vbo);
+	glBufferData(GL_ARRAY_BUFFER, VERTEX_LENGTH + NORMAL_LENGTH + TEXCOORD_LENGTH, nullptr, GL_STATIC_DRAW);
+
+	/// assigns the addr of "points" to be the beginning of the array buffer "sizeof(points)" in length
+	glBufferSubData(GL_ARRAY_BUFFER, 0, VERTEX_LENGTH, &vertices[0]);
+	/// assigns the addr of "normals" to be "sizeof(points)" offset from the beginning and "sizeof(normals)" in length  
+	glBufferSubData(GL_ARRAY_BUFFER, VERTEX_LENGTH, NORMAL_LENGTH, &normals[0]);
+	/// assigns the addr of "texCoords" to be "sizeof(points) + sizeof(normals)" offset from the beginning and "sizeof(texCoords)" in length  
+	glBufferSubData(GL_ARRAY_BUFFER, VERTEX_LENGTH + NORMAL_LENGTH, TEXCOORD_LENGTH, &uvCoords[0]);
+
+	glEnableVertexAttribArray(verticiesLayoutLocation);
+	glVertexAttribPointer(verticiesLayoutLocation, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(0));
+	glEnableVertexAttribArray(normalsLayoutLocation);
+	glVertexAttribPointer(normalsLayoutLocation, 3, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(VERTEX_LENGTH));
+	glEnableVertexAttribArray(uvCoordsLayoutLocation);
+	glVertexAttribPointer(uvCoordsLayoutLocation, 2, GL_FLOAT, GL_FALSE, 0, reinterpret_cast<void*>(VERTEX_LENGTH + NORMAL_LENGTH));
+
+	dateLength = vertices.size();
+
+	/// give back the memory used in these vectors. The data is safely stored in the GPU now
+	vertices.clear();
+	normals.clear();
+	uvCoords.clear();
+
+	/// Don't need these defines sticking around anymore
+#undef VERTEX_LENGTH
+#undef NORMAL_LENGTH
+#undef TEXCOORD_LENGTH
+}
+
+uint64_t OpenGLRenderer::LoadTexture2D(std::string texturePath)
+{
+	return uint64_t();
+}
+
+uint64_t OpenGLRenderer::CreateShader(std::string vertPath, std::string fragPath)
+{
+	return uint64_t();
 }
 
 std::array<int, 4> OpenGLRenderer::GetViewPort() {
