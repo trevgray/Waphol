@@ -1,4 +1,3 @@
-#include <glew.h>
 #include <iostream>
 #include <SDL.h>
 #include "Scene3.h"

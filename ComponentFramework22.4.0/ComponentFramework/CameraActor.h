@@ -37,7 +37,7 @@ public:
 	void UpdateProjectionMatrix(const float fovy, const float aspectRatio, const float near, const float far);
 	void UpdateViewMatrix();
 
-	uint64_t GetMatriciesID() const { return uboMatricesID; }
+	unsigned int GetMatriciesID() const { return uboMatricesID; }
 
 	GEOMETRY::Ray WorldSpaceRayFromMouseCoords(float mouseX, float mouseY);
 };

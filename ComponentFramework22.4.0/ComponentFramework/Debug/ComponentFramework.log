@@ -1,7 +1,4 @@
-﻿  Actor.cpp
-  ActorManager.cpp
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\ActorManager.cpp(120,73): warning C4244: 'argument': conversion from 'uint64_t' to 'GLuint', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\ActorManager.cpp(121,68): warning C4244: 'argument': conversion from 'uint64_t' to 'GLuint', possible loss of data
+﻿  ActorManager.cpp
   Align.cpp
   Arrive.cpp
   AssetManager.cpp
@@ -11,7 +8,7 @@ E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\ActorManager.cpp(12
   Flee.cpp
   FollowPath.cpp
   LightActor.cpp
-  Main.cpp
+  MaterialComponent.cpp
   MeshComponent.cpp
   NavigationMesh.cpp
   NetworkManager.cpp
@@ -20,25 +17,25 @@ E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\tiny_obj_loader.h(1
   Physics.cpp
   PhysicsBodyComponent.cpp
   Scene0.cpp
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene0.cpp(162,119): warning C4244: 'argument': conversion from 'uint64_t' to 'GLuint', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene0.cpp(163,114): warning C4244: 'argument': conversion from 'uint64_t' to 'GLuint', possible loss of data
   Scene3.cpp
+  Scene4.cpp
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(35,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(35,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(46,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(46,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(54,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(54,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(64,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(64,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Generating Code...
   Compiling...
-  Scene4.cpp
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(36,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(47,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,26): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(55,24): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,21): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\Scene4.cpp(65,19): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
   Scene5.cpp
   Scene6.cpp
   SceneManager.cpp
 E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SceneManager.cpp(101,4): warning C4065: switch statement contains 'default' but no 'case' labels
+  Main.cpp
   Seek.cpp
+  ShaderComponent.cpp
   SteeringComponent.cpp
   VelocityMatch.cpp
   Generating Code...

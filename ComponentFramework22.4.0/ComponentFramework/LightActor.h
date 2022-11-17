@@ -31,5 +31,5 @@ public:
 	Vec3 getPosition() const { return pos; }
 	bool OnCreate() override;
 	void OnDestroy() override;
-	uint64_t GetLightID() const { return uboLightDataID; }
+	unsigned int GetLightID() const { return uboLightDataID; }
 };

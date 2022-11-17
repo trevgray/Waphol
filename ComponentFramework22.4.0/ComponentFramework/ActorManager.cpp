@@ -5,6 +5,7 @@
 #include "CameraActor.h"
 #include "LightActor.h"
 #include "EngineManager.h"
+
 ActorManager::ActorManager() {
 }
 
@@ -113,25 +114,26 @@ void ActorManager::UpdateActors(const float deltaTime) {
 }
 
 void ActorManager::RenderActors(std::vector<std::string> shaders) const {
-	glEnable(GL_DEPTH_TEST);
-	glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	int uniformBuffer = 0x8A11; //0x8A11 is GL_UNIFORM_BUFFER
+	int texture2D = 0x0DE1; //0x0DE1 is a GL_TEXTURE_2D
 
-	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<CameraActor>()->GetMatriciesID());
-	glBindBuffer(GL_UNIFORM_BUFFER, GetActor<LightActor>()->GetLightID());
+	EngineManager::Instance()->GetRenderer()->ClearScreen(0.0f, 0.0f, 0.0f, 0.0f);
+
+	EngineManager::Instance()->GetRenderer()->BindBuffer(uniformBuffer, GetActor<CameraActor>()->GetMatriciesID());
+	EngineManager::Instance()->GetRenderer()->BindBuffer(uniformBuffer, GetActor<LightActor>()->GetLightID());
 
 	for (std::string shaderFileName : shaders) {
-		glUseProgram(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>(shaderFileName.c_str())->GetProgram());
+		EngineManager::Instance()->GetRenderer()->UseShader(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>(shaderFileName.c_str())->GetProgram());
 
 		for (auto actor : GetActorGraph()) {
-			glUniformMatrix4fv(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>(shaderFileName.c_str())->GetUniformID("modelMatrix"), 1, GL_FALSE, actor.second->GetModelMatrix());
+			EngineManager::Instance()->GetRenderer()->UpdateMatrixUniform(EngineManager::Instance()->GetAssetManager()->GetComponent<ShaderComponent>(shaderFileName.c_str())->GetUniformID("modelMatrix"), actor.second->GetModelMatrix());
 			if (actor.second->GetComponent<MaterialComponent>() != nullptr) { //everything is an actor, so i just check if it has a texture
-				glBindTexture(GL_TEXTURE_2D, actor.second->GetComponent<MaterialComponent>()->getTextureID()); //this is also amazing because we can add as many actors as we want, and the render does not need to change
-				actor.second->GetComponent<MeshComponent>()->Render(GL_TRIANGLES);
+				EngineManager::Instance()->GetRenderer()->BindTexture(texture2D, actor.second->GetComponent<MaterialComponent>()->getTextureID());
+				actor.second->GetComponent<MeshComponent>()->Render(); //4 is GL_Triangles
 			}
 		}
-		glBindTexture(GL_TEXTURE_2D, 0);
-		glUseProgram(0);
+		EngineManager::Instance()->GetRenderer()->BindTexture(texture2D, 0);
+		EngineManager::Instance()->GetRenderer()->UseShader(0);
 	}
 }
 

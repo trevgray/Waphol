@@ -1,6 +1,5 @@
 #pragma once
 #include "Component.h"
-#include "glew.h"
 #include <unordered_map>
 
 class ShaderComponent: public Component {
@@ -15,20 +14,13 @@ private:
 	unsigned int shaderID;
 	unsigned int vertShaderID;
 	unsigned int fragShaderID;
-	std::unordered_map<std::string, GLuint > uniformMap;
-
-	/// Private helper methods
-	char* ReadTextFile(const char *fileName);	
-	bool CompileAttach();
-	bool Link();
-	void SetUniformLocations();
+	std::unordered_map<std::string, unsigned int> uniformMap;
 	
-
 public:
 	ShaderComponent(Component* parent_, std::string vsFilename_, std::string fsFilename_);
 	~ShaderComponent();
-	inline GLuint GetProgram() const { return shaderID;}
-	GLuint GetUniformID(std::string name);
+	inline unsigned int GetProgram() const { return shaderID;}
+	unsigned int GetUniformID(std::string name);
 	bool OnCreate() override;
 	void OnDestroy() override;
 	void Update(const float deltaTime ) override;
