@@ -45,6 +45,7 @@ private:
 
 	//Server Variables & Functions
 	void AddClientActor();
+	void AddClientSession(void* data);
 	std::string clientActorTemplateName;
 
 	std::unordered_map<std::string, Ref<Actor>> clientActors;

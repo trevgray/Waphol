@@ -47,21 +47,19 @@ NetworkManager::~NetworkManager() {
 void NetworkManager::Run() {
 	while (EngineManager::Instance()->GetIsRunning() == true) {
 		if (networkMode == Server) {
-			if (connectSocket == INVALID_SOCKET) { //when the listen socket is null
-				//listen
-				iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
-				if (iResult == SOCKET_ERROR) {
-					std::cout << "Listen Socket failed with error: " << WSAGetLastError() << std::endl;
-					closesocket(listenSocket);
-					WSACleanup();
-					system("pause");
-					return;
-				}
+			//listen
+			iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
+			if (iResult == SOCKET_ERROR) {
+				std::cout << "Listen Socket failed with error: " << WSAGetLastError() << std::endl;
+				closesocket(listenSocket);
+				WSACleanup();
+				system("pause");
+				return;
+			}
+			std::cout << "Waiting for connection request..." << std::endl;
 
-				std::cout << "Waiting for connection request..." << std::endl;
-
+			while (connectSocket = accept(listenSocket, nullptr, nullptr)) {
 				//Accept a client socket
-				connectSocket = accept(listenSocket, nullptr, nullptr);
 				if (connectSocket == INVALID_SOCKET) {
 					std::cout << "Accept failed with error: " << WSAGetLastError() << std::endl;
 					closesocket(listenSocket);
@@ -74,46 +72,11 @@ void NetworkManager::Run() {
 
 				AddClientActor();
 
-				closesocket(listenSocket);
+				//create a thread and start it
+				std::thread clientThread(&NetworkManager::AddClientSession, this, (void*)connectSocket);
+				clientThread.detach();
 			}
 
-			iResult = recv(connectSocket, (char*)&actorBuffer, sizeof(ActorBuffer), 0);
-			if (iResult > 0) {
-
-				std::unique_lock<std::mutex> lock(transformUpdateMutex);
-				printf("%f %f %f\n", actorBuffer.position.x, actorBuffer.position.y, actorBuffer.position.z);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(actorBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(actorBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(actorBuffer.orientation);
-				lock.unlock();
-
-				actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
-				actorBuffer.orientation = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion();
-
-				sendbuf = (char*)&actorBuffer; //binary representation 
-
-				iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
-				if (iResult == SOCKET_ERROR) {
-					std::cout << "Send failed with error: " << iResult << std::endl;
-					closesocket(connectSocket);
-					WSACleanup();
-					system("pause");
-					return;
-				}
-			}
-			else if (iResult == 0) {
-				std::cout << "Connection closing..." << std::endl;
-
-				EngineManager::Instance()->GetActorManager()->RemoveActor(std::to_string(actorBuffer.ID));
-
-				break;
-			}
-			else {
-				std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
-				closesocket(listenSocket);
-				WSACleanup();
-				system("pause");
-				return;
-			}
 		}
 		else if (networkMode == Client) {
 
@@ -317,4 +280,60 @@ void NetworkManager::AddClientActor() {
 		system("pause");
 		return;
 	}
+}
+
+void NetworkManager::AddClientSession(void* data) {
+	SOCKET clientSocket = (SOCKET)data;
+	ActorBuffer clientActorBuffer;
+	char* clientSendbuf;
+	int iClientResult;
+
+	while (EngineManager::Instance()->GetIsRunning() == true) {
+		iClientResult = recv(clientSocket, (char*)&clientActorBuffer, sizeof(ActorBuffer), 0);
+		if (iClientResult > 0) {
+
+			std::unique_lock<std::mutex> lock(transformUpdateMutex);
+			printf("%f %f %f\n", clientActorBuffer.position.x, clientActorBuffer.position.y, clientActorBuffer.position.z);
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(clientActorBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(clientActorBuffer.position);
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(clientActorBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(clientActorBuffer.orientation);
+			lock.unlock();
+
+			clientActorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
+			clientActorBuffer.orientation = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion();
+
+			clientSendbuf = (char*)&clientActorBuffer; //binary representation 
+
+			iClientResult = send(clientSocket, clientSendbuf, sizeof(ActorBuffer), 0);
+			if (iClientResult == SOCKET_ERROR) {
+				std::cout << "Send failed with error: " << iClientResult << std::endl;
+				closesocket(clientSocket);
+				WSACleanup();
+				system("pause");
+				return;
+			}
+		}
+		else if (iClientResult == 0) {
+			std::cout << "Connection closing..." << std::endl;
+			EngineManager::Instance()->GetActorManager()->RemoveActor(std::to_string(clientActorBuffer.ID));
+			break;
+		}
+		else {
+			std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
+			closesocket(listenSocket);
+			WSACleanup();
+			system("pause");
+			return;
+		}
+	}
+
+	//shutdown the connection on our end
+	iClientResult = shutdown(clientSocket, SD_SEND);
+	if (iClientResult == SOCKET_ERROR) {
+		std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
+		WSACleanup();
+		system("pause");
+		return;
+	}
+
+	closesocket(clientSocket);
 }
