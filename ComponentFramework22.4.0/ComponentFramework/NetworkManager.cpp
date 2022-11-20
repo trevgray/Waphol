@@ -28,7 +28,7 @@ NetworkManager::~NetworkManager() {
 	}
 	else {
 		//shutdown the connection on our end
-		iResult = shutdown(connectSocket, SD_SEND);
+		iResult = shutdown(listenSocket, SD_SEND);
 		if (iResult == SOCKET_ERROR) {
 			std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
 			closesocket(listenSocket);
@@ -308,7 +308,6 @@ void NetworkManager::AddClientSession(void* data) {
 				std::cout << "Send failed with error: " << iClientResult << std::endl;
 				closesocket(clientSocket);
 				WSACleanup();
-				system("pause");
 				return;
 			}
 		}
@@ -319,9 +318,8 @@ void NetworkManager::AddClientSession(void* data) {
 		}
 		else {
 			std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
-			closesocket(listenSocket);
+			closesocket(clientSocket);
 			WSACleanup();
-			system("pause");
 			return;
 		}
 	}

@@ -17,7 +17,6 @@ void ActorManager::RemoveAllActors() {
 	//for (Actor* parentPointer : parentPointers) {
 	//	if (parentPointer) { delete parentPointer; }
 	//}
-
 	parentPointers.clear(); //remove all parent pointers in the parentPointer vector
 
 	for (auto actor : actorGraph) { //remove all actors in the hash table
@@ -41,6 +40,7 @@ template<typename ActorTemplate, typename ... Args> void ActorManager::AddActor(
 }
 
 void ActorManager::RemoveActor(std::string name) {
+	actorGraph.find(name)->second->~Actor();
 	actorGraph.erase(name);
 }
 

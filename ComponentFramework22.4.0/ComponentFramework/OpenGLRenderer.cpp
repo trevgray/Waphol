@@ -81,7 +81,7 @@ void OpenGLRenderer::UpdateUniformBuffer(unsigned int& bufferID, unsigned int of
 }
 
 void OpenGLRenderer::DeleteBuffers(int numberOfBuffers, unsigned int& bufferID) {
-	glDeleteBuffers(numberOfBuffers, &bufferID); //protect the memory and delete the buffer
+	glDeleteBuffers(numberOfBuffers, &bufferID); //protects the memory and delete the buffer
 }
 
 void OpenGLRenderer::DeleteVertexArrays(int numberOfBuffers, unsigned int& bufferID) {
