@@ -157,6 +157,7 @@
     <ClCompile Include="ControllerComponent.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Debug.cpp" />
+    <ClCompile Include="DecisionMakingComponent.cpp" />
     <ClCompile Include="EMath.cpp" />
     <ClCompile Include="EngineManager.cpp" />
     <ClCompile Include="FaceVelocity.cpp" />
@@ -219,6 +220,7 @@
     <ClInclude Include="ControllerComponent.h" />
     <ClInclude Include="Cylinder.h" />
     <ClInclude Include="Debug.h" />
+    <ClInclude Include="DecisionMakingComponent.h" />
     <ClInclude Include="EMath.h" />
     <ClInclude Include="EngineManager.h" />
     <ClInclude Include="Euler.h" />
