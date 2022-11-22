@@ -242,9 +242,11 @@ void AssetManager::BuildPhysicsBodyComponent() {
 		Vec3(currentElement->FirstChildElement("Acceleration")->FloatAttribute("x"), currentElement->FirstChildElement("Acceleration")->FloatAttribute("y"), currentElement->FirstChildElement("Acceleration")->FloatAttribute("z")), /*accel*/
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxSpeed"),
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxAcceleration"),
-		Matrix3(),
-		Vec3(),
-		Vec3(),
+		Matrix3(currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("xx"), currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("yx"), currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("zx"),
+			currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("xy"), currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("yy"), currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("zy"), 
+			currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("xz"), currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("yz"), currentElement->FirstChildElement("RotationalInertia")->FloatAttribute("zz")),
+		Vec3(currentElement->FirstChildElement("AngularAccel")->FloatAttribute("x"), currentElement->FirstChildElement("AngularAccel")->FloatAttribute("y"), currentElement->FirstChildElement("AngularAccel")->FloatAttribute("z")),
+		Vec3(currentElement->FirstChildElement("AngularVel")->FloatAttribute("x"), currentElement->FirstChildElement("AngularVel")->FloatAttribute("y"), currentElement->FirstChildElement("AngularVel")->FloatAttribute("z")),
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxAngular"));
 }
 

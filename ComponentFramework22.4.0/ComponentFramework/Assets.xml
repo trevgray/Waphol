@@ -261,14 +261,24 @@
 			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
 			<Acceleration x="0.0" y ="0.0" z="0.0"/>
-			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
+			<RotationalInertia xx = "1.0" xy = "0.0" xz = "0.0"
+							   yx = "0.0" yy = "1.0" yz = "0.0"
+							   zx = "0.0" zy = "0.0" zz = "1.0"/>
+			<AngularAccel x="0.0" y ="0.0" z="0.0"/>
+			<AngularVel x="0.0" y ="0.0" z="0.0"/>
+			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxAngular="180.0"/>
 		</Component>
 
 		<Component name = "PhysicsBodyNPC">
 			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
 			<Acceleration x="0.0" y ="0.0" z="0.0"/>
-			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
+			<RotationalInertia xx = "1.0" xy = "0.0" xz = "0.0"
+							   yx = "0.0" yy = "1.0" yz = "0.0"
+							   zx = "0.0" zy = "0.0" zz = "1.0"/>
+			<AngularAccel x="0.0" y ="0.0" z="0.0"/>
+			<AngularVel x="0.0" y ="0.0" z="0.0"/>
+			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxAngular="180.0"/>
 		</Component>
 
 		<Component name = "SteeringPlayer">
@@ -361,14 +371,24 @@
 			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
 			<Acceleration x="0.0" y ="0.0" z="0.0"/>
-			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
+			<RotationalInertia xx = "1.0" xy = "0.0" xz = "0.0"
+							   yx = "0.0" yy = "1.0" yz = "0.0"
+							   zx = "0.0" zy = "0.0" zz = "1.0"/>
+			<AngularAccel x="0.0" y ="0.0" z="0.0"/>
+			<AngularVel x="0.0" y ="0.0" z="0.0"/>
+			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxAngular="180.0"/>
 		</Component>
 
 		<Component name = "PhysicsBodyNPC">
 			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
 			<Acceleration x="0.0" y ="0.0" z="0.0"/>
-			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
+			<RotationalInertia xx = "1.0" xy = "0.0" xz = "0.0"
+							   yx = "0.0" yy = "1.0" yz = "0.0"
+							   zx = "0.0" zy = "0.0" zz = "1.0"/>
+			<AngularAccel x="0.0" y ="0.0" z="0.0"/>
+			<AngularVel x="0.0" y ="0.0" z="0.0"/>
+			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxAngular="180.0"/>
 		</Component>
 
 		<Component name = "SteeringPlayer">
@@ -472,14 +492,24 @@
 			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
 			<Acceleration x="0.0" y ="0.0" z="0.0"/>
-			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
+			<RotationalInertia xx = "1.0" xy = "0.0" xz = "0.0"
+							   yx = "0.0" yy = "1.0" yz = "0.0"
+							   zx = "0.0" zy = "0.0" zz = "1.0"/>
+			<AngularAccel x="0.0" y ="0.0" z="0.0"/>
+			<AngularVel x="0.0" y ="0.0" z="0.0"/>
+			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxAngular="180.0"/>
 		</Component>
 
 		<Component name = "PhysicsBodyNPC">
 			<Type type = "PhysicsBody"/>
 			<Velocity x="0.0" y ="0.0" z="0.0"/>
 			<Acceleration x="0.0" y ="0.0" z="0.0"/>
-			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxRotation="180.0" maxAngular="180.0"/>
+			<RotationalInertia xx = "1.0" xy = "0.0" xz = "0.0"
+							   yx = "0.0" yy = "1.0" yz = "0.0"
+							   zx = "0.0" zy = "0.0" zz = "1.0"/>
+			<AngularAccel x="0.0" y ="0.0" z="0.0"/>
+			<AngularVel x="0.0" y ="0.0" z="0.0"/>
+			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxAngular="180.0"/>
 		</Component>
 
 		<Component name = "SteeringPlayer">
