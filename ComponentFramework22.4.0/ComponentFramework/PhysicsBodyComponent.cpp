@@ -92,10 +92,10 @@ void PhysicsBodyComponent::Update(float deltaTime) {
         vel = vel + accel * deltaTime;
 
         // Clip to maxSpeed, if speed exceeds max
-        if (VMath::mag(vel) > maxSpeed)
+        /*if (VMath::mag(vel) > maxSpeed)
         {
             vel = VMath::normalize(vel) * maxSpeed;
-        }
+        }*/
     }
 
     // Clip to maxRotation, if needed

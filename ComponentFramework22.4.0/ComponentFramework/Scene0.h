@@ -9,6 +9,11 @@
 struct Scene0 : public Scene {
 	bool renderMeshes = true;
 	bool renderCollisionShapes = true;
+
+	Ref<Actor> pickedActor;
+	Vec3 intersectionPoint;
+	bool haveClickedOnSomething = false;
+
 	explicit Scene0() {};
 	virtual ~Scene0() {};
 

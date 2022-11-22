@@ -15,6 +15,7 @@
 #include "Physics.h"
 
 #include "PMath.h"
+#include "PhysicsBodyComponent.h"
 
 bool Scene0::OnCreate()
 {
@@ -33,6 +34,12 @@ bool Scene0::OnCreate()
 	//	GetActor<Actor>(name)->InheritActor(assetManager->GetComponent<Actor>(name.c_str()));
 	//	GetActor<Actor>(name)->OnCreate();
 	//}
+
+	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+		if (actor.second->GetComponent<TransformComponent>() != nullptr) {
+			actor.second->AddComponent<PhysicsBodyComponent>(nullptr, actor.second->GetComponent<TransformComponent>(), 10.0f, Vec3(), Vec3(), 999.0f, 999.0f, Matrix3(), Vec3(), Vec3(), 999.0f);
+		}
+	}
 
 	EngineManager::Instance()->GetActorManager()->AddActor<Actor>("Obstacle", new Actor(nullptr));
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>("ObstacleActor"));
@@ -90,13 +97,14 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 				std::cout << "You picked: " << hitResult.hitActorName << '\n';
 
 				Vec3 actorPos = hitResult.hitActor->GetModelMatrix() * hitResult.intersectionPoint;
+				intersectionPoint = hitResult.intersectionPoint;
 
 				//std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
 
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
 
-				//pickedActor = actor; // make a member variable called pickedActor. Will come in handy later...  
-				//haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
+				pickedActor = hitResult.hitActor; // make a member variable called pickedActor. Will come in handy later...  
+				haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
 			}
 		}
 		break;
@@ -150,7 +158,28 @@ void Scene0::UpdateGUI() {
 }
 
 void Scene0::Update(const float deltaTime) {
-	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
+	//EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
+	if (haveClickedOnSomething) {
+		Ref<PhysicsBodyComponent> physicsBody = pickedActor->GetComponent<PhysicsBodyComponent>();
+		Ref<TransformComponent> transform = pickedActor->GetComponent<TransformComponent>();
+		float dragCoeff = 0.2f;
+		Vec3 dragForce = physicsBody->GetVel() * (-dragCoeff);
+		Vec3 gravityForce(0.0f, -9.81f, 0.0f);
+		Vec3 netForce = gravityForce + dragForce;
+		Physics::ApplyForce(pickedActor, netForce);
+		//calculate a fist approximation of velocity based on acceleration
+		physicsBody->SetVel(physicsBody->GetVel() + physicsBody->GetAccel() * deltaTime);
+		//use constraint to correct velocity errors
+		Physics::MouseConstraint(pickedActor, deltaTime, intersectionPoint);
+		//update position using corrected velocities
+		transform->SetPosition(transform->GetPosition() + physicsBody->GetVel() * deltaTime);
+		//we can rotate too with the mouse constraint - so update orientation too
+		Quaternion angularVelQuaternion(0.0f, physicsBody->GetAngularVel());
+		//Rotate using q = q + 0.5twq
+		transform->setOrientation(transform->GetQuaternion() + angularVelQuaternion * transform->GetQuaternion() * 0.5f * deltaTime);
+		//don't forget to normalize after too - Only unit quaternions please - Otherwise the model stretches
+		transform->setOrientation(QMath::normalize(transform->GetQuaternion()));
+	}
 }
 
 void Scene0::Render() const

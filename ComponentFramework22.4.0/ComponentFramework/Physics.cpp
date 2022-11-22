@@ -10,6 +10,7 @@
 #include "ShapeComponent.h"
 #include "EngineManager.h"
 #include "CameraActor.h"
+#include "QMath.h"
 
 void Physics::SimpleNewtonMotion(Ref<Actor> object, const float deltaTime) {
 	Ref<TransformComponent> actorTransform = object->GetComponent<TransformComponent>();
@@ -24,7 +25,44 @@ void Physics::SimpleNewtonMotion(Ref<Actor> object, const float deltaTime) {
 void Physics::RigidBodyRotation(Ref<Actor> object, const float deltaTime) { //I use quaternions so
 	//object.angle += object.angularVel * deltaTime + 0.5f * object.angularAccel * deltaTime * deltaTime;
 	//object.angularVel += object.angularAccel * deltaTime;
+	Ref<TransformComponent> actorTransform = object->GetComponent<TransformComponent>();
+	Ref<PhysicsBodyComponent> actorBody = object->GetComponent<PhysicsBodyComponent>();
+	actorBody->SetAngularVel(actorBody->GetAngularVel() + actorBody->GetAngularAccel() * deltaTime);
+	//update orientation too
+	Quaternion angularVelQuaternion(0.0f, actorBody->GetAngularVel());
+	//Rotate using q = q + 0.5twq
+	actorTransform->setOrientation(actorTransform->GetQuaternion() + angularVelQuaternion * actorTransform->GetQuaternion() * 0.5f * deltaTime);
+	//don't forget to normalize after too - Only unit quaternions please - Otherwise the model stretches
+	actorTransform->setOrientation(QMath::normalize(actorTransform->GetQuaternion()));
+}
 
+void Physics::ApplyTorque(Ref<Actor> object, Vec3 torque) {
+	Ref<PhysicsBodyComponent> actorBody = object->GetComponent<PhysicsBodyComponent>();
+	actorBody->SetAngularAccel(MMath::inverse(actorBody->GetRotationalInertia()) * torque);
+}
+
+void Physics::ApplyForce(Ref<Actor> object, Vec3 force) {
+	Ref<PhysicsBodyComponent> actorBody = object->GetComponent<PhysicsBodyComponent>();
+	actorBody->SetAccel(force / actorBody->GetMass());
+}
+
+void Physics::MouseConstraint(Ref<Actor> object, const float deltaTime, Vec3 mousePos) {
+	Ref<TransformComponent> actorTransform = object->GetComponent<TransformComponent>();
+	Ref<PhysicsBodyComponent> actorBody = object->GetComponent<PhysicsBodyComponent>();
+	//Assume the position in world space in the centre of mass
+	//r is the vector from the centre of mass to the attachment point
+	Vec3 r = mousePos - actorTransform->GetPosition();
+	Matrix3 mEffective(
+		1.0f + r.z * r.z + r.y * r.y, -r.x * r.y, -r.x * r.z, //first column
+		-r.x * r.y, 1.0f + r.z * r.z + r.x * r.x, -r.y * r.z, //second column 
+		-r.x * r.z, -r.y * r.z, 1.0f + r.y * r.y + r.x * r.x);//third column
+	//for a static anchor point - the JV vector is written on page 14 in Constraints
+	Vec3 JV = actorBody->GetVel() + VMath::cross(actorBody->GetAngularVel(), r);
+	//Now calculate lambda = mEffective inversed * (-JV)
+	Vec3 lambda = MMath::inverse(mEffective) * (-JV);
+	//page 16 in Constraints we update the vel & angularVel should be
+	actorBody->SetVel(actorBody->GetVel() + lambda);
+	actorBody->SetAngularVel(actorBody->GetAngularVel() + VMath::cross(lambda, r));
 }
 
 Vec3 Physics::RotateZ(float angleDisplacement, Vec3 force)

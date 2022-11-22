@@ -29,17 +29,22 @@ public:
 	virtual void Update(const float deltaTime_);
 	virtual void Render()const;
 
-	virtual void ApplyForce(MATH::Vec3 force_);
+	void ApplyForce(MATH::Vec3 force_);
 
-	virtual MATH::Vec3 GetVel() { return vel; }
-	virtual MATH::Vec3 GetAccel() { return accel; }
-	virtual float GetMass() { return mass; }
-	virtual float GetMaxSpeed() { return maxSpeed; }
-	virtual float GetMaxAcceleration() { return maxAcceleration; }
-	virtual float GetMaxAngular() { return maxAngular; }
+	MATH::Vec3 GetVel() { return vel; }
+	MATH::Vec3 GetAccel() { return accel; }
+	float GetMass() { return mass; }
+	float GetMaxSpeed() { return maxSpeed; }
+	float GetMaxAcceleration() { return maxAcceleration; }
+	float GetMaxAngular() { return maxAngular; }
+	MATH::Vec3 GetAngularVel() { return angularAccel; }
+	MATH::Vec3 GetAngularAccel() { return angularVel; }
+	Matrix3 GetRotationalInertia() { return rotationalInertia; }
 
-	virtual void SetVel(MATH::Vec3 vel_) { vel = vel_; }
-	virtual void SetAccel(MATH::Vec3 accel_) { accel = accel_; }
+	void SetVel(MATH::Vec3 vel_) { vel = vel_; }
+	void SetAccel(MATH::Vec3 accel_) { accel = accel_; }
+	void SetAngularVel(MATH::Vec3 angularVel_) { angularVel = angularVel_; }
+	void SetAngularAccel(MATH::Vec3 angularAccel_) { angularAccel = angularAccel_; }
 
 	MATH::Vec3 vel; //temp change just to make some stuff in the inputManager easier
 private:
