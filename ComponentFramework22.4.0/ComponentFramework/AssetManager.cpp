@@ -237,12 +237,14 @@ void AssetManager::BuildShapeComponent() {
 
 void AssetManager::BuildPhysicsBodyComponent() {
 	AddComponent<PhysicsBodyComponent>(currentElement->Attribute("name"), nullptr,
+		currentElement->FirstChildElement("Attributes")->FloatAttribute("mass"),
 		Vec3(currentElement->FirstChildElement("Velocity")->FloatAttribute("x"), currentElement->FirstChildElement("Velocity")->FloatAttribute("y"), currentElement->FirstChildElement("Velocity")->FloatAttribute("z")), /*velocity*/
 		Vec3(currentElement->FirstChildElement("Acceleration")->FloatAttribute("x"), currentElement->FirstChildElement("Acceleration")->FloatAttribute("y"), currentElement->FirstChildElement("Acceleration")->FloatAttribute("z")), /*accel*/
-		currentElement->FirstChildElement("Attributes")->FloatAttribute("mass"),
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxSpeed"),
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxAcceleration"),
-		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxRotation"),
+		Matrix3(),
+		Vec3(),
+		Vec3(),
 		currentElement->FirstChildElement("Attributes")->FloatAttribute("maxAngular"));
 }
 

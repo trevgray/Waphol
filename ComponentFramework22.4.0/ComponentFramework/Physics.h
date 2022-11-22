@@ -21,6 +21,11 @@ class Physics {
 public:
 	static void SimpleNewtonMotion(Ref<Actor> object, const float deltaTime);
 	static void RigidBodyRotation(Ref<Actor> object, const float deltaTime);
+	//Updates angular acceleration using torque/rotation inertia
+	static void ApplyTorque(Ref<Actor> object, Vec3 torque);
+	//Updates acceleration using a = F/m
+	static void ApplyForce(Ref<Actor> object, Vec3 force);
+
 	static Vec3 RotateZ(float angleDisplacement, Vec3 force);
 	static bool PlaneSphereCollision(Ref<Actor> object, Plane &p);
 	static void PlaneSphereCollisionResponse(Ref<Actor> object, Plane &p);

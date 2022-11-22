@@ -10,18 +10,18 @@ class PhysicsBodyComponent : public Component {
 	PhysicsBodyComponent& operator = (PhysicsBodyComponent&&) = delete;
 public:
 	PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_);
-	PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_, MATH::Vec3 vel_, MATH::Vec3 accel_,
-		float mass_,
-		float maxSpeed_,
-		float maxAcceleration_,
-		float maxRotation_,
+	PhysicsBodyComponent(Component* parent_, 
+		Ref<TransformComponent> transform_, 
+		float mass_, 
+		Vec3 vel_, 
+		Vec3 accel_, 
+		float maxSpeed_, 
+		float maxAcceleration_, 
+		Matrix3 rotationalInertia_, 
+		Vec3 angularAccel_, 
+		Vec3 angularVel_, 
 		float maxAngular_);
-	PhysicsBodyComponent(Component* parent_, MATH::Vec3 vel_, MATH::Vec3 accel_,
-		float mass_,
-		float maxSpeed_,
-		float maxAcceleration_,
-		float maxRotation_,
-		float maxAngular_);
+	PhysicsBodyComponent(Component* parent_, float mass_, Vec3 vel_, Vec3 accel_, float maxSpeed_, float maxAcceleration_, Matrix3 rotationalInertia_, Vec3 angularAccel_, Vec3 angularVel_, float maxAngular_);
 
 	virtual ~PhysicsBodyComponent();
 	virtual bool OnCreate();
@@ -41,14 +41,19 @@ public:
 	virtual void SetVel(MATH::Vec3 vel_) { vel = vel_; }
 	virtual void SetAccel(MATH::Vec3 accel_) { accel = accel_; }
 
-	MATH::Vec3 vel;
+	MATH::Vec3 vel; //temp change just to make some stuff in the inputManager easier
 private:
 	Ref<TransformComponent> transform;
-
-	MATH::Vec3 accel;
 	float mass;
+	// Linear
+	MATH::Vec3 accel;
+	//MATH::Vec3 vel;
 	float maxSpeed;
 	float maxAcceleration;
+	// Angular
+	Matrix3 rotationalInertia;
+	Vec3 angularAccel;
+	Vec3 angularVel;
 	float maxAngular;
 };
 

@@ -5,50 +5,72 @@
 using namespace MATH;
 PhysicsBodyComponent::PhysicsBodyComponent(Component* parent_, Ref<TransformComponent> transform_) : Component(parent_) {
     transform = transform_;
+    mass = 1.0f;
 
     vel = Vec3();
     accel = Vec3();
-    mass = 1.0f;
     maxSpeed = 4.0f;
     maxAcceleration = 200.0f;
+
+    rotationalInertia = Matrix3();
+    angularAccel = Vec3();
+    angularVel = Vec3();
     maxAngular = 10.0f;
 }
 
 PhysicsBodyComponent::PhysicsBodyComponent(
-    Component* parent_, Ref<TransformComponent> transform_, Vec3 vel_, Vec3 accel_,
-    float mass_,
+    Component* parent_, Ref<TransformComponent> transform_, 
+    float mass_ = 1.0f, 
+    Vec3 vel_ = Vec3(),
+    Vec3 accel_ = Vec3(),
     // These are not very good defaults, but they will prevent compiler warnings.
     float maxSpeed_ = 4.0f,
     float maxAcceleration_ = 10.0f,
-    float maxRotation_ = 180.0f,
+    Matrix3 rotationalInertia_ = Matrix3(),
+    Vec3 angularAccel_ = Vec3(),
+    Vec3 angularVel_ = Vec3(),
     float maxAngular_ = 180.0f
 ) : Component(parent_)
 {
     transform = transform_;
+    mass = mass_;
+
     vel = vel_;
     accel = accel_;
-    mass = mass_;
     maxSpeed = maxSpeed_;
     maxAcceleration = maxAcceleration_;
+
+    rotationalInertia = rotationalInertia_;
+    angularAccel = angularAccel_;
+    angularVel = angularVel_;
     maxAngular = maxAngular_;
 }
 
 PhysicsBodyComponent::PhysicsBodyComponent(
-    Component* parent_, Vec3 vel_, Vec3 accel_,
-    float mass_,
+    Component* parent_, 
+    float mass_ = 1.0f,
+    Vec3 vel_ = Vec3(),
+    Vec3 accel_ = Vec3(),
     // These are not very good defaults, but they will prevent compiler warnings.
     float maxSpeed_ = 4.0f,
     float maxAcceleration_ = 10.0f,
-    float maxRotation_ = 180.0f,
+    Matrix3 rotationalInertia_ = Matrix3(),
+    Vec3 angularAccel_ = Vec3(),
+    Vec3 angularVel_ = Vec3(),
     float maxAngular_ = 180.0f
 ) : Component(parent_)
 {
     transform = nullptr;
+    mass = mass_;
+
     vel = vel_;
     accel = accel_;
-    mass = mass_;
     maxSpeed = maxSpeed_;
     maxAcceleration = maxAcceleration_;
+
+    rotationalInertia = rotationalInertia_;
+    angularAccel = angularAccel_;
+    angularVel = angularVel_;
     maxAngular = maxAngular_;
 }
 
@@ -65,14 +87,9 @@ void PhysicsBodyComponent::ApplyForce(Vec3 force_) {
 
 void PhysicsBodyComponent::Update(float deltaTime) {
     if (vel != Vec3() || accel != Vec3()) {
-
+        //I could use Physics::SimpleNewtonMotion but this is quicker
         transform->SetPosition(transform->GetPosition() + vel * deltaTime + accel * (0.5f * deltaTime * deltaTime));
         vel = vel + accel * deltaTime;
-
-        // Update orientation
-        //transform->setOrientation(QMath::angleAxisRotation(90,Vec3(1.0f,0.0f,0.0f)) * QMath::angleAxisRotation(rotation, Vec3(0.0f, 0.0f, 1.0f))); //IDK YET ABOUT THIS
-        ////orientation += rotation * deltaTime;
-        //rotation += angular;
 
         // Clip to maxSpeed, if speed exceeds max
         if (VMath::mag(vel) > maxSpeed)

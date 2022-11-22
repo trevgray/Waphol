@@ -24,6 +24,7 @@ void Physics::SimpleNewtonMotion(Ref<Actor> object, const float deltaTime) {
 void Physics::RigidBodyRotation(Ref<Actor> object, const float deltaTime) { //I use quaternions so
 	//object.angle += object.angularVel * deltaTime + 0.5f * object.angularAccel * deltaTime * deltaTime;
 	//object.angularVel += object.angularAccel * deltaTime;
+
 }
 
 Vec3 Physics::RotateZ(float angleDisplacement, Vec3 force)

@@ -20,5 +20,3 @@ public:
 private:
 	std::string controllerTemplate;
 };
-};
-
