@@ -31,14 +31,11 @@ NetworkManager::~NetworkManager() {
 		iResult = shutdown(listenSocket, SD_SEND);
 		if (iResult == SOCKET_ERROR) {
 			std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
-			closesocket(listenSocket);
-			WSACleanup();
-			//system("pause");
-			return;
 		}
 
 		std::cout << "Connection closed" << std::endl;
 
+		closesocket(listenSocket);
 		closesocket(connectSocket);
 		WSACleanup();
 	}
@@ -51,9 +48,7 @@ void NetworkManager::Run() {
 			iResult = listen(listenSocket, SOMAXCONN); //SOMAXCONN allows maximum number of connections
 			if (iResult == SOCKET_ERROR) {
 				std::cout << "Listen Socket failed with error: " << WSAGetLastError() << std::endl;
-				closesocket(listenSocket);
-				WSACleanup();
-				system("pause");
+				this->~NetworkManager();
 				return;
 			}
 			std::cout << "Waiting for connection request..." << std::endl;
@@ -62,9 +57,7 @@ void NetworkManager::Run() {
 				//Accept a client socket
 				if (connectSocket == INVALID_SOCKET) {
 					std::cout << "Accept failed with error: " << WSAGetLastError() << std::endl;
-					closesocket(listenSocket);
-					WSACleanup();
-					system("pause");
+					this->~NetworkManager();
 					return;
 				}
 
@@ -86,8 +79,7 @@ void NetworkManager::Run() {
 					connectSocket = socket(ptr->ai_family, ptr->ai_socktype, ptr->ai_protocol); //find a open socket
 					if (connectSocket == INVALID_SOCKET) {
 						std::cout << "Socket failed with error: " << iResult << std::endl;
-						WSACleanup();
-						system("pause");
+						this->~NetworkManager();
 						return;
 					}
 
@@ -108,8 +100,7 @@ void NetworkManager::Run() {
 				freeaddrinfo(result);
 				if (connectSocket == INVALID_SOCKET) {
 					std::cout << "Unable to connect to the server: " << iResult << std::endl;
-					WSACleanup();
-					system("pause");
+					this->~NetworkManager();
 					return;
 				}
 			}
@@ -125,9 +116,7 @@ void NetworkManager::Run() {
 			iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
 			if (iResult == SOCKET_ERROR) {
 				std::cout << "Send failed with error: " << iResult << std::endl;
-				closesocket(connectSocket);
-				WSACleanup();
-				system("pause");
+				this->~NetworkManager();
 				return;
 			}
 
@@ -142,9 +131,7 @@ void NetworkManager::Run() {
 			}
 			else {
 				std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
-				closesocket(listenSocket);
-				WSACleanup();
-				system("pause");
+				this->~NetworkManager();
 				return;
 			}
 			//std::cout << "Bytes sent: " << iResult << std::endl;
@@ -183,8 +170,7 @@ bool NetworkManager::Initialize(NetworkNode networkMode_) {
 		iResult = getaddrinfo(nullptr, DEFAULT_PORT, &hints, &result);
 		if (iResult != 0) {
 			std::cout << "getaddrinfo failed with error: " << iResult << std::endl;
-			WSACleanup();
-			system("pause");
+			this->~NetworkManager();
 			return false;
 		}
 
@@ -193,8 +179,7 @@ bool NetworkManager::Initialize(NetworkNode networkMode_) {
 		if (listenSocket == INVALID_SOCKET) {
 			std::cout << "Error at socket(): " << WSAGetLastError() << std::endl;
 			freeaddrinfo(result);
-			WSACleanup();
-			system("pause");
+			this->~NetworkManager();
 			return false;
 		}
 
@@ -203,9 +188,7 @@ bool NetworkManager::Initialize(NetworkNode networkMode_) {
 		if (iResult == SOCKET_ERROR) {
 			std::cout << "Bind failed with error: " << WSAGetLastError() << std::endl;
 			freeaddrinfo(result);
-			closesocket(listenSocket);
-			WSACleanup();
-			system("pause");
+			this->~NetworkManager();
 			return false;
 		}
 		freeaddrinfo(result);
@@ -222,9 +205,8 @@ bool NetworkManager::Initialize(NetworkNode networkMode_) {
 		{ //result gets full of how to connection to the computer
 			if (iResult != 0) {
 				std::cout << "getaddrinfo failed with error: " << iResult << std::endl;
-				WSACleanup();
-				system("pause");
-				return 1;
+				this->~NetworkManager();
+				return false;
 			}
 		}
 	}
@@ -250,9 +232,7 @@ void NetworkManager::GetServerActorName() {
 	}
 	else {
 		std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
-		closesocket(connectSocket);
-		WSACleanup();
-		system("pause");
+		this->~NetworkManager();
 		return;
 	}
 }
@@ -275,9 +255,7 @@ void NetworkManager::AddClientActor() {
 	iResult = send(connectSocket, sendbuf, clientName.size(), 0);
 	if (iResult == SOCKET_ERROR) {
 		std::cout << "Send failed with error: " << iResult << std::endl;
-		closesocket(connectSocket);
-		WSACleanup();
-		system("pause");
+		this->~NetworkManager();
 		return;
 	}
 }
@@ -306,21 +284,13 @@ void NetworkManager::AddClientSession(void* data) {
 			iClientResult = send(clientSocket, clientSendbuf, sizeof(ActorBuffer), 0);
 			if (iClientResult == SOCKET_ERROR) {
 				std::cout << "Send failed with error: " << iClientResult << std::endl;
-				closesocket(clientSocket);
-				WSACleanup();
-				return;
+				break;
 			}
 		}
-		else if (iClientResult == 0) {
+		else {
 			std::cout << "Connection closing..." << std::endl;
 			EngineManager::Instance()->GetActorManager()->RemoveActor(std::to_string(clientActorBuffer.ID));
 			break;
-		}
-		else {
-			std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
-			closesocket(clientSocket);
-			WSACleanup();
-			return;
 		}
 	}
 
@@ -329,8 +299,6 @@ void NetworkManager::AddClientSession(void* data) {
 	if (iClientResult == SOCKET_ERROR) {
 		std::cout << "Shutdown failed with error: " << WSAGetLastError() << std::endl;
 		WSACleanup();
-		system("pause");
-		return;
 	}
 
 	closesocket(clientSocket);
