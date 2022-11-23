@@ -22,7 +22,7 @@ EngineManager::~EngineManager() {
 bool EngineManager::Initialize() {
 	//open the engine xml here
 	renderer = std::make_unique<OpenGLRenderer>();
-	networkManager->Initialize(Server);
+	networkManager->Initialize(Offline);
 
 	//start the game loop
 	timer->Start();

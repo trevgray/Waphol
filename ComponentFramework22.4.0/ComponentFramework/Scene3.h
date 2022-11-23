@@ -1,6 +1,10 @@
 #pragma once
 #include "Scene.h"
 #include "AssetManager.h"
+
+#include "ProfilerManager.h"
+#include <vector>
+
 using namespace MATH;
 
 /// Forward declarations 
@@ -8,7 +12,7 @@ union SDL_Event;
 
 class Scene3 : public Scene {
 private:
-	
+	ProfilerManager* test;
 public:
 	explicit Scene3();
 	virtual ~Scene3();
