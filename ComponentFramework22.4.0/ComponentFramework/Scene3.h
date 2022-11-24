@@ -12,7 +12,7 @@ union SDL_Event;
 
 class Scene3 : public Scene {
 private:
-	ProfilerManager* test;
+
 public:
 	explicit Scene3();
 	virtual ~Scene3();

@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "NetworkManager.h"
 #include "SoundManager.h"
+#include "ProfilerManager.h"
 //
 #include "Renderer.h"
 #include "OpenGLRenderer.h"
@@ -35,6 +36,7 @@ private:
 	Ref<InputManager> inputManager;
 	Ref<NetworkManager> networkManager;
 	Ref<SoundManager> soundManager;
+	Ref<ProfilerManager> profilerManager;
 	//threads
 	//std::thread networkThread;
 public:
@@ -64,4 +66,5 @@ public:
 	Ref<InputManager> GetInputManager() { return inputManager; }
 	Ref<SoundManager> GetSoundManager() { return soundManager; }
 	Ref<Renderer> GetRenderer() { return renderer; }
+	Ref<ProfilerManager> GetProfilerManager() { return profilerManager; }
 };

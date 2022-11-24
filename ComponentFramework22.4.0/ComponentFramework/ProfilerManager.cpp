@@ -8,7 +8,7 @@ ProfilerManager::ProfilerManager() {
 }
 
 ProfilerManager::~ProfilerManager() {
-	//profilers.clear();
+	profilerResults.clear();
 }
 
 //Profiler& ProfilerManager::AddProfiler(const char* name_) {

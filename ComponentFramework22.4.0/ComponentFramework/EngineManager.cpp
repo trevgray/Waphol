@@ -13,6 +13,9 @@ EngineManager::EngineManager() : fps(60), isRunning(false), fullScreen(false) {
 	inputManager = std::make_unique<InputManager>();
 	networkManager = std::make_unique<NetworkManager>();
 	soundManager = std::make_unique<SoundManager>();
+#ifdef _DEBUG
+	profilerManager = std::make_unique<ProfilerManager>();
+#endif
 }
 
 EngineManager::~EngineManager() {

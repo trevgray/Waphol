@@ -56,7 +56,8 @@ void Scene6::HandleEvents(const SDL_Event &sdlEvent) {
 	}
 }
 
-void Scene6::UpdateGUI() {}
+void Scene6::UpdateGUI() {
+}
 
 void Scene6::Update(const float deltaTime) {
 	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);

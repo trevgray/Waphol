@@ -4,7 +4,6 @@
 
 Scene3::Scene3() {
 	Debug::Info("Created Scene3: ", __FILE__, __LINE__);
-	test = new ProfilerManager();
 }
 
 Scene3::~Scene3() {
@@ -26,9 +25,7 @@ void Scene3::HandleEvents(const SDL_Event &sdlEvent) {
 	EngineManager::Instance()->GetInputManager()->HandleInputs(sdlEvent);
 }
 
-void Scene3::UpdateGUI() {
-	//test->RenderProfiler();
-}
+void Scene3::UpdateGUI() {}
 
 void Scene3::Update(const float deltaTime) {
 	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
@@ -38,7 +35,6 @@ void Scene3::Update(const float deltaTime) {
 }
 
 void Scene3::Render() const {
-	test->RenderProfiler();
 	std::vector<std::string> shaders;
 	shaders.push_back("TextureShader");
 	EngineManager::Instance()->GetActorManager()->RenderActors(shaders);

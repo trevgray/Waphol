@@ -1,6 +1,5 @@
 #pragma once
 #include <chrono>
-#include <iostream>
 #include <vector>
 //ref: https://www.youtube.com/watch?v=YbYV8rRo9_A
 
@@ -11,8 +10,7 @@ struct ProfilerResult {
 	float duration;
 };
 
-template<typename Fn> 
-class Profiler {
+template<typename Fn> class Profiler {
 public:
 	//Profiler() {}
 	Profiler(const char* name_, Fn&& func_) : func(func_) {
@@ -56,7 +54,7 @@ public:
 	ProfilerManager();
 	~ProfilerManager();
 
-	void AddProfiler(const char* name_) {
+	void ProfileScope(const char* name_) {
 		Profiler profiler(name_, [&](ProfilerResult profileResult) { profilerResults.push_back(profileResult); });
 	}
 
@@ -64,7 +62,6 @@ public:
 
 	void RenderProfiler();
 
-	//std::vector<ProfilerResult> profilerResults;
 private:
 	//std::unordered_map<const char*, Profiler> profilers;
 	std::vector<ProfilerResult> profilerResults;
