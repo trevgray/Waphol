@@ -1,2 +1,5 @@
-﻿  Scene6.cpp
+﻿  DecisionMakingComponent.cpp
+  InRangeDecision.cpp
+  Scene7.cpp
+  Generating Code...
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

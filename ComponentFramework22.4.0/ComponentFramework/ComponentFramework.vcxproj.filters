@@ -106,6 +106,12 @@
     <Filter Include="Source Files\Renderer">
       <UniqueIdentifier>{153fd62e-f2c5-45f7-8332-630cfa0cacd6}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI\Decision Making">
+      <UniqueIdentifier>{19cbcfc2-a329-4117-adb3-3f96305a2683}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Decision Making">
+      <UniqueIdentifier>{f7f1632c-cd29-44f1-868e-6f3195aa15db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -287,6 +293,18 @@
     </ClCompile>
     <ClCompile Include="ProfilerManager.cpp">
       <Filter>Source Files\Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Scene7.cpp">
+      <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.cpp">
+      <Filter>Source Files\AI\Decision Making</Filter>
+    </ClCompile>
+    <ClCompile Include="Decision.cpp">
+      <Filter>Source Files\AI\Decision Making</Filter>
+    </ClCompile>
+    <ClCompile Include="InRangeDecision.cpp">
+      <Filter>Source Files\AI\Decision Making</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -520,6 +538,21 @@
     </ClInclude>
     <ClInclude Include="ProfilerManager.h">
       <Filter>Header Files\Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Scene7.h">
+      <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.h">
+      <Filter>Header Files\AI\Decision Making</Filter>
+    </ClInclude>
+    <ClInclude Include="Decision.h">
+      <Filter>Header Files\AI\Decision Making</Filter>
+    </ClInclude>
+    <ClInclude Include="DecisionTreeNode.h">
+      <Filter>Header Files\AI\Decision Making</Filter>
+    </ClInclude>
+    <ClInclude Include="InRangeDecision.h">
+      <Filter>Header Files\AI\Decision Making</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

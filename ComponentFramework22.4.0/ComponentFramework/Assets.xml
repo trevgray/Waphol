@@ -581,5 +581,109 @@
 			<Falloff x="0.0" y="0.0" z="0.0"/>
 		</Light>
 	</Scene3>
+
+	<Scene7>
+		<Component name = "PhysicsBodyCharacter">
+			<Type type = "PhysicsBody"/>
+			<Velocity x="0.0" y ="0.0" z="0.0"/>
+			<Acceleration x="0.0" y ="0.0" z="0.0"/>
+			<RotationalInertia xx = "1.0" xy = "0.0" xz = "0.0"
+							   yx = "0.0" yy = "1.0" yz = "0.0"
+							   zx = "0.0" zy = "0.0" zz = "1.0"/>
+			<AngularAccel x="0.0" y ="0.0" z="0.0"/>
+			<AngularVel x="0.0" y ="0.0" z="0.0"/>
+			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxAngular="180.0"/>
+		</Component>
+
+		<Component name = "PhysicsBodyNPC">
+			<Type type = "PhysicsBody"/>
+			<Velocity x="0.0" y ="0.0" z="0.0"/>
+			<Acceleration x="0.0" y ="0.0" z="0.0"/>
+			<RotationalInertia xx = "1.0" xy = "0.0" xz = "0.0"
+							   yx = "0.0" yy = "1.0" yz = "0.0"
+							   zx = "0.0" zy = "0.0" zz = "1.0"/>
+			<AngularAccel x="0.0" y ="0.0" z="0.0"/>
+			<AngularVel x="0.0" y ="0.0" z="0.0"/>
+			<Attributes mass="1.0" maxSpeed="15.0" maxAcceleration="10.0" maxAngular="180.0"/>
+		</Component>
+
+		<Component name = "SteeringPlayer">
+			<Type type = "Steering"/>
+			<SteeringBehaviour one="FaceVelocity"/>
+			<Arguments target="Player"/>
+			<Weights one="1.0"/>
+		</Component>
+
+		<!--<Component name = "SteeringNPC">
+			<Type type = "Steering"/>
+			<SteeringBehaviour one="Align" two="Arrive"/>
+			<Arguments AlignTargetName="Player" ArriveTargetName="Player" ArriveTargetRadius="1.0" ArriveSlowRadius="3.0" ArriveTimeToTarget="0.1"/>
+			<Weights one="1.0" two="1.0"/>
+		</Component>-->
+
+		<Component name = "PlayerController">
+			<Type type = "Controller"/>
+			<Controller controllerTemplate = "PlayerController"/>
+		</Component>
+
+		<Component name = "CheckerPieceMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/arrow.obj"/>
+		</Component>
+
+		<Component name = "PlaneMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/Plane.obj"/>
+		</Component>
+
+		<Component name = "RedCheckerTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/redCheckerPiece.png"/>
+		</Component>
+
+		<Component name = "BlackCheckerTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/blackCheckerPiece.png"/>
+		</Component>
+
+		<Component name = "CheckerBoardTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/8x8_checkered_board.png"/>
+		</Component>
+
+		<Component name = "TextureShader">
+			<Type type = "Shader"/>
+			<Shader vertFileName = "shaders/textureVert.glsl" fragFileName = "shaders/textureFrag.glsl" />
+		</Component>
+
+		<Actor name = "Player" parent="null">
+			<Mesh name = "CheckerPieceMesh"/>
+			<Material name = "RedCheckerTexture"/>
+			<PhysicsBody name = "PhysicsBodyCharacter"/>
+			<Controller name = "PlayerController"/>
+			<Transform posx="12.5" posy ="7.5" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
+			<Steering name = "SteeringPlayer"/>
+		</Actor>
+
+		<Actor name = "NPC" parent="null">
+			<Mesh name = "CheckerPieceMesh"/>
+			<Material name = "BlackCheckerTexture"/>
+			<PhysicsBody name = "PhysicsBodyNPC"/>
+			<Transform posx="0.0" posy ="0.0" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
+			<!--<Steering name = "SteeringNPC"/>-->
+		</Actor>
+
+		<Camera name = "camera">
+			<Transform posx="0.0" posy ="0.5" posz="-40.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="0.0" scaley ="0.0" scalez="0.0"/>
+		</Camera>
+
+		<Light name = "light">
+			<LightStyle style ="DirectionLight"/>
+			<Location x="0.0" y ="-10.0" z="0.0"/>
+			<Colour r="0.8" g="0.8" b="0.8" a="0.0"/>
+			<Intensity intensity ="1.0"/>
+			<Falloff x="0.0" y="0.0" z="0.0"/>
+		</Light>
+	</Scene7>
 	
 </Root>

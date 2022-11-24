@@ -2,9 +2,6 @@
 #include "Scene.h"
 #include "AssetManager.h"
 
-#include "ProfilerManager.h"
-#include <vector>
-
 using namespace MATH;
 
 /// Forward declarations 

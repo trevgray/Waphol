@@ -3,6 +3,10 @@
 #include <string>
 #include <vector>
 
+#include "Decision.h" //which includes DecisionTreeNode.h
+#include "InRangeDecision.h"
+#include "Action.h"
+
 class DecisionMakingComponent : public Component {
 	DecisionMakingComponent(const DecisionMakingComponent&) = delete;
 	DecisionMakingComponent(DecisionMakingComponent&&) = delete;
@@ -18,5 +22,5 @@ public:
 
 	//std::string GetControllerTemplate() { return controllerTemplate; }
 private:
-	std::string controllerTemplate;
+	DecisionTreeNode* decider;
 };
