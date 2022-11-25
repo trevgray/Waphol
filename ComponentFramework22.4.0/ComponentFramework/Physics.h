@@ -27,7 +27,7 @@ public:
 	static void ApplyForce(Ref<Actor> object, Vec3 force);
 	//Using Allen Chou's slides for a mouse constraint
 	//http://allenchou.net/files/slides/2014/constraint-based-physics.pdf
-	static void MouseConstraint(Ref<Actor> object, const float deltaTime, Vec3 mousePos);
+	static void MouseConstraint(Ref<Actor> object, float deltaTime, Vec3 mousePos);
 
 	static Vec3 RotateZ(float angleDisplacement, Vec3 force);
 	static bool PlaneSphereCollision(Ref<Actor> object, Plane &p);
