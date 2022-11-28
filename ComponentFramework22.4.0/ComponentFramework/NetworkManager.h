@@ -32,6 +32,13 @@ struct ActorBuffer {
 	MATH::Quaternion orientation;
 };
 
+struct ServerBuffer {
+	unsigned int numOfActors;
+	unsigned int ID[5];
+	MATH::Vec3 position[5];
+	MATH::Quaternion orientation[5];
+};
+
 class NetworkManager {
 public:
 	NetworkManager();
@@ -41,6 +48,7 @@ public:
 private:
 	//Client Variables & Functions
 	void GetServerActorName();
+	void ReceiveServerBuffers();
 	unsigned int actorID;
 
 	//Server Variables & Functions

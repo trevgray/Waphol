@@ -1,6 +1,11 @@
 #include "NetworkManager.h"
 #include "EngineManager.h"
 
+#include <chrono>
+#include <thread>
+
+using namespace std::chrono_literals;
+
 NetworkManager::NetworkManager() {
 	networkMode = Offline;
 
@@ -94,6 +99,10 @@ void NetworkManager::Run() {
 
 					GetServerActorName();
 
+					//create a thread and start it
+					std::thread bufferThread(&NetworkManager::ReceiveServerBuffers, this);
+					bufferThread.detach();
+
 					break;
 				}
 
@@ -105,12 +114,10 @@ void NetworkManager::Run() {
 				}
 			}
 
-			//Receive until the peer closes connection
 			actorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 			actorBuffer.orientation = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion();
 			actorBuffer.ID = actorID;
 
-			//Send an initial buffer
 			sendbuf = (char*)&actorBuffer; //binary representation 
 
 			iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
@@ -119,22 +126,7 @@ void NetworkManager::Run() {
 				this->~NetworkManager();
 				return;
 			}
-
-			iResult = recv(connectSocket, (char*)&actorBuffer, sizeof(ActorBuffer), 0);
-			if (iResult > 0) {
-
-				std::unique_lock<std::mutex> lock(transformUpdateMutex);
-				printf("%f %f %f\n", actorBuffer.position.x, actorBuffer.position.y, actorBuffer.position.z);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->GetComponent<TransformComponent>()->SetPosition(actorBuffer.position);
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->GetComponent<TransformComponent>()->setOrientation(actorBuffer.orientation);
-				lock.unlock();
-			}
-			else {
-				std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
-				this->~NetworkManager();
-				return;
-			}
-			//std::cout << "Bytes sent: " << iResult << std::endl;
+			std::this_thread::sleep_for(1ms);
 		}
 		else if (networkMode == Offline) { //we are not using networking - do nothing
 			return;
@@ -223,17 +215,54 @@ void NetworkManager::GetServerActorName() {
 		actorID = (unsigned int)actorNameBuffer[0] - 48;
 
 		std::unique_lock<std::mutex> lock(transformUpdateMutex);
-		EngineManager::Instance()->GetActorManager()->AddActor<Actor>("ServerActor", new Actor(nullptr));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(clientActorTemplateName.c_str()));
+		EngineManager::Instance()->GetActorManager()->AddActor<Actor>("9", new Actor(nullptr));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("9")->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(clientActorTemplateName.c_str()));
 		//maybe make a spawn point actor? Just a though
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->AddComponent<TransformComponent>(nullptr, Vec3(12.5f, 7.5f, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(3.0f, 3.0f, 3.0f));
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("ServerActor")->OnCreate();
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("9")->AddComponent<TransformComponent>(nullptr, Vec3(12.5f, 7.5f, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(3.0f, 3.0f, 3.0f));
+		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("9")->OnCreate();
 		lock.unlock();
 	}
 	else {
 		std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
 		this->~NetworkManager();
 		return;
+	}
+}
+
+void NetworkManager::ReceiveServerBuffers() {
+	while (EngineManager::Instance()->GetIsRunning() == true) {
+		ActorBuffer serverBuffer;
+		iResult = recv(connectSocket, (char*)&serverBuffer, sizeof(ActorBuffer), 0);
+		if (iResult > 0) {
+			bool checkActor = true;
+			for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+				if (std::to_string(serverBuffer.ID) == actor.first) {
+					checkActor = false;
+				}
+			}
+			if (checkActor == true) {
+				std::unique_lock<std::mutex> lock(transformUpdateMutex);
+				EngineManager::Instance()->GetActorManager()->AddActor<Actor>(std::to_string(serverBuffer.ID), new Actor(nullptr));
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(clientActorTemplateName.c_str()));
+				//maybe make a spawn point actor? Just a though
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->AddComponent<TransformComponent>(nullptr, Vec3(12.5f, 7.5f, 0.0f), Quaternion(1.0f, 0.0f, 0.0f, 0.0f), Vec3(3.0f, 3.0f, 3.0f));
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->OnCreate();
+				lock.unlock();
+			}
+
+			//SET THE ACTORS VARIABLES
+			std::unique_lock<std::mutex> lock(transformUpdateMutex);
+			printf("%f %f %f\n", serverBuffer.position.x, serverBuffer.position.y, serverBuffer.position.z);
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(serverBuffer.position);
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(serverBuffer.orientation);
+			lock.unlock();
+		}
+		else {
+			std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
+			this->~NetworkManager();
+			return;
+		}
+		//std::cout << "Bytes sent: " << iResult << std::endl;
 	}
 }
 
@@ -276,6 +305,18 @@ void NetworkManager::AddClientSession(void* data) {
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(clientActorBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(clientActorBuffer.orientation);
 			lock.unlock();
 
+			int thisClientID = clientActorBuffer.ID;
+
+			//SEND # OF ACTORS
+			/*int numOfActors = 1;
+			iClientResult = send(clientSocket, (char*)&numOfActors, sizeof(int), 0);
+			if (iClientResult == SOCKET_ERROR) {
+				std::cout << "Send failed with error: " << iClientResult << std::endl;
+				break;
+			}*/
+
+			//SERVER ACTOR
+			clientActorBuffer.ID = 9;
 			clientActorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetPosition();
 			clientActorBuffer.orientation = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<TransformComponent>()->GetQuaternion();
 
@@ -285,6 +326,22 @@ void NetworkManager::AddClientSession(void* data) {
 			if (iClientResult == SOCKET_ERROR) {
 				std::cout << "Send failed with error: " << iClientResult << std::endl;
 				break;
+			}
+			//CLIENT ACTORS
+			for (auto actor : clientActors) {
+				if (EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(thisClientID)) != actor.second) {
+					clientActorBuffer.ID = std::stoi(actor.first);
+					clientActorBuffer.position = EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(clientActorBuffer.ID))->GetComponent<TransformComponent>()->GetPosition();
+					clientActorBuffer.orientation = EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(clientActorBuffer.ID))->GetComponent<TransformComponent>()->GetQuaternion();
+
+					clientSendbuf = (char*)&clientActorBuffer; //binary representation 
+
+					iClientResult = send(clientSocket, clientSendbuf, sizeof(ActorBuffer), 0);
+					if (iClientResult == SOCKET_ERROR) {
+						std::cout << "Send failed with error: " << iClientResult << std::endl;
+						break;
+					}
+				}
 			}
 		}
 		else {
