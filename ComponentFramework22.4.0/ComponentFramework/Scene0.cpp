@@ -86,26 +86,7 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 		
 	case SDL_MOUSEBUTTONDOWN:
 		if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
-			GEOMETRY::Ray rayWorldSpace = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->WorldSpaceRayFromMouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y));
 			
-			/*std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
-			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;*/
-
-			Hit hitResult = Physics::LineTrace(rayWorldSpace);
-
-			if (hitResult.isIntersected) {
-				std::cout << "You picked: " << hitResult.hitActorName << '\n';
-
-				Vec3 actorPos = hitResult.hitActor->GetModelMatrix() * hitResult.intersectionPoint;
-				intersectionPoint = hitResult.intersectionPoint;
-
-				//std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
-
-				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
-
-				pickedActor = hitResult.hitActor; // make a member variable called pickedActor. Will come in handy later...  
-				haveClickedOnSomething = true; // make this a member variable too. Set it to false before we loop over each actor
-			}
 		}
 		break;
 
@@ -164,7 +145,7 @@ void Scene0::Update(const float deltaTime) {
 		Ref<TransformComponent> transform = pickedActor->GetComponent<TransformComponent>();
 		float dragCoeff = 0.2f;
 		Vec3 dragForce = physicsBody->GetVel() * (-dragCoeff);
-		Vec3 gravityForce(0.0f, -9.81f, 0.0f);
+		Vec3 gravityForce(0.0f, -9.81f * physicsBody->GetMass(), 0.0f);
 		Vec3 netForce = gravityForce + dragForce;
 		Physics::ApplyForce(pickedActor, netForce);
 		//calculate a fist approximation of velocity based on acceleration

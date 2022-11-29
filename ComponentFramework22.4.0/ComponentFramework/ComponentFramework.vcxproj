@@ -188,6 +188,7 @@
     <ClCompile Include="ProfilerManager.cpp" />
     <ClCompile Include="QMath.cpp" />
     <ClCompile Include="Scene0.cpp" />
+    <ClCompile Include="Scene1.cpp" />
     <ClCompile Include="Scene3.cpp" />
     <ClCompile Include="Scene4.cpp" />
     <ClCompile Include="Scene5.cpp" />
@@ -267,6 +268,7 @@
     <ClInclude Include="Ray.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="Scene0.h" />
+    <ClInclude Include="Scene1.h" />
     <ClInclude Include="Scene3.h" />
     <ClInclude Include="Scene4.h" />
     <ClInclude Include="Scene5.h" />

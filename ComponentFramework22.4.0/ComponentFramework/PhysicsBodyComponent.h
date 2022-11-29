@@ -37,8 +37,8 @@ public:
 	float GetMaxSpeed() { return maxSpeed; }
 	float GetMaxAcceleration() { return maxAcceleration; }
 	float GetMaxAngular() { return maxAngular; }
-	MATH::Vec3 GetAngularVel() { return angularAccel; }
-	MATH::Vec3 GetAngularAccel() { return angularVel; }
+	MATH::Vec3 GetAngularVel() { return angularVel; }
+	MATH::Vec3 GetAngularAccel() { return angularAccel; }
 	Matrix3 GetRotationalInertia() { return rotationalInertia; }
 
 	void SetVel(MATH::Vec3 vel_) { vel = vel_; }

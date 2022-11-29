@@ -196,6 +196,158 @@
 	  </Light>
 	</Scene0>
 
+	<Scene1>
+		<Component name = "SkullSphereShape">
+			<Type type = "Shape"/>
+			<Sphere radius ="1.5" centreX="0.0" centreY="0.0" centreZ="0.0"/>
+		</Component>
+
+		<Component name = "CheckerCylinderShape">
+			<Type type = "Shape"/>
+			<Cylinder radius ="3.7" topX="0.15" topY="-0.15" topZ="2.7" bottomX="0.15" bottomY="-0.15" bottomZ="0.0" />
+			<!--<Cylinder radius ="3.7" topX="2.7" topY="-0.15" topZ="4.0" bottomX="0.0" bottomY="-0.15" bottomZ="0.0"/>-->
+		</Component>
+
+		<Component name = "MarioCapsuleShape">
+			<Type type = "Shape"/>
+			<Capsule radius ="1.0" topSphereX="0.0" topSphereY="0.5" topSphereZ="0.0" bottomSphereX="0.0" bottomSphereY="-0.5" bottomSphereZ="0.0" />
+		</Component>
+
+		<Component name = "ObstacleMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/Cube.obj"/>
+		</Component>
+
+		<Component name = "ObstacleTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/8x8_checkered_board.png"/>
+		</Component>
+
+		<Component name = "BoxShape">
+			<Type type = "Shape"/>
+			<Box centerX ="0.0" centerY ="0.0" centerZ ="0.0"
+				 halfExtentX ="1.0" halfExtentY="1.0" halfExtentZ ="1.0"
+				 angleDeg ="0.0" axisX="0.0" axisY="1.0" axisZ="0.0" />
+		</Component>
+
+		<Component name = "MarioMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/Mario.obj"/>
+		</Component>
+
+		<Component name = "CubeMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/Cube.obj"/>
+		</Component>
+
+		<Component name = "CheckerPieceMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/CheckerPiece.obj"/>
+		</Component>
+
+		<Component name = "PlaneMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/Plane.obj"/>
+		</Component>
+
+		<Component name = "SkullMesh">
+			<Type type = "Mesh"/>
+			<Mesh filename = "meshes/Skull.obj"/>
+		</Component>
+
+		<Component name = "RedCheckerTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/redCheckerPiece.png"/>
+		</Component>
+
+		<Component name = "WhiteCheckerTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/whiteCheckerPiece.png"/>
+		</Component>
+
+		<Component name = "BlackCheckerTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/blackCheckerPiece.png"/>
+		</Component>
+
+		<Component name = "CheckerBoardTexture">
+			<Type type = "Material"/>
+			<Material filename = "textures/8x8_checkered_board.png"/>
+		</Component>
+
+		<Component name = "MarioMaterial">
+			<Type type = "Material"/>
+			<Material filename = "textures/mario_main.png"/>
+		</Component>
+
+		<Component name = "TextureShader">
+			<Type type = "Shader"/>
+			<Shader vertFileName = "shaders/textureVert.glsl" fragFileName = "shaders/textureFrag.glsl" />
+		</Component>
+
+		<Actor name = "ObstacleActor" parent="null">
+			<Mesh name = "ObstacleMesh"/>
+			<Material name = "ObstacleTexture"/>
+		</Actor>
+
+		<Actor name = "ActorDefaultChecker" parent="null">
+			<Mesh name = "CheckerPieceMesh"/>
+			<Material name = "BlackCheckerTexture"/>
+			<Shape name ="CheckerCylinderShape"/>
+			<Transform posx="0.0" posy="-2.8" posz="-16.0"
+					   angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0"
+					   scalex="0.5" scaley="0.5" scalez="0.5"/>
+		</Actor>
+
+		<Actor name = "ActorSkull" parent="null">
+			<Mesh name = "SkullMesh"/>
+			<Material name = "WhiteCheckerTexture"/>
+			<Shape name ="SkullSphereShape"/>
+			<Transform posx="5.0" posy="0.0" posz="-16.0"
+					   angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0"
+					   scalex="1" scaley="1" scalez="1"/>
+		</Actor>
+
+		<Actor name = "ActorCube" parent="null">
+			<Mesh name = "CubeMesh"/>
+			<Material name = "RedCheckerTexture"/>
+			<Shape name ="BoxShape"/>
+			<Transform posx="0.0" posy="0.0" posz="-16.0"
+					  angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0"
+					  scalex="1.0" scaley="1.0" scalez="1.0"/>
+		</Actor>
+
+		<Actor name = "ActorCube2" parent="null">
+			<Mesh name = "CubeMesh"/>
+			<Material name = "MarioMaterial"/>
+			<Shape name ="BoxShape"/>
+			<Transform posx="3.0" posy="2.0" posz="-16.0"
+					   angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0"
+					   scalex="1.0" scaley="1.0" scalez="1.0"/>
+		</Actor>
+
+		<Actor name = "ActorMario" parent="null">
+			<Mesh name = "MarioMesh"/>
+			<Material name = "MarioMaterial"/>
+			<Shape name ="MarioCapsuleShape"/>
+			<Transform posx="-4.0" posy="1.0" posz="-15.0"
+					   angleDeg="0.0" axisx="0.0" axisy="1.0" axisz="0.0"
+					   scalex="1.0" scaley="1.0" scalez="1.0"/>
+		</Actor>
+
+		<Camera name = "camera">
+			<Transform posx="0.0" posy ="0.0" posz="0.0" angleDeg="0.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="0.0" scaley ="0.0" scalez="0.0"/>
+		</Camera>
+
+		<Light name = "light">
+			<LightStyle style ="DirectionLight"/>
+			<Location x="0.0" y ="-10.0" z="0.0"/>
+			<Colour r="0.8" g="0.8" b="0.8" a="0.0"/>
+			<Intensity intensity ="1.0"/>
+			<Falloff x="0.0" y="0.0" z="0.0"/>
+		</Light>
+	</Scene1>
+
 	<Scene4>
 		<Component name = "CheckerPieceMesh">
 			<Type type = "Mesh"/>

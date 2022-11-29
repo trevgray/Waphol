@@ -49,7 +49,7 @@ void Physics::ApplyForce(Ref<Actor> object, Vec3 force) {
 void Physics::MouseConstraint(Ref<Actor> object, float deltaTime, Vec3 mousePos) {
 	Ref<TransformComponent> actorTransform = object->GetComponent<TransformComponent>();
 	Ref<PhysicsBodyComponent> actorBody = object->GetComponent<PhysicsBodyComponent>();
-	/*//Assume the position in world space in the centre of mass
+	//Assume the position in world space in the centre of mass
 	//r is the vector from the centre of mass to the attachment point
 	Vec3 r = mousePos - actorTransform->GetPosition();
 	Matrix3 mEffective(
@@ -62,36 +62,7 @@ void Physics::MouseConstraint(Ref<Actor> object, float deltaTime, Vec3 mousePos)
 	Vec3 lambda = MMath::inverse(mEffective) * (-JV);
 	//page 16 in Constraints we update the vel & angularVel should be
 	actorBody->SetVel(actorBody->GetVel() + lambda);
-	actorBody->SetAngularVel(actorBody->GetAngularVel() + VMath::cross(lambda, r));*/
-
-	//Assume the position in world space is the centre of mass
-	MATH::Vec3 body_centreOfMass = actorTransform->GetPosition();
-	// r is the vector from the centre of mass to the attachment point
-	MATH::Vec3 r = mousePos - body_centreOfMass;
-	MATH::Matrix3 m_effective(
-		1 + r.z * r.z + r.y * r.y, -r.x * r.y, -r.x * r.z, // first column
-		-r.x * r.y, 1 + r.z * r.z + r.x * r.x, -r.y * r.z, // second column
-		-r.x * r.z, -r.y * r.z, 1 + r.y * r.y + r.x * r.x); // third column
-
-	MATH::Matrix3 m_effective_inversed = MATH::MMath::inverse(m_effective);
-	// Now calculate lambda = m_effective_inversed *(-JV -b)
-	// lambda = m_effective_inversed * (beta/deltatime) * d - m_effective_inversed * JV
-	float beta = 0.2f;
-	MATH::Vec3 d = (body_centreOfMass + r - mousePos);
-	// at the start of the program deltaTime == zero! Set to 1/60 instead
-	if (deltaTime < VERY_SMALL) { 
-		deltaTime = 0.01667f; 
-	}
-	MATH::Vec3 negative_b = (beta / deltaTime) * d;
-	// for a static anchor point I wrote out the JV vector on paper
-	MATH::Vec3 JV = actorBody->vel + MATH::VMath::cross(actorBody->GetAngularAccel(), r);
-
-	MATH::Vec3 lambda = m_effective_inversed * negative_b + m_effective_inversed * JV;
-	// I wrote out on paper what the change in vel & angularVel should be
-	MATH::Vec3 deltaAngularVel = -MATH::VMath::cross(lambda, r);
-
-	actorBody->vel -= lambda;
-	actorBody->SetAngularVel(actorBody->GetAngularVel() - deltaAngularVel);
+	actorBody->SetAngularVel(actorBody->GetAngularVel() + VMath::cross(r, lambda));
 }
 
 Vec3 Physics::RotateZ(float angleDisplacement, Vec3 force)
