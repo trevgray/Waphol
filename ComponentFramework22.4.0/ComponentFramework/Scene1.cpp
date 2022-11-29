@@ -161,11 +161,7 @@ void Scene1::Update(const float deltaTime) {
 		//update position using corrected velocities
 		transform->SetPosition(transform->GetPosition() + physicsBody->GetVel() * deltaTime);
 		//we can rotate too with the mouse constraint - so update orientation too
-		Quaternion angularVelQuaternion(0.0f, physicsBody->GetAngularVel());
-		//Rotate using q = q + 0.5twq
-		transform->setOrientation(transform->GetQuaternion() + angularVelQuaternion * transform->GetQuaternion() * 0.5f * deltaTime);
-		//don't forget to normalize after too - Only unit quaternions please - Otherwise the model stretches
-		transform->setOrientation(QMath::normalize(transform->GetQuaternion()));
+		Physics::RigidBodyRotation(pickedActor, deltaTime);
 	}
 }
 

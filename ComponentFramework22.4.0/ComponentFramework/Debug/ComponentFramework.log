@@ -1,6 +1,4 @@
-﻿  Scene0.cpp
+﻿  Physics.cpp
   Scene1.cpp
-  SceneManager.cpp
-E:\GitHub\PikePi\ComponentFramework22.4.0\ComponentFramework\SceneManager.cpp(103,4): warning C4065: switch statement contains 'default' but no 'case' labels
   Generating Code...
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe
