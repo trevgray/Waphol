@@ -24,10 +24,10 @@ bool DecisionMakingComponent::OnCreate() {
 
 	Ref<Condition> ifInRange = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
-	doNothing->AddTransition(new Transition(ifInRange, seekPlayer));
+	doNothing->AddTransition(Transition(ifInRange, seekPlayer));
 	Ref<Condition> ifOutOfRange = std::make_shared<ConditionOutOfRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
-	seekPlayer->AddTransition(new Transition(ifOutOfRange, doNothing));
+	seekPlayer->AddTransition(Transition(ifOutOfRange, doNothing));
 	stateMachine->SetInitialState(doNothing);
 
 	return true;

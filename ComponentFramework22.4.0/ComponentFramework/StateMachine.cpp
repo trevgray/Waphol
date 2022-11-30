@@ -9,17 +9,17 @@ void StateMachine::SetInitialState(Ref<State> initial_) {
 }
 
 void StateMachine::Update() {
-	Transition* triggered = nullptr;
+	Transition triggered;
 
 	//store first transition that triggers
 	for (auto transition : currentState->GetTransitions()) {
-		if (transition->IsTriggered()) {
+		if (transition.IsTriggered()) {
 			triggered = transition;
 			break;
 		}
 	}
-	if (triggered) {
-		Ref<State> targetState = triggered->GetTargetState();
+	if (triggered.GetTargetState() != nullptr) {
+		Ref<State> targetState = triggered.GetTargetState();
 		//TODO collect exit actions, transition action, add target state actions
 		currentState = targetState;
 	}
