@@ -112,6 +112,18 @@
     <Filter Include="Source Files\AI\Decision Making">
       <UniqueIdentifier>{f7f1632c-cd29-44f1-868e-6f3195aa15db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI\Decision Making\Decision Trees">
+      <UniqueIdentifier>{ef65191a-a076-4a89-8457-514f87e46197}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Decision Making\Decision Trees">
+      <UniqueIdentifier>{5eecffd6-b147-4bc2-8a4f-7947162037f3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\Decision Making\State Machine">
+      <UniqueIdentifier>{10688eb0-58d0-44ba-bd84-9c550caee1ca}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Decision Making\State Machine">
+      <UniqueIdentifier>{c27afc38-e968-4e34-bed4-cc4cdec12c80}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -300,14 +312,29 @@
     <ClCompile Include="Action.cpp">
       <Filter>Source Files\AI\Decision Making</Filter>
     </ClCompile>
-    <ClCompile Include="Decision.cpp">
-      <Filter>Source Files\AI\Decision Making</Filter>
-    </ClCompile>
-    <ClCompile Include="InRangeDecision.cpp">
-      <Filter>Source Files\AI\Decision Making</Filter>
-    </ClCompile>
     <ClCompile Include="Scene1.cpp">
       <Filter>Source Files\Scenes</Filter>
+    </ClCompile>
+    <ClCompile Include="Decision.cpp">
+      <Filter>Source Files\AI\Decision Making\Decision Trees</Filter>
+    </ClCompile>
+    <ClCompile Include="InRangeDecision.cpp">
+      <Filter>Source Files\AI\Decision Making\Decision Trees</Filter>
+    </ClCompile>
+    <ClCompile Include="ConditionInRange.cpp">
+      <Filter>Source Files\AI\Decision Making\State Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="ConditionOutOfRange.cpp">
+      <Filter>Source Files\AI\Decision Making\State Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="State.cpp">
+      <Filter>Source Files\AI\Decision Making\State Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="StateMachine.cpp">
+      <Filter>Source Files\AI\Decision Making\State Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="Transition.cpp">
+      <Filter>Source Files\AI\Decision Making\State Machine</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -548,17 +575,35 @@
     <ClInclude Include="Action.h">
       <Filter>Header Files\AI\Decision Making</Filter>
     </ClInclude>
-    <ClInclude Include="Decision.h">
-      <Filter>Header Files\AI\Decision Making</Filter>
-    </ClInclude>
-    <ClInclude Include="DecisionTreeNode.h">
-      <Filter>Header Files\AI\Decision Making</Filter>
-    </ClInclude>
-    <ClInclude Include="InRangeDecision.h">
-      <Filter>Header Files\AI\Decision Making</Filter>
-    </ClInclude>
     <ClInclude Include="Scene1.h">
       <Filter>Header Files\Scenes</Filter>
+    </ClInclude>
+    <ClInclude Include="Decision.h">
+      <Filter>Header Files\AI\Decision Making\Decision Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="DecisionTreeNode.h">
+      <Filter>Header Files\AI\Decision Making\Decision Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="InRangeDecision.h">
+      <Filter>Header Files\AI\Decision Making\Decision Trees</Filter>
+    </ClInclude>
+    <ClInclude Include="Condition.h">
+      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionInRange.h">
+      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionOutOfRange.h">
+      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="State.h">
+      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="StateMachine.h">
+      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="Transition.h">
+      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

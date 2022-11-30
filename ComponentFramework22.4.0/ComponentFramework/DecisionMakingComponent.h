@@ -7,6 +7,8 @@
 #include "InRangeDecision.h"
 #include "Action.h"
 
+#include "StateMachine.h"
+
 class DecisionMakingComponent : public Component {
 	DecisionMakingComponent(const DecisionMakingComponent&) = delete;
 	DecisionMakingComponent(DecisionMakingComponent&&) = delete;
@@ -23,4 +25,5 @@ public:
 	//std::string GetControllerTemplate() { return controllerTemplate; }
 private:
 	Ref<DecisionTreeNode> decider;
+	Ref<StateMachine> stateMachine;
 };
