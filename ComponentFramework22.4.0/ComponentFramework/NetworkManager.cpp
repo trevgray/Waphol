@@ -241,7 +241,7 @@ void NetworkManager::ReceiveServerBuffers() {
 				}
 			}
 			if (checkActor == true) {
-				std::unique_lock<std::mutex> lock(transformUpdateMutex);
+				std::unique_lock<std::mutex> lock(serverBufferMutex);
 				EngineManager::Instance()->GetActorManager()->AddActor<Actor>(std::to_string(serverBuffer.ID), new Actor(nullptr));
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(clientActorTemplateName.c_str()));
 				//maybe make a spawn point actor? Just a though
@@ -251,7 +251,8 @@ void NetworkManager::ReceiveServerBuffers() {
 			}
 
 			//SET THE ACTORS VARIABLES
-			std::unique_lock<std::mutex> lock(transformUpdateMutex);
+			std::unique_lock<std::mutex> lock(serverBufferMutex);
+			std::cout << "MUTEX 3" << std::endl;
 			printf("%f %f %f\n", serverBuffer.position.x, serverBuffer.position.y, serverBuffer.position.z);
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(serverBuffer.position);
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(serverBuffer.orientation);
@@ -295,6 +296,8 @@ void NetworkManager::AddClientSession(void* data) {
 	char* clientSendbuf;
 	int iClientResult;
 
+	int thisClientID;
+
 	while (EngineManager::Instance()->GetIsRunning() == true) {
 		iClientResult = recv(clientSocket, (char*)&clientActorBuffer, sizeof(ActorBuffer), 0);
 		if (iClientResult > 0) {
@@ -305,7 +308,7 @@ void NetworkManager::AddClientSession(void* data) {
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(clientActorBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(clientActorBuffer.orientation);
 			lock.unlock();
 
-			int thisClientID = clientActorBuffer.ID;
+			thisClientID = clientActorBuffer.ID;
 
 			//SEND # OF ACTORS
 			/*int numOfActors = 1;
@@ -346,7 +349,7 @@ void NetworkManager::AddClientSession(void* data) {
 		}
 		else {
 			std::cout << "Connection closing..." << std::endl;
-			EngineManager::Instance()->GetActorManager()->RemoveActor(std::to_string(clientActorBuffer.ID));
+			EngineManager::Instance()->GetActorManager()->RemoveActor(std::to_string(thisClientID));
 			break;
 		}
 	}

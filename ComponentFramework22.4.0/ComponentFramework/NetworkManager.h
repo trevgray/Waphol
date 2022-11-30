@@ -74,6 +74,7 @@ private:
 	SOCKET connectSocket;
 
 	std::mutex transformUpdateMutex;
+	std::mutex serverBufferMutex;
 
 	char* sendbuf;
 	int iSendResult;
