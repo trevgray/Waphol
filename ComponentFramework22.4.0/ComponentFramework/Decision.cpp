@@ -1,7 +1,7 @@
 #include "Decision.h"
 
-DecisionTreeNode* Decision::MakeDecision() {
-	DecisionTreeNode* branch = GetBranch();
+Ref<DecisionTreeNode> Decision::MakeDecision() {
+	Ref<DecisionTreeNode> branch = GetBranch();
 	return branch->MakeDecision();
 }
 
@@ -9,9 +9,13 @@ bool Decision::TestValue() {
 	return false;
 }
 
-DecisionTreeNode* Decision::GetBranch() {
+Ref<DecisionTreeNode> Decision::GetBranch() {
 	if (TestValue()) {
 		return trueNode;
 	}
 	return falseNode;
+}
+
+Decision::~Decision() {
+	
 }

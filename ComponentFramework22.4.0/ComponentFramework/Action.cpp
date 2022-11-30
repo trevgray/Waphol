@@ -1,9 +1,17 @@
 #include "Action.h"
 #include <iostream>
 
-DecisionTreeNode* Action::MakeDecision() {
+Action::Action(ACTION_SET actionSet_) {
+	actionSet = actionSet_;
+}
+
+Ref<DecisionTreeNode> Action::MakeDecision() {
 	if (actionSet == ACTION_SET::SEEK) {
 		std::cout << "ACTION TEST" << std::endl;
 	}
-	return this;
+	return nullptr;
+}
+
+Action::~Action() {
+
 }

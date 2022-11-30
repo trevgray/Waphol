@@ -251,12 +251,12 @@ void NetworkManager::ReceiveServerBuffers() {
 			}
 
 			//SET THE ACTORS VARIABLES
-			std::unique_lock<std::mutex> lock(serverBufferMutex);
+			//std::unique_lock<std::mutex> lock(serverBufferMutex);
 			std::cout << "MUTEX 3" << std::endl;
 			printf("%f %f %f\n", serverBuffer.position.x, serverBuffer.position.y, serverBuffer.position.z);
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(serverBuffer.position);
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(serverBuffer.orientation);
-			lock.unlock();
+			//lock.unlock();
 		}
 		else {
 			std::cout << "Receive failed with error: " << WSAGetLastError() << std::endl;
@@ -350,6 +350,7 @@ void NetworkManager::AddClientSession(void* data) {
 		else {
 			std::cout << "Connection closing..." << std::endl;
 			EngineManager::Instance()->GetActorManager()->RemoveActor(std::to_string(thisClientID));
+			clientActors.erase(std::to_string(thisClientID));
 			break;
 		}
 	}

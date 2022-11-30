@@ -11,3 +11,7 @@ bool InRangeDecision::TestValue() {
 	}
 	return false;
 }
+
+InRangeDecision::~InRangeDecision() {
+	
+}

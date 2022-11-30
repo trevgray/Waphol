@@ -10,5 +10,7 @@ class DecisionTreeNode {
 protected:
 	Ref<Actor> owner;
 public:
-	virtual DecisionTreeNode* MakeDecision() = 0;
+	DecisionTreeNode() {};
+	virtual Ref<DecisionTreeNode> MakeDecision() { return nullptr; }
+	~DecisionTreeNode() {}
 };

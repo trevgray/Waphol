@@ -22,5 +22,5 @@ public:
 
 	//std::string GetControllerTemplate() { return controllerTemplate; }
 private:
-	DecisionTreeNode* decider;
+	Ref<DecisionTreeNode> decider;
 };

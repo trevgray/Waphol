@@ -3,11 +3,12 @@
 
 class Decision : public DecisionTreeNode {
 protected:
-	DecisionTreeNode* trueNode;
-	DecisionTreeNode* falseNode;
+	Ref<DecisionTreeNode> trueNode;
+	Ref<DecisionTreeNode> falseNode;
 public:
-	virtual DecisionTreeNode* MakeDecision() override;
+	virtual Ref<DecisionTreeNode> MakeDecision() override;
 	virtual bool TestValue();
-	virtual DecisionTreeNode* GetBranch();
+	virtual Ref<DecisionTreeNode> GetBranch();
+	~Decision();
 };
 
