@@ -635,5 +635,8 @@
     <Xml Include="Assets.xml">
       <Filter>Resource Files</Filter>
     </Xml>
+    <Xml Include="DecisionMaking.xml">
+      <Filter>Resource Files</Filter>
+    </Xml>
   </ItemGroup>
 </Project>

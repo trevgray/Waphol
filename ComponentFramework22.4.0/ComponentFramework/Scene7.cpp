@@ -17,6 +17,7 @@ bool Scene7::OnCreate() {
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
 	std::vector<std::string> xmls;
+	xmls.push_back("DecisionMaking.xml");
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<DecisionMakingComponent>(nullptr, xmls);
 	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<DecisionMakingComponent>()->OnCreate();
 
