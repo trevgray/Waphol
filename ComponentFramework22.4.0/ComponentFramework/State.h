@@ -15,7 +15,7 @@ private:
 	//ignoring Actions for this simple example
 	STATE name;
 public:
-	State(STATE name_, ACTION_SET actionSet_) : action(actionSet_) { name = name_; }
+	State(STATE name_, std::string actionSet_) : action(actionSet_) { name = name_; }
 	~State();
 	std::list<Transition> GetTransitions() { return transitions; }
 	void AddTransition(Transition transition);

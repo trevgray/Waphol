@@ -2,12 +2,12 @@
 <Root>
 	<DecisionTree>
 		<RootNode type ="InRangeDecision" ownerName ="NPC" targetName ="Player">
-			<True type ="Action" ActionSet ="SEEK"/>
-			<!--<True type ="InRangeDecision" ownerName ="NPC" targetName ="Player">
-				<True type ="Action" ActionSet ="SEEK"/>
-				<False type ="Action" ActionSet ="DO_NOTHING"/>
-			</True>-->
-			<False type ="Action" ActionSet ="DO_NOTHING"/>
+			<!--<True type ="Action" actionSet ="SEEK"/>-->
+			<True type ="InRangeDecision" ownerName ="NPC" targetName ="Player">
+				<True type ="Action" actionSet ="SEEK"/>
+				<False type ="Action" actionSet ="DO_NOTHING"/>
+			</True>
+			<False type ="Action" actionSet ="DO_NOTHING"/>
 		</RootNode>
 	</DecisionTree>
 </Root>

@@ -20,10 +20,9 @@ Ref<DecisionTreeNode> DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XM
 	Ref<DecisionTreeNode> falseNode;
 
 	//--BRANCHES--
-	//TRUE
 	tinyxml2::XMLElement* currentBranch;
 	std::string compareAttribute;
-
+	//TRUE
 	currentBranch = nodeElement->FirstChildElement("True");
 	compareAttribute = currentBranch->Attribute("type");
 	if (compareAttribute != "Action") {
@@ -31,7 +30,7 @@ Ref<DecisionTreeNode> DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XM
 		trueNode = MakeDecisionTreeNode(currentBranch); //pass it down the chain
 	}
 	else { //if the thing is a action, we create the node right here
-		trueNode = std::make_shared<Action>(ACTION_SET::SEEK);
+		trueNode = std::make_shared<Action>(currentBranch->Attribute("actionSet"));
 	}
 	//FALSE
 	currentBranch = nodeElement->FirstChildElement("False");
@@ -40,15 +39,15 @@ Ref<DecisionTreeNode> DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XM
 		falseNode = MakeDecisionTreeNode(currentBranch); //pass it down the chain
 	}
 	else { //if the thing is a action, we create the node right here
-		falseNode = std::make_shared<Action>(ACTION_SET::DO_NOTHING);
+		falseNode = std::make_shared<Action>(currentBranch->Attribute("actionSet"));
 	}
 
 	//--CREATE THIS NODE--
 	compareAttribute = nodeElement->Attribute("type");
 	if (compareAttribute == "InRangeDecision") {
 		//grab the names in the node and find refs to them
-		thisNode = std::make_shared<InRangeDecision>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
-			EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), trueNode, falseNode);
+		thisNode = std::make_shared<InRangeDecision>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeElement->Attribute("ownerName")),
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeElement->Attribute("targetName")), trueNode, falseNode);
 	}
 	else {
 		std::cout << "DECISION TREE TYPE NOT FOUND" << std::endl;
@@ -85,8 +84,8 @@ bool DecisionMakingComponent::OnCreate() {
 
 	stateMachines.push_back(StateMachine(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"))); //this = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")
 
-	Ref<State> seekPlayer = std::make_shared<State>(STATE::SEEK, ACTION_SET::SEEK);
-	Ref<State>  doNothing = std::make_shared<State>(STATE::DO_NOTHING, ACTION_SET::DO_NOTHING);
+	Ref<State> seekPlayer = std::make_shared<State>(STATE::SEEK, "SEEK");
+	Ref<State>  doNothing = std::make_shared<State>(STATE::DO_NOTHING, "DO_NOTHING");
 
 	Ref<Condition> ifInRange = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
