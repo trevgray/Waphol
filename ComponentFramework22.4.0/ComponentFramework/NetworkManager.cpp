@@ -132,6 +132,19 @@ void NetworkManager::Run() {
 			return;
 		}
 	}
+	if (networkMode == Client) { //send closing buffer
+		actorBuffer.orientation.ijk.z = FLT_MAX;
+		actorBuffer.ID = actorID;
+
+		sendbuf = (char*)&actorBuffer; //binary representation 
+
+		iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
+		if (iResult == SOCKET_ERROR) {
+			std::cout << "Send failed with error: " << iResult << std::endl;
+			this->~NetworkManager();
+			return;
+		}
+	}
 }
 
 bool NetworkManager::Initialize(NetworkNode networkMode_) {
@@ -240,7 +253,7 @@ void NetworkManager::ReceiveServerBuffers() {
 					checkActor = false;
 				}
 			}
-			if (checkActor == true) {
+			if (checkActor == true) { //add a the new client to our actor vector
 				std::unique_lock<std::mutex> lock(serverBufferMutex);
 				EngineManager::Instance()->GetActorManager()->AddActor<Actor>(std::to_string(serverBuffer.ID), new Actor(nullptr));
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->InheritActor(EngineManager::Instance()->GetAssetManager()->GetComponent<Actor>(clientActorTemplateName.c_str()));
@@ -249,11 +262,13 @@ void NetworkManager::ReceiveServerBuffers() {
 				EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->OnCreate();
 				lock.unlock();
 			}
+			if (serverBuffer.orientation.ijk.z == FLT_MAX) {
+				EngineManager::Instance()->GetActorManager()->RemoveActor(std::to_string(serverBuffer.ID));
+			}
 
 			//SET THE ACTORS VARIABLES
 			//std::unique_lock<std::mutex> lock(serverBufferMutex);
-			std::cout << "MUTEX 3" << std::endl;
-			printf("%f %f %f\n", serverBuffer.position.x, serverBuffer.position.y, serverBuffer.position.z);
+			//printf("%f %f %f\n", serverBuffer.position.x, serverBuffer.position.y, serverBuffer.position.z);
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(serverBuffer.position);
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(serverBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(serverBuffer.orientation);
 			//lock.unlock();
@@ -303,7 +318,7 @@ void NetworkManager::AddClientSession(void* data) {
 		if (iClientResult > 0) {
 
 			std::unique_lock<std::mutex> lock(transformUpdateMutex);
-			printf("%f %f %f\n", clientActorBuffer.position.x, clientActorBuffer.position.y, clientActorBuffer.position.z);
+			//printf("%f %f %f\n", clientActorBuffer.position.x, clientActorBuffer.position.y, clientActorBuffer.position.z);
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(clientActorBuffer.ID))->GetComponent<TransformComponent>()->SetPosition(clientActorBuffer.position);
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(std::to_string(clientActorBuffer.ID))->GetComponent<TransformComponent>()->setOrientation(clientActorBuffer.orientation);
 			lock.unlock();

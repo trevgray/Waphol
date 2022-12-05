@@ -41,12 +41,13 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 	}*/
 
 	/********************************   Default first scene   ***********************/
-	BuildNewScene(SCENE_NUMBER::SCENE7);
+	BuildNewScene(SCENE_NUMBER::SCENE3);
 
 	//Setup ImGui context
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGuiIO& io = ImGui::GetIO(); 
+	(void)io;
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
 	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableGamepad;      // Enable Gamepad Controls
 
@@ -57,7 +58,7 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 	//Setup Platform/Renderer backends for imGUI
 	if (EngineManager::Instance()->GetRenderer()->getRendererType() == RendererType::OPENGL) { //OpenGL setup
 		ImGui_ImplSDL2_InitForOpenGL(static_cast<OpenGLRenderer*>(EngineManager::Instance()->GetRenderer().get())->getWindow(), static_cast<OpenGLRenderer*>(EngineManager::Instance()->GetRenderer().get())->GetContext()); //this will create two leaks
-		ImGui_ImplOpenGL3_Init("#version 450"); //hard code OpenGL code
+		ImGui_ImplOpenGL3_Init("#version 450"); //hard code OpenGL version
 	}
 	
 	return true;
