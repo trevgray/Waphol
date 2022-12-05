@@ -123,10 +123,10 @@ void NetworkManager::Run() {
 			iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
 			if (iResult == SOCKET_ERROR) {
 				std::cout << "Send failed with error: " << iResult << std::endl;
-				this->~NetworkManager();
+				//this->~NetworkManager();
 				return;
 			}
-			std::this_thread::sleep_for(1ms);
+			std::this_thread::sleep_for(0.5ms);
 		}
 		else if (networkMode == Offline) { //we are not using networking - do nothing
 			return;
@@ -141,7 +141,7 @@ void NetworkManager::Run() {
 		iResult = send(connectSocket, sendbuf, sizeof(ActorBuffer), 0);
 		if (iResult == SOCKET_ERROR) {
 			std::cout << "Send failed with error: " << iResult << std::endl;
-			this->~NetworkManager();
+			//this->~NetworkManager();
 			return;
 		}
 	}
@@ -210,7 +210,7 @@ bool NetworkManager::Initialize(NetworkNode networkMode_) {
 		{ //result gets full of how to connection to the computer
 			if (iResult != 0) {
 				std::cout << "getaddrinfo failed with error: " << iResult << std::endl;
-				this->~NetworkManager();
+				//this->~NetworkManager();
 				return false;
 			}
 		}
