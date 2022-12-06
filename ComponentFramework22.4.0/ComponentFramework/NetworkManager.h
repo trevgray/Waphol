@@ -38,6 +38,9 @@ public:
 	~NetworkManager();
 	void Run();
 	bool Initialize(NetworkNode networkMode_);
+
+	void SetAuthorityActor(Ref<Actor> actor) { authorityActor = actor; }
+	void AddReplicatedActor(std::string ID, Ref<Actor> actorRef);
 private:
 	//Client Variables & Functions
 	void GetServerActorName();
@@ -47,9 +50,10 @@ private:
 	//Server Variables & Functions
 	void AddClientActor();
 	void AddClientSession(void* data);
-	std::string clientActorTemplateName;
+	std::string clientActorPrehab;
 
-	std::unordered_map<std::string, Ref<Actor>> clientActors;
+	Ref<Actor> authorityActor; //your actor that this instance owns
+	std::unordered_map<std::string, Ref<Actor>> replicatedActors;
 
 	//server socket
 	SOCKET listenSocket;

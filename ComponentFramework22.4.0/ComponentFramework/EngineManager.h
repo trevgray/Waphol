@@ -67,4 +67,5 @@ public:
 	Ref<SoundManager> GetSoundManager() { return soundManager; }
 	Ref<Renderer> GetRenderer() { return renderer; }
 	Ref<ProfilerManager> GetProfilerManager() { return profilerManager; }
+	Ref<NetworkManager> GetNetworkManager() { return networkManager; }
 };

@@ -14,6 +14,9 @@ bool Scene3::OnCreate() {
 	Debug::Info("Loading assets Scene3: ", __FILE__, __LINE__);
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene3");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
+
+	EngineManager::Instance()->GetNetworkManager()->SetAuthorityActor(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"));
+	EngineManager::Instance()->GetNetworkManager()->AddReplicatedActor("0", EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"));
 	return true;
 }
 
