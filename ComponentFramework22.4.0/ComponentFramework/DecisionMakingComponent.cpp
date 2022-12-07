@@ -67,47 +67,48 @@ StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* sta
 	bool stateLoop = true;
 	while (stateLoop) {
 		std::string stateCheck = currentElement->Name();
-		if (stateCheck == "State") { //check if the element is a component
+		if (stateCheck == "State") { //check if the element is a state
 			states[currentElement->Attribute("name")] = std::make_shared<State>(static_cast<STATE>(currentElement->Int64Attribute("state")), currentElement->Attribute("actionSet"));
 			//Exit if we are at the last element
 			if (currentElement == stateMachineElement->LastChildElement("State")) { //stopping looping when the current element is the last element in Scene Scope - stateMachineElement->LastChild() will also work, but stopping at the last element should be faster
 				stateLoop = false;
 			}
 		}
-		currentElement = currentElement->NextSiblingElement(); //loading the next component
+		currentElement = currentElement->NextSiblingElement(); //loading the next element
 	}
-	//Conditions Loop - Get all the conditions in a hash table
-	currentElement = stateMachineElement->FirstChildElement("Condition"); //loading first State from stateMachine Scope
+	//Conditions Loop - Get all the conditions in a hash table - same as State, but create unique conditions based on type
+	currentElement = stateMachineElement->FirstChildElement("Condition");
 	bool conditionLoop = true;
 	while (conditionLoop) {
 		std::string conditionCheck = currentElement->Name();
-		if (conditionCheck == "Condition") { //check if the element is a component
+		if (conditionCheck == "Condition") {
 			std::string conditionType = currentElement->Attribute("type");
-
+			//Create unique conditions based on type
 			if (conditionType == "ConditionInRange") { //ConditionInRange
 				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
 					EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
 			}
-			else if (conditionType == "ConditionOutOfRange") { //ConditionInRange
+			else if (conditionType == "ConditionOutOfRange") { //ConditionOutOfRange
 				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
 					EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
 			}
 			//Exit if we are at the last element
-			if (currentElement == stateMachineElement->LastChildElement("Condition")) { //stopping looping when the current element is the last element in Scene Scope - stateMachineElement->LastChild() will also work, but stopping at the last element should be faster
+			if (currentElement == stateMachineElement->LastChildElement("Condition")) {
 				conditionLoop = false;
 			}
 		}
-		currentElement = currentElement->NextSiblingElement(); //loading the next component
+		currentElement = currentElement->NextSiblingElement();
 	}
 	//Transitions loop - make all the transitions on the states
-	currentElement = stateMachineElement->FirstChildElement("Transition"); //loading first State from stateMachine Scope
+	currentElement = stateMachineElement->FirstChildElement("Transition");
 	bool transitionLoop = true;
 	while (transitionLoop) {
 		std::string transitionCheck = currentElement->Name();
-		if (transitionCheck == "Transition") { //check if the element is a component
+		if (transitionCheck == "Transition") { //check if the element is a Transition
+			//add the Transition to the state (this is why we set up all the hash tables)
 			states[currentElement->Attribute("state")]->AddTransition(Transition(conditions[currentElement->Attribute("condition")], states[currentElement->Attribute("targetState")]));
 			//Exit if we are at the last element
-			if (currentElement == stateMachineElement->LastChildElement("Transition")) { //stopping looping when the current element is the last element in Scene Scope - stateMachineElement->LastChild() will also work, but stopping at the last element should be faster
+			if (currentElement == stateMachineElement->LastChildElement("Transition")) {
 				transitionLoop = false;
 			}
 		}
@@ -127,11 +128,9 @@ bool DecisionMakingComponent::OnCreate() {
 	}
 	tinyxml2::XMLElement* currentElement = nullptr;
 
-	tinyxml2::XMLElement* decisionRoot = nullptr;
-	decisionRoot = XMLFile.RootElement()->FirstChildElement("DecisionTree"); //we need to get next after this node
-	currentElement = decisionRoot->FirstChildElement("RootNode");
+	currentElement = XMLFile.RootElement()->FirstChildElement("DecisionTree");
 
-	decisionTrees.push_back(MakeDecisionTreeNode(currentElement));
+	decisionTrees.push_back(MakeDecisionTreeNode(currentElement->FirstChildElement("RootNode")));
 
 	//for each decisionMakingXML, we make a each StateMachine or DecisionTree
 
