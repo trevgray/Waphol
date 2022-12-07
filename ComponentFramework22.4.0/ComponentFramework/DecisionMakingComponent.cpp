@@ -121,48 +121,48 @@ StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* sta
 
 bool DecisionMakingComponent::OnCreate() {
 	tinyxml2::XMLDocument XMLFile;
-	XMLFile.LoadFile(decisionMakingXMLs[0].c_str()); //loading XML file
-	if (XMLFile.Error()) { //Error detection in the xml
-		std::cout << XMLFile.ErrorIDToName(XMLFile.ErrorID()) << std::endl;
-		return false;
+	//for each decisionMakingXML, we make each StateMachine or DecisionTree
+	for (std::string fileName : decisionMakingXMLs) {
+		XMLFile.LoadFile(fileName.c_str()); //loading XML file
+		if (XMLFile.Error()) { //Error detection in the xml
+			std::cout << XMLFile.ErrorIDToName(XMLFile.ErrorID()) << std::endl;
+			return false;
+		}
+		tinyxml2::XMLElement* currentElement = nullptr;
+		//DecisionTree loop
+		currentElement = XMLFile.RootElement()->FirstChildElement("DecisionTree");
+		bool decisionLoop = true;
+		while (decisionLoop) {
+			std::string decisionCheck = currentElement->Name();
+			if (decisionCheck == "DecisionTree") { //check if the element is a Transition
+				//add the Transition to the state (this is why we set up all the hash tables)
+				decisionTrees.push_back(MakeDecisionTreeNode(currentElement->FirstChildElement("RootNode")));
+				//Exit if we are at the last element
+				if (currentElement == XMLFile.RootElement()->LastChildElement("DecisionTree")) {
+					decisionLoop = false;
+				}
+			}
+			currentElement = currentElement->NextSiblingElement(); //loading the next component
+		}
+		//decisionTrees.push_back(MakeDecisionTreeNode(currentElement->FirstChildElement("RootNode")));
+
+		//StateMachine loop
+		currentElement = XMLFile.RootElement()->FirstChildElement("StateMachine");
+		bool stateLoop = true;
+		while (stateLoop) {
+			std::string stateCheck = currentElement->Name();
+			if (stateCheck == "StateMachine") { //check if the element is a Transition
+				//add the Transition to the state (this is why we set up all the hash tables)
+				stateMachines.push_back(MakeStateMachine(currentElement));
+				//Exit if we are at the last element
+				if (currentElement == XMLFile.RootElement()->LastChildElement("StateMachine")) {
+					stateLoop = false;
+				}
+			}
+			currentElement = currentElement->NextSiblingElement(); //loading the next component
+		}
+		//stateMachines.push_back(MakeStateMachine(currentElement));
 	}
-	tinyxml2::XMLElement* currentElement = nullptr;
-
-	currentElement = XMLFile.RootElement()->FirstChildElement("DecisionTree");
-
-	decisionTrees.push_back(MakeDecisionTreeNode(currentElement->FirstChildElement("RootNode")));
-
-	//for each decisionMakingXML, we make a each StateMachine or DecisionTree
-
-
-	//lets pretend the XML parsing produced these instances
-	/*Ref<Action> trueNode = std::make_shared<Action>(ACTION_SET::SEEK);
-	Ref<Action> falseNode = std::make_shared<Action>(ACTION_SET::DO_NOTHING);
-	decisionTrees.push_back(std::make_shared<InRangeDecision>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), trueNode, falseNode));*/
-
-	//-------------------------------------------------
-
-	currentElement = XMLFile.RootElement()->FirstChildElement("StateMachine");
-
-	stateMachines.push_back(MakeStateMachine(currentElement));
-
-	/*stateMachines.push_back(StateMachine("NPC")); //this = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")
-
-	Ref<State> seekPlayer = std::make_shared<State>(STATE::SEEK, "SEEK");
-	Ref<State> doNothing = std::make_shared<State>(STATE::DO_NOTHING, "DO_NOTHING");
-
-	Ref<Condition> ifInRange = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
-
-	doNothing->AddTransition(Transition(ifInRange, seekPlayer));
-
-	Ref<Condition> ifOutOfRange = std::make_shared<ConditionOutOfRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
-		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
-
-	seekPlayer->AddTransition(Transition(ifOutOfRange, doNothing));
-
-	stateMachines[0].SetInitialState(doNothing);*/
 	return true;
 }
 
