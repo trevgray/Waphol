@@ -56,17 +56,79 @@ Ref<DecisionTreeNode> DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XM
 	return thisNode;
 }
 
+StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* stateMachineElement) {
+	StateMachine thisStateMachine = StateMachine(stateMachineElement->Attribute("owner"));
+	//State Machine Utility
+	std::unordered_map<std::string, Ref<Condition>> conditions;
+	std::unordered_map<std::string, Ref<State>> states;
+	tinyxml2::XMLElement* currentElement;
+	//States Loop - Get all the states in a hash table
+	currentElement = stateMachineElement->FirstChildElement("State"); //loading first State from stateMachine Scope
+	bool stateLoop = true;
+	while (stateLoop) {
+		std::string stateCheck = currentElement->Name();
+		if (stateCheck == "State") { //check if the element is a component
+			states[currentElement->Attribute("name")] = std::make_shared<State>(static_cast<STATE>(currentElement->Int64Attribute("state")), currentElement->Attribute("actionSet"));
+			//Exit if we are at the last element
+			if (currentElement == stateMachineElement->LastChildElement("State")) { //stopping looping when the current element is the last element in Scene Scope - stateMachineElement->LastChild() will also work, but stopping at the last element should be faster
+				stateLoop = false;
+			}
+		}
+		currentElement = currentElement->NextSiblingElement(); //loading the next component
+	}
+	//Conditions Loop - Get all the conditions in a hash table
+	currentElement = stateMachineElement->FirstChildElement("Condition"); //loading first State from stateMachine Scope
+	bool conditionLoop = true;
+	while (conditionLoop) {
+		std::string conditionCheck = currentElement->Name();
+		if (conditionCheck == "Condition") { //check if the element is a component
+			std::string conditionType = currentElement->Attribute("type");
+
+			if (conditionType == "ConditionInRange") { //ConditionInRange
+				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
+					EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
+			}
+			else if (conditionType == "ConditionOutOfRange") { //ConditionInRange
+				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
+					EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
+			}
+			//Exit if we are at the last element
+			if (currentElement == stateMachineElement->LastChildElement("Condition")) { //stopping looping when the current element is the last element in Scene Scope - stateMachineElement->LastChild() will also work, but stopping at the last element should be faster
+				conditionLoop = false;
+			}
+		}
+		currentElement = currentElement->NextSiblingElement(); //loading the next component
+	}
+	//Transitions loop - make all the transitions on the states
+	currentElement = stateMachineElement->FirstChildElement("Transition"); //loading first State from stateMachine Scope
+	bool transitionLoop = true;
+	while (transitionLoop) {
+		std::string transitionCheck = currentElement->Name();
+		if (transitionCheck == "Transition") { //check if the element is a component
+			states[currentElement->Attribute("state")]->AddTransition(Transition(conditions[currentElement->Attribute("condition")], states[currentElement->Attribute("targetState")]));
+			//Exit if we are at the last element
+			if (currentElement == stateMachineElement->LastChildElement("Transition")) { //stopping looping when the current element is the last element in Scene Scope - stateMachineElement->LastChild() will also work, but stopping at the last element should be faster
+				transitionLoop = false;
+			}
+		}
+		currentElement = currentElement->NextSiblingElement(); //loading the next component
+	}
+	//Set initial state
+	thisStateMachine.SetInitialState(states[stateMachineElement->FirstChildElement("InitialState")->Attribute("name")]);
+	return thisStateMachine;
+}
+
 bool DecisionMakingComponent::OnCreate() {
 	tinyxml2::XMLDocument XMLFile;
-	tinyxml2::XMLElement* decisionRoot = nullptr;
-	tinyxml2::XMLElement* currentElement = nullptr;
-
 	XMLFile.LoadFile(decisionMakingXMLs[0].c_str()); //loading XML file
 	if (XMLFile.Error()) { //Error detection in the xml
 		std::cout << XMLFile.ErrorIDToName(XMLFile.ErrorID()) << std::endl;
 		return false;
 	}
-	decisionRoot = XMLFile.RootElement()->FirstChildElement("DecisionTree");
+	tinyxml2::XMLElement* currentElement = nullptr;
+
+	tinyxml2::XMLElement* decisionRoot = nullptr;
+	decisionRoot = XMLFile.RootElement()->FirstChildElement("DecisionTree"); //we need to get next after this node
 	currentElement = decisionRoot->FirstChildElement("RootNode");
 
 	decisionTrees.push_back(MakeDecisionTreeNode(currentElement));
@@ -82,19 +144,26 @@ bool DecisionMakingComponent::OnCreate() {
 
 	//-------------------------------------------------
 
-	stateMachines.push_back(StateMachine(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"))); //this = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")
+	currentElement = XMLFile.RootElement()->FirstChildElement("StateMachine");
+
+	stateMachines.push_back(MakeStateMachine(currentElement));
+
+	/*stateMachines.push_back(StateMachine("NPC")); //this = EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")
 
 	Ref<State> seekPlayer = std::make_shared<State>(STATE::SEEK, "SEEK");
-	Ref<State>  doNothing = std::make_shared<State>(STATE::DO_NOTHING, "DO_NOTHING");
+	Ref<State> doNothing = std::make_shared<State>(STATE::DO_NOTHING, "DO_NOTHING");
 
 	Ref<Condition> ifInRange = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
+
 	doNothing->AddTransition(Transition(ifInRange, seekPlayer));
+
 	Ref<Condition> ifOutOfRange = std::make_shared<ConditionOutOfRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
 		EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
-	seekPlayer->AddTransition(Transition(ifOutOfRange, doNothing));
-	stateMachines[0].SetInitialState(doNothing);
 
+	seekPlayer->AddTransition(Transition(ifOutOfRange, doNothing));
+
+	stateMachines[0].SetInitialState(doNothing);*/
 	return true;
 }
 
@@ -104,10 +173,10 @@ void DecisionMakingComponent::Update(const float deltaTime_) {
 	//Ref<Action> a = std::dynamic_pointer_cast<Action>(decider->MakeDecision());
 	//call update for each StateMachine and DecisionTree
 	for (Ref<DecisionTreeNode> decisionTree : decisionTrees) {
-		decisionTree->MakeDecision();
+		//decisionTree->MakeDecision();
 	}
 	for (StateMachine stateMachine : stateMachines) {
-		//stateMachine.Update();
+		stateMachine.Update();
 	}
 }
 

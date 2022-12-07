@@ -32,7 +32,7 @@ int main(int argc, char* args[]) {
 	//std::cout << memoryAllocated << std::endl;
 
 	/// This writes out memory leaks to the output window not the console window
-	_CrtDumpMemoryLeaks();
-	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
+	//_CrtDumpMemoryLeaks();
+	//_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	exit(0);
 }
