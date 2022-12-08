@@ -3,13 +3,13 @@
 
 class InRangeDecision : public Decision {
 public:
-	InRangeDecision(Ref<Actor> owner_, Ref<Actor> target_, Ref<DecisionTreeNode> trueNode_, Ref<DecisionTreeNode> falseNode_) {
+	InRangeDecision(Ref<Actor> owner_, Ref<Actor> target_, DecisionTreeNode* trueNode_, DecisionTreeNode* falseNode_) {
 		owner = owner_;
 		target = target_;
 		trueNode = trueNode_;
 		falseNode = falseNode_;
 	}
-	InRangeDecision(std::string ownerName_, std::string targetName_, Ref<DecisionTreeNode> trueNode_, Ref<DecisionTreeNode> falseNode_) {
+	InRangeDecision(std::string ownerName_, std::string targetName_, DecisionTreeNode* trueNode_, DecisionTreeNode* falseNode_) {
 		target = nullptr;
 		ownerName = ownerName_;
 		targetName = targetName_;

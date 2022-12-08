@@ -9,15 +9,15 @@ DecisionMakingComponent::~DecisionMakingComponent() {
 	//delete decider;
 }
 
-Ref<DecisionTreeNode> DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XMLElement* nodeElement) { //
+DecisionTreeNode* DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XMLElement* nodeElement) { //
 	//when we find a test, we have the info for both the branches, we finally make that decisiontreenode after that
 	//grab the names in the Decision tree and find refs to them
 	//then create the decisiontreenode
 	//recursively call the function if there are any test elements in the node element in both true and false
 
-	Ref<DecisionTreeNode> thisNode;
-	Ref<DecisionTreeNode> trueNode;
-	Ref<DecisionTreeNode> falseNode;
+	DecisionTreeNode* thisNode;
+	DecisionTreeNode* trueNode;
+	DecisionTreeNode* falseNode;
 
 	//--BRANCHES--
 	tinyxml2::XMLElement* currentBranch;
@@ -30,7 +30,7 @@ Ref<DecisionTreeNode> DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XM
 		trueNode = MakeDecisionTreeNode(currentBranch); //pass it down the chain
 	}
 	else { //if the thing is a action, we create the node right here
-		trueNode = std::make_shared<Action>(currentBranch->Attribute("actionSet"));
+		trueNode = new Action(currentBranch->Attribute("actionSet"), currentBranch->FloatAttribute("expiryTime"), currentBranch->FloatAttribute("executionTime"));
 	}
 	//FALSE
 	currentBranch = nodeElement->FirstChildElement("False");
@@ -39,14 +39,14 @@ Ref<DecisionTreeNode> DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XM
 		falseNode = MakeDecisionTreeNode(currentBranch); //pass it down the chain
 	}
 	else { //if the thing is a action, we create the node right here
-		falseNode = std::make_shared<Action>(currentBranch->Attribute("actionSet"));
+		falseNode = new Action(currentBranch->Attribute("actionSet"), currentBranch->FloatAttribute("expiryTime"), currentBranch->FloatAttribute("executionTime"));
 	}
 
 	//--CREATE THIS NODE--
 	compareAttribute = nodeElement->Attribute("type");
 	if (compareAttribute == "InRangeDecision") {
 		//grab the names in the node and find refs to them
-		thisNode = std::make_shared<InRangeDecision>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeElement->Attribute("ownerName")),
+		thisNode = new InRangeDecision(EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeElement->Attribute("ownerName")),
 			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeElement->Attribute("targetName")), trueNode, falseNode);
 	}
 	else {
@@ -68,7 +68,7 @@ StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* sta
 	while (stateLoop) {
 		std::string stateCheck = currentElement->Name();
 		if (stateCheck == "State") { //check if the element is a state
-			states[currentElement->Attribute("name")] = std::make_shared<State>(static_cast<STATE>(currentElement->Int64Attribute("state")), currentElement->Attribute("actionSet"));
+			states[currentElement->Attribute("name")] = std::make_shared<State>(static_cast<STATE>(currentElement->Int64Attribute("state")), currentElement->Attribute("actionSet"), currentElement->FloatAttribute("expiryTime"), currentElement->FloatAttribute("executionTime"));
 			//Exit if we are at the last element
 			if (currentElement == stateMachineElement->LastChildElement("State")) { //stopping looping when the current element is the last element in Scene Scope - stateMachineElement->LastChild() will also work, but stopping at the last element should be faster
 				stateLoop = false;
@@ -171,12 +171,13 @@ void DecisionMakingComponent::OnDestroy() {}
 void DecisionMakingComponent::Update(const float deltaTime_) {
 	//Ref<Action> a = std::dynamic_pointer_cast<Action>(decider->MakeDecision());
 	//call update for each StateMachine and DecisionTree
-	for (Ref<DecisionTreeNode> decisionTree : decisionTrees) {
-		//decisionTree->MakeDecision();
+	for (DecisionTreeNode* decisionTree : decisionTrees) {
+		actionManager.ScheduleAction(dynamic_cast<Action*>(decisionTree->MakeDecision()));
 	}
 	for (StateMachine stateMachine : stateMachines) {
-		stateMachine.Update();
+		//stateMachine.Update();
 	}
+	actionManager.Execute(deltaTime_);
 }
 
 void DecisionMakingComponent::Render() const {}

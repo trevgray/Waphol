@@ -9,6 +9,8 @@
 
 #include "StateMachine.h"
 
+#include "ActionManager.h"
+
 #include "tinyxml2.h"
 
 class DecisionMakingComponent : public Component {
@@ -19,7 +21,7 @@ class DecisionMakingComponent : public Component {
 public:
 	DecisionMakingComponent(Component* parent_, std::vector<std::string> decisionMakingXMLs_);
 	virtual ~DecisionMakingComponent();
-	Ref<DecisionTreeNode> MakeDecisionTreeNode(tinyxml2::XMLElement* nodeElement);
+	DecisionTreeNode* MakeDecisionTreeNode(tinyxml2::XMLElement* nodeElement);
 	StateMachine MakeStateMachine(tinyxml2::XMLElement* stateMachineElement);
 	virtual bool OnCreate();
 	virtual void OnDestroy();
@@ -30,7 +32,9 @@ public:
 private:
 	std::vector<std::string> decisionMakingXMLs;
 	//Decision Trees
-	std::vector<Ref<DecisionTreeNode>> decisionTrees;
+	std::vector<DecisionTreeNode*> decisionTrees;
 	//State Machines
 	std::vector <StateMachine> stateMachines;
+
+	ActionManager actionManager;
 };

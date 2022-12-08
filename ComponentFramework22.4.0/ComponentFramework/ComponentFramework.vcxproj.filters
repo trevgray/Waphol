@@ -124,6 +124,12 @@
     <Filter Include="Source Files\AI\Decision Making\State Machine">
       <UniqueIdentifier>{c27afc38-e968-4e34-bed4-cc4cdec12c80}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI\Decision Making\Actions">
+      <UniqueIdentifier>{4a7582ca-d4c5-4b1c-bdd1-132692a0d71c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\AI\Decision Making\Actions">
+      <UniqueIdentifier>{d1cd2730-9a31-4280-8f7f-b3ef3153ad27}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -309,9 +315,6 @@
     <ClCompile Include="Scene7.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
-    <ClCompile Include="Action.cpp">
-      <Filter>Source Files\AI\Decision Making</Filter>
-    </ClCompile>
     <ClCompile Include="Scene1.cpp">
       <Filter>Source Files\Scenes</Filter>
     </ClCompile>
@@ -335,6 +338,12 @@
     </ClCompile>
     <ClCompile Include="Transition.cpp">
       <Filter>Source Files\AI\Decision Making\State Machine</Filter>
+    </ClCompile>
+    <ClCompile Include="Action.cpp">
+      <Filter>Source Files\AI\Decision Making\Actions</Filter>
+    </ClCompile>
+    <ClCompile Include="ActionManager.cpp">
+      <Filter>Source Files\AI\Decision Making\Actions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -397,9 +406,6 @@
     </ClInclude>
     <ClInclude Include="LightActor.h">
       <Filter>Header Files\Actors</Filter>
-    </ClInclude>
-    <ClInclude Include="UBO_Padding.h">
-      <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Scene4.h">
       <Filter>Header Files\Scenes</Filter>
@@ -572,9 +578,6 @@
     <ClInclude Include="Scene7.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
-    <ClInclude Include="Action.h">
-      <Filter>Header Files\AI\Decision Making</Filter>
-    </ClInclude>
     <ClInclude Include="Scene1.h">
       <Filter>Header Files\Scenes</Filter>
     </ClInclude>
@@ -604,6 +607,15 @@
     </ClInclude>
     <ClInclude Include="Transition.h">
       <Filter>Header Files\AI\Decision Making\State Machine</Filter>
+    </ClInclude>
+    <ClInclude Include="Action.h">
+      <Filter>Header Files\AI\Decision Making\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="ActionManager.h">
+      <Filter>Header Files\AI\Decision Making\Actions</Filter>
+    </ClInclude>
+    <ClInclude Include="UBO_Padding.h">
+      <Filter>Header Files\Renderers</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
