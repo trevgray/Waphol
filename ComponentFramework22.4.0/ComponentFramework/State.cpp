@@ -3,6 +3,7 @@
 
 State::~State() {
 	transitions.clear();
+	if (action) { delete action; }
 	/*for (Transition* transition : transitions) {
 		if (transition) { delete transition; }
 	}

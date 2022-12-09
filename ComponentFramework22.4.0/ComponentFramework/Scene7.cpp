@@ -18,8 +18,8 @@ bool Scene7::OnCreate() {
 
 	std::vector<std::string> xmls;
 	xmls.push_back("DecisionMaking.xml");
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->AddComponent<DecisionMakingComponent>(nullptr, xmls);
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player")->GetComponent<DecisionMakingComponent>()->OnCreate();
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<DecisionMakingComponent>(nullptr, xmls);
+	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<DecisionMakingComponent>()->OnCreate();
 
 	return true;
 }

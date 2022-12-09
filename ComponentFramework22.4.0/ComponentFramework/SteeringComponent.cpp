@@ -1,5 +1,7 @@
 #include "SteeringComponent.h"
+
 #include "PhysicsBodyComponent.h"
+#include "DecisionMakingComponent.h"
 
 SteeringComponent::SteeringComponent(Component* parent_, std::vector<Ref<SteeringBehaviour>> steeringBehaviours_, Ref<Actor> actor_) : Component(parent_) {
 	steeringBehaviours = steeringBehaviours_;
@@ -48,7 +50,6 @@ void SteeringComponent::OnDestroy() {
 
 void SteeringComponent::Update(const float deltaTime_) {
 	// using the target, calculate and set values in the overall steering output
-
 	RunSteering();
 
 	// apply the steering to the equations of motion

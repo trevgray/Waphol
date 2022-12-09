@@ -19,7 +19,7 @@ public:
 	}
 	~StateMachine();
 	void SetInitialState(Ref<State> initial_);
-	void Update();
+	Action* Update();
 
 	STATE GetCurrentStateName() { return currentState->GetName(); }
 };

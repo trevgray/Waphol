@@ -10,16 +10,19 @@ enum class STATE { SEEK = 0, DO_NOTHING };
 
 class State {
 private:
-	Action action;
+	Action* action;
 	std::list<Transition> transitions;
 	//ignoring Actions for this simple example
 	STATE name;
 public:
-	State(STATE name_, std::string actionSet, float expiryTime, float executionTime) : action(actionSet, expiryTime, executionTime) { name = name_; }
+	State(STATE name_, std::string actionSet, unsigned int priority, float expiryTime, float executionTime){
+		name = name_; 
+		action = new Action(actionSet, priority, expiryTime, executionTime);
+	}
 	~State();
 	std::list<Transition> GetTransitions() { return transitions; }
 	void AddTransition(Transition transition);
 	STATE GetName() { return name; }
-	Action GetAction() { return action; }
+	Action* GetAction() { return action; }
 };
 

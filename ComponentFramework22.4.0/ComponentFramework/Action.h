@@ -10,15 +10,16 @@ private:
 	float expiryTime;
 	float executionTime;
 public:
+	unsigned int priority;
 	//Action(ACTION_SET actionSet_);
-	Action(std::string actionSet_, float expiryTime_, float executionTime_);
+	Action(std::string actionSet_, unsigned int priority_, float expiryTime_, float executionTime_);
 	~Action();
 
 	bool isExecuted;
 
 	virtual DecisionTreeNode* MakeDecision() override;
 	virtual std::string GetValue() { return actionSet; }
-	virtual void Execute();
+	//virtual void Execute();
 
 	bool IsComplete(float totalTime);
 	bool IsExpired(float totalTime);

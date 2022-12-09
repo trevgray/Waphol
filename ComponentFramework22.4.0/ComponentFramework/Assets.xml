@@ -766,12 +766,12 @@
 			<Weights one="1.0"/>
 		</Component>
 
-		<!--<Component name = "SteeringNPC">
+		<Component name = "SteeringNPC">
 			<Type type = "Steering"/>
 			<SteeringBehaviour one="Align" two="Arrive"/>
 			<Arguments AlignTargetName="Player" ArriveTargetName="Player" ArriveTargetRadius="1.0" ArriveSlowRadius="3.0" ArriveTimeToTarget="0.1"/>
 			<Weights one="1.0" two="1.0"/>
-		</Component>-->
+		</Component>
 
 		<Component name = "PlayerController">
 			<Type type = "Controller"/>
@@ -822,7 +822,7 @@
 			<Material name = "BlackCheckerTexture"/>
 			<PhysicsBody name = "PhysicsBodyNPC"/>
 			<Transform posx="0.0" posy ="0.0" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
-			<!--<Steering name = "SteeringNPC"/>-->
+			<Steering name = "SteeringNPC"/>
 		</Actor>
 
 		<Camera name = "camera">

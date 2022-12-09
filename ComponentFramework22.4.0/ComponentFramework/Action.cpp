@@ -5,8 +5,9 @@
 //	actionSet = actionSet_;
 //}
 
-Action::Action(std::string actionSet_, float expiryTime_, float executionTime_) {
+Action::Action(std::string actionSet_, unsigned int priority_, float expiryTime_, float executionTime_) {
 	actionSet = actionSet_;
+	priority = priority_;
 	expiryTime = expiryTime_;
 	executionTime = executionTime_;
 	isExecuted = false;
@@ -19,12 +20,9 @@ DecisionTreeNode* Action::MakeDecision() {
 	return this;
 }
 
-void Action::Execute() {
-	isExecuted = true;
-	if (actionSet == "SEEK") {
-		std::cout << "ACTION TEST" << std::endl;
-	}
-}
+//void Action::Execute() {
+//	isExecuted = true;
+//}
 
 bool Action::IsComplete(float totalTime) {
 	if (totalTime > executionTime) {

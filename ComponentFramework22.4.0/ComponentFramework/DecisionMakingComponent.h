@@ -28,7 +28,7 @@ public:
 	virtual void Update(const float deltaTime_);
 	virtual void Render()const;
 
-	//std::string GetControllerTemplate() { return controllerTemplate; }
+	ActionManager GetActionManager() { return actionManager; }
 private:
 	std::vector<std::string> decisionMakingXMLs;
 	//Decision Trees

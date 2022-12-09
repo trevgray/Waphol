@@ -8,7 +8,7 @@ void StateMachine::SetInitialState(Ref<State> initial_) {
 	currentState = initialState;
 }
 
-void StateMachine::Update() {
+Action* StateMachine::Update() {
 	Transition triggered;
 
 	//store first transition that triggers
@@ -24,6 +24,6 @@ void StateMachine::Update() {
 		currentState = targetState;
 	}
 	//return any actions
-	currentState->GetAction().MakeDecision();
-	return;
+	currentState->GetAction()->MakeDecision();
+	return currentState->GetAction();
 }

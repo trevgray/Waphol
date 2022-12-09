@@ -30,7 +30,7 @@ DecisionTreeNode* DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XMLEle
 		trueNode = MakeDecisionTreeNode(currentBranch); //pass it down the chain
 	}
 	else { //if the thing is a action, we create the node right here
-		trueNode = new Action(currentBranch->Attribute("actionSet"), currentBranch->FloatAttribute("expiryTime"), currentBranch->FloatAttribute("executionTime"));
+		trueNode = new Action(currentBranch->Attribute("actionSet"), currentBranch->Int64Attribute("priority"), currentBranch->FloatAttribute("expiryTime"), currentBranch->FloatAttribute("executionTime"));
 	}
 	//FALSE
 	currentBranch = nodeElement->FirstChildElement("False");
@@ -39,7 +39,7 @@ DecisionTreeNode* DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XMLEle
 		falseNode = MakeDecisionTreeNode(currentBranch); //pass it down the chain
 	}
 	else { //if the thing is a action, we create the node right here
-		falseNode = new Action(currentBranch->Attribute("actionSet"), currentBranch->FloatAttribute("expiryTime"), currentBranch->FloatAttribute("executionTime"));
+		falseNode = new Action(currentBranch->Attribute("actionSet"), currentBranch->Int64Attribute("priority"), currentBranch->FloatAttribute("expiryTime"), currentBranch->FloatAttribute("executionTime"));
 	}
 
 	//--CREATE THIS NODE--
@@ -68,7 +68,7 @@ StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* sta
 	while (stateLoop) {
 		std::string stateCheck = currentElement->Name();
 		if (stateCheck == "State") { //check if the element is a state
-			states[currentElement->Attribute("name")] = std::make_shared<State>(static_cast<STATE>(currentElement->Int64Attribute("state")), currentElement->Attribute("actionSet"), currentElement->FloatAttribute("expiryTime"), currentElement->FloatAttribute("executionTime"));
+			states[currentElement->Attribute("name")] = std::make_shared<State>(static_cast<STATE>(currentElement->Int64Attribute("state")), currentElement->Attribute("actionSet"), currentElement->Int64Attribute("priority"), currentElement->FloatAttribute("expiryTime"), currentElement->FloatAttribute("executionTime"));
 			//Exit if we are at the last element
 			if (currentElement == stateMachineElement->LastChildElement("State")) { //stopping looping when the current element is the last element in Scene Scope - stateMachineElement->LastChild() will also work, but stopping at the last element should be faster
 				stateLoop = false;
@@ -120,6 +120,14 @@ StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* sta
 }
 
 bool DecisionMakingComponent::OnCreate() {
+	//find parent actor
+	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
+		if (actor.second->GetComponent<DecisionMakingComponent>() != nullptr && actor.second->GetComponent<DecisionMakingComponent>().get() == this) {
+			actionManager.SetOwner(actor.second); //Set owner in the action Manager
+			break;
+		}
+	}
+	//Build the decision making structures
 	tinyxml2::XMLDocument XMLFile;
 	//for each decisionMakingXML, we make each StateMachine or DecisionTree
 	for (std::string fileName : decisionMakingXMLs) {
@@ -172,10 +180,10 @@ void DecisionMakingComponent::Update(const float deltaTime_) {
 	//Ref<Action> a = std::dynamic_pointer_cast<Action>(decider->MakeDecision());
 	//call update for each StateMachine and DecisionTree
 	for (DecisionTreeNode* decisionTree : decisionTrees) {
-		actionManager.ScheduleAction(dynamic_cast<Action*>(decisionTree->MakeDecision()));
+		//actionManager.ScheduleAction(dynamic_cast<Action*>(decisionTree->MakeDecision()));
 	}
 	for (StateMachine stateMachine : stateMachines) {
-		//stateMachine.Update();
+		actionManager.ScheduleAction(stateMachine.Update());
 	}
 	actionManager.Execute(deltaTime_);
 }
