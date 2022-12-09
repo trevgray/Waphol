@@ -47,10 +47,4 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.33.3162
           [
               _Ty=State
           ]
-  Scene7.cpp
-  State.cpp
-  StateMachine.cpp
-  SteeringComponent.cpp
-  Transition.cpp
-  Generating Code...
   ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

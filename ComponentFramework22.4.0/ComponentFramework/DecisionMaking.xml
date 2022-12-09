@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Root>
 	<DecisionTree>
-		<RootNode type ="InRangeDecision" ownerName ="NPC" targetName ="Player">
+		<RootNode type ="InRangeDecision" ownerName ="NPC" thresholdDistance ="12.0" targetName ="Player">
 			<True type ="Action" actionSet ="SEEK" priority="2" expiryTime ="5.0" executionTime ="5.0"/>
-			<!--<True type ="InRangeDecision" ownerName ="NPC" targetName ="Player">
+			<!--<True type ="InRangeDecision" ownerName ="NPC" targetName ="Player" thresholdDistance ="7.0">
 				<True type ="Action" actionSet ="SEEK"/>
 				<False type ="Action" actionSet ="DO_NOTHING"/>
 			</True>-->
@@ -11,11 +11,11 @@
 		</RootNode>
 	</DecisionTree>
 
-	<StateMachine owner ="NPC">
+	<!--STATE IS ENUM: 0 = SEEK & 1 = DO_NOTHING-->
+	<!--<StateMachine owner ="NPC">
 		<Condition name ="ifInRange" type ="ConditionInRange" owner ="NPC" target ="Player" thresholdDistance ="5.0"/>
 		<Condition name ="ifOutOfRange" type ="ConditionOutOfRange" owner ="NPC" target ="Player" thresholdDistance ="5.0"/>
 		
-		<!--STATE IS ENUM: 0 = SEEK & 1 = DO_NOTHING-->
 		<State name ="seekPlayer" state ="0" actionSet ="SEEK" priority="2" expiryTime ="1.0" executionTime ="1.0"/>
 		<State name ="doNothing" state ="1" actionSet ="DO_NOTHING" priority="1" expiryTime ="1.0" executionTime ="1.0"/>
 		
@@ -23,5 +23,5 @@
 		<Transition state ="seekPlayer" condition="ifOutOfRange" targetState="doNothing"/>
 		
 		<InitialState name ="doNothing"/>
-	</StateMachine>
+	</StateMachine>-->
 </Root>

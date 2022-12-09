@@ -4,6 +4,7 @@
 
 ActionManager::ActionManager() {
 	timer = 0.0f;
+	owner = nullptr;
 }
 
 ActionManager::~ActionManager() {}

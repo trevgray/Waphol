@@ -47,7 +47,7 @@ DecisionTreeNode* DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XMLEle
 	if (compareAttribute == "InRangeDecision") {
 		//grab the names in the node and find refs to them
 		thisNode = new InRangeDecision(EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeElement->Attribute("ownerName")),
-			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeElement->Attribute("targetName")), trueNode, falseNode);
+			EngineManager::Instance()->GetActorManager()->GetActor<Actor>(nodeElement->Attribute("targetName")), nodeElement->FloatAttribute("thresholdDistance"), trueNode, falseNode);
 	}
 	else {
 		std::cout << "DECISION TREE TYPE NOT FOUND" << std::endl;
@@ -85,12 +85,12 @@ StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* sta
 			std::string conditionType = currentElement->Attribute("type");
 			//Create unique conditions based on type
 			if (conditionType == "ConditionInRange") { //ConditionInRange
-				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
-					EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
+				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>(currentElement->Attribute("owner")),
+					EngineManager::Instance()->GetActorManager()->GetActor<Actor>(currentElement->Attribute("target")), currentElement->FloatAttribute("thresholdDistance"));
 			}
 			else if (conditionType == "ConditionOutOfRange") { //ConditionOutOfRange
-				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC"),
-					EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Player"), 5.0f);
+				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>(currentElement->Attribute("owner")),
+					EngineManager::Instance()->GetActorManager()->GetActor<Actor>(currentElement->Attribute("target")), currentElement->FloatAttribute("thresholdDistance"));
 			}
 			//Exit if we are at the last element
 			if (currentElement == stateMachineElement->LastChildElement("Condition")) {
@@ -139,35 +139,39 @@ bool DecisionMakingComponent::OnCreate() {
 		tinyxml2::XMLElement* currentElement = nullptr;
 		//DecisionTree loop
 		currentElement = XMLFile.RootElement()->FirstChildElement("DecisionTree");
-		bool decisionLoop = true;
-		while (decisionLoop) {
-			std::string decisionCheck = currentElement->Name();
-			if (decisionCheck == "DecisionTree") { //check if the element is a Transition
-				//add the Transition to the state (this is why we set up all the hash tables)
-				decisionTrees.push_back(MakeDecisionTreeNode(currentElement->FirstChildElement("RootNode")));
-				//Exit if we are at the last element
-				if (currentElement == XMLFile.RootElement()->LastChildElement("DecisionTree")) {
-					decisionLoop = false;
+		if (currentElement != nullptr) {
+			bool decisionLoop = true;
+			while (decisionLoop) {
+				std::string decisionCheck = currentElement->Name();
+				if (decisionCheck == "DecisionTree") { //check if the element is a Transition
+					//add the Transition to the state (this is why we set up all the hash tables)
+					decisionTrees.push_back(MakeDecisionTreeNode(currentElement->FirstChildElement("RootNode")));
+					//Exit if we are at the last element
+					if (currentElement == XMLFile.RootElement()->LastChildElement("DecisionTree")) {
+						decisionLoop = false;
+					}
 				}
+				currentElement = currentElement->NextSiblingElement(); //loading the next component
 			}
-			currentElement = currentElement->NextSiblingElement(); //loading the next component
 		}
 		//decisionTrees.push_back(MakeDecisionTreeNode(currentElement->FirstChildElement("RootNode")));
 
 		//StateMachine loop
 		currentElement = XMLFile.RootElement()->FirstChildElement("StateMachine");
-		bool stateLoop = true;
-		while (stateLoop) {
-			std::string stateCheck = currentElement->Name();
-			if (stateCheck == "StateMachine") { //check if the element is a Transition
-				//add the Transition to the state (this is why we set up all the hash tables)
-				stateMachines.push_back(MakeStateMachine(currentElement));
-				//Exit if we are at the last element
-				if (currentElement == XMLFile.RootElement()->LastChildElement("StateMachine")) {
-					stateLoop = false;
+		if (currentElement != nullptr) {
+			bool stateLoop = true;
+			while (stateLoop) {
+				std::string stateCheck = currentElement->Name();
+				if (stateCheck == "StateMachine") { //check if the element is a Transition
+					//add the Transition to the state (this is why we set up all the hash tables)
+					stateMachines.push_back(MakeStateMachine(currentElement));
+					//Exit if we are at the last element
+					if (currentElement == XMLFile.RootElement()->LastChildElement("StateMachine")) {
+						stateLoop = false;
+					}
 				}
+				currentElement = currentElement->NextSiblingElement(); //loading the next component
 			}
-			currentElement = currentElement->NextSiblingElement(); //loading the next component
 		}
 		//stateMachines.push_back(MakeStateMachine(currentElement));
 	}
@@ -180,7 +184,7 @@ void DecisionMakingComponent::Update(const float deltaTime_) {
 	//Ref<Action> a = std::dynamic_pointer_cast<Action>(decider->MakeDecision());
 	//call update for each StateMachine and DecisionTree
 	for (DecisionTreeNode* decisionTree : decisionTrees) {
-		//actionManager.ScheduleAction(dynamic_cast<Action*>(decisionTree->MakeDecision()));
+		actionManager.ScheduleAction(dynamic_cast<Action*>(decisionTree->MakeDecision()));
 	}
 	for (StateMachine stateMachine : stateMachines) {
 		actionManager.ScheduleAction(stateMachine.Update());
