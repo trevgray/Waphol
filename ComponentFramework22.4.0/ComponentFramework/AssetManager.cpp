@@ -13,6 +13,7 @@
 #include "ControllerComponent.h"
 #include "SteeringComponent.h"
 #include "FollowPath.h"
+#include "DecisionMakingComponent.h"
 
 AssetManager::AssetManager() : sceneRoot(nullptr), currentElement(nullptr) {}
 
@@ -145,8 +146,11 @@ void AssetManager::BuildComponents() {
 			else if (componentType == "Shape") { //create shape component
 				BuildShapeComponent();
 			}
-			else if (componentType == "Steering") { //create shape component
+			else if (componentType == "Steering") { //create steering component
 				BuildSteeringComponent();
+			}
+			else if (componentType == "DecisionMaking") {
+				BuildDecisionMakingComponent();
 			}
 			if (currentElement == sceneRoot->LastChildElement("Component")) { //stopping looping when the current element is the last element in Scene Scope - sceneRoot->LastChild() will also work, but stopping at the last component should be faster
 				componentLoop = false;
@@ -199,6 +203,10 @@ void AssetManager::BuildActors() {
 			if (currentElement->FirstChildElement("Steering") != nullptr) {
 				currentComponent = currentElement->FirstChildElement("Steering");
 				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<SteeringComponent>(GetComponent<SteeringComponent>(currentComponent->Attribute("name")));
+			}
+			if (currentElement->FirstChildElement("DecisionMaking") != nullptr) {
+				currentComponent = currentElement->FirstChildElement("DecisionMaking");
+				GetComponent<Actor>(currentElement->Attribute("name"))->AddComponent<DecisionMakingComponent>(GetComponent<DecisionMakingComponent>(currentComponent->Attribute("name")));
 			}
 			if (currentElement == sceneRoot->LastChildElement("Actor")) { //exit when component is = to the LastChildElement in currentComponent
 				actorLoop = false;
@@ -306,4 +314,12 @@ void AssetManager::BuildSteeringComponent() {
 	}
 
 	AddComponent<SteeringComponent>(currentElement->Attribute("name"), nullptr, steeringBehaviours);
+}
+
+void AssetManager::BuildDecisionMakingComponent() {
+	std::vector<std::string> decisionMakingXMLs; //set up arrays for all the decision making xmls
+	for (const tinyxml2::XMLAttribute* a = currentElement->FirstChildElement("filePaths")->FirstAttribute(); a; a = a->Next()) { //loop through all the attributes
+		decisionMakingXMLs.push_back(a->Value()); //add all the names of the behaviours
+	}
+	AddComponent<DecisionMakingComponent>(currentElement->Attribute("name"), nullptr, decisionMakingXMLs);
 }

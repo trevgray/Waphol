@@ -74,7 +74,7 @@ template<typename ActorTemplate> Ref<ActorTemplate> ActorManager::GetActor(std::
 	auto id = actorGraph.find(name);
 #ifdef _DEBUG
 	if (id == actorGraph.end()) {
-		Debug::Error("Can't find requested component", __FILE__, __LINE__);
+		//Debug::Error("Can't find requested component", __FILE__, __LINE__);
 		return Ref<ActorTemplate>(nullptr);
 	}
 #endif

@@ -130,6 +130,12 @@
     <Filter Include="Source Files\AI\Decision Making\Actions">
       <UniqueIdentifier>{d1cd2730-9a31-4280-8f7f-b3ef3153ad27}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\AI\Decision Making\State Machine\Conditions">
+      <UniqueIdentifier>{4c8f8dcd-0730-4cab-ad47-cde857ab3351}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\AI\Decision Making\Decision Trees\Decisions">
+      <UniqueIdentifier>{821b82e2-7365-4874-b748-a59a0d8d1a3b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">
@@ -587,16 +593,7 @@
     <ClInclude Include="DecisionTreeNode.h">
       <Filter>Header Files\AI\Decision Making\Decision Trees</Filter>
     </ClInclude>
-    <ClInclude Include="InRangeDecision.h">
-      <Filter>Header Files\AI\Decision Making\Decision Trees</Filter>
-    </ClInclude>
     <ClInclude Include="Condition.h">
-      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
-    </ClInclude>
-    <ClInclude Include="ConditionInRange.h">
-      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
-    </ClInclude>
-    <ClInclude Include="ConditionOutOfRange.h">
       <Filter>Header Files\AI\Decision Making\State Machine</Filter>
     </ClInclude>
     <ClInclude Include="State.h">
@@ -616,6 +613,15 @@
     </ClInclude>
     <ClInclude Include="UBO_Padding.h">
       <Filter>Header Files\Renderers</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionInRange.h">
+      <Filter>Header Files\AI\Decision Making\State Machine\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="ConditionOutOfRange.h">
+      <Filter>Header Files\AI\Decision Making\State Machine\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="InRangeDecision.h">
+      <Filter>Header Files\AI\Decision Making\Decision Trees\Decisions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

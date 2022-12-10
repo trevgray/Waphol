@@ -120,6 +120,8 @@ StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* sta
 }
 
 bool DecisionMakingComponent::OnCreate() {
+	decisionTrees.clear();
+	stateMachines.clear();
 	//find parent actor
 	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		if (actor.second->GetComponent<DecisionMakingComponent>() != nullptr && actor.second->GetComponent<DecisionMakingComponent>().get() == this) {

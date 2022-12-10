@@ -16,10 +16,10 @@ bool Scene7::OnCreate() {
 	EngineManager::Instance()->GetAssetManager()->LoadAssets("Assets.xml", "Scene7");
 	EngineManager::Instance()->GetActorManager()->LoadNonPrehabActors();
 
-	std::vector<std::string> xmls;
-	xmls.push_back("DecisionMaking.xml");
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<DecisionMakingComponent>(nullptr, xmls);
-	EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<DecisionMakingComponent>()->OnCreate();
+	//std::vector<std::string> xmls;
+	//xmls.push_back("DecisionMaking.xml");
+	//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->AddComponent<DecisionMakingComponent>(nullptr, xmls);
+	//EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<DecisionMakingComponent>()->OnCreate();
 
 	return true;
 }

@@ -69,4 +69,9 @@ void ActionManager::ExecuteAction(Action* action) {
 		owner->GetComponent<PhysicsBodyComponent>()->SetAccel(Vec3());
 		owner->GetComponent<PhysicsBodyComponent>()->SetVel(Vec3());
 	}
+	else if (action->GetValue() == "ACTION") {
+		//std::cout << "TEST3" << std::endl;
+		owner->GetComponent<PhysicsBodyComponent>()->SetAccel(Vec3());
+		owner->GetComponent<PhysicsBodyComponent>()->SetVel(Vec3());
+	}
 }

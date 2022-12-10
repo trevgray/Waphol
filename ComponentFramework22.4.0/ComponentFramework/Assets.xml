@@ -773,6 +773,11 @@
 			<Weights one="1.0" two="1.0"/>
 		</Component>
 
+		<Component name = "DecisionNPC">
+			<Type type = "DecisionMaking"/>
+			<filePaths one="DecisionMaking.xml"/>
+		</Component>
+
 		<Component name = "PlayerController">
 			<Type type = "Controller"/>
 			<Controller controllerTemplate = "PlayerController"/>
@@ -823,6 +828,7 @@
 			<PhysicsBody name = "PhysicsBodyNPC"/>
 			<Transform posx="0.0" posy ="0.0" posz="0.0" angleDeg="90.0" axisx="1.0" axisy="0.0" axisz="0.0" scalex ="3.0" scaley ="3.0" scalez="3.0"/>
 			<Steering name = "SteeringNPC"/>
+			<DecisionMaking name = "DecisionNPC"/>
 		</Actor>
 
 		<Camera name = "camera">
