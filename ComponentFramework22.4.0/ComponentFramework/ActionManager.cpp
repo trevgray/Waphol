@@ -1,5 +1,6 @@
 #include "ActionManager.h"
 
+#include "SteeringComponent.h"
 #include "PhysicsBodyComponent.h"
 
 ActionManager::ActionManager() {
@@ -54,24 +55,26 @@ void ActionManager::Execute(float deltaTime) {
 	}
 	//Start the action if it has not started
 	if (active->isExecuted == false) {
+
 		ExecuteAction(active);
 	}
 }
 
 void ActionManager::ExecuteAction(Action* action) {
 	action->isExecuted = true;
+	std::cout << action->GetValue() << std::endl;
 	if (action->GetValue() == "SEEK") {
-		//std::cout << "TEST" << std::endl;
-
+		owner->GetComponent<SteeringComponent>()->SetIsActive(true);
 	}
 	else if (action->GetValue() == "DO_NOTHING") {
-		//std::cout << "TEST2" << std::endl;
-		owner->GetComponent<PhysicsBodyComponent>()->SetAccel(Vec3());
+		owner->GetComponent<SteeringComponent>()->SetIsActive(false);
 		owner->GetComponent<PhysicsBodyComponent>()->SetVel(Vec3());
+		owner->GetComponent<PhysicsBodyComponent>()->SetAccel(Vec3());
 	}
-	else if (action->GetValue() == "ACTION") {
-		//std::cout << "TEST3" << std::endl;
-		owner->GetComponent<PhysicsBodyComponent>()->SetAccel(Vec3());
+	else if (action->GetValue() == "ATTACK") {
+		owner->GetComponent<SteeringComponent>()->SetIsActive(false);
 		owner->GetComponent<PhysicsBodyComponent>()->SetVel(Vec3());
+		owner->GetComponent<PhysicsBodyComponent>()->SetAccel(Vec3());
+
 	}
 }

@@ -26,7 +26,7 @@ DecisionTreeNode* DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XMLEle
 	currentBranch = nodeElement->FirstChildElement("True");
 	compareAttribute = currentBranch->Attribute("type");
 	if (compareAttribute != "Action") {
-		std::cout << currentBranch->Attribute("type") << std::endl;
+		//std::cout << currentBranch->Attribute("type") << std::endl;
 		trueNode = MakeDecisionTreeNode(currentBranch); //pass it down the chain
 	}
 	else { //if the thing is a action, we create the node right here

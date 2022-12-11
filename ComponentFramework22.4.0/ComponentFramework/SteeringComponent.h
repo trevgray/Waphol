@@ -39,9 +39,12 @@ public:
 		return Ref<SteeringTemplate>(nullptr);
 	}
 
+	bool GetIsActive() { return isActive; }
+	void SetIsActive(bool status_) { isActive = status_; }
 private:
 	std::vector<Ref<SteeringBehaviour>> steeringBehaviours;
 	SteeringOutput steering;
 	Ref<Actor> actorComponent;
+	bool isActive;
 };
 

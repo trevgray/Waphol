@@ -7,18 +7,21 @@ SteeringComponent::SteeringComponent(Component* parent_, std::vector<Ref<Steerin
 	steeringBehaviours = steeringBehaviours_;
 	steering = SteeringOutput();
 	actorComponent = actor_;
+	isActive = true;
 }
 
 SteeringComponent::SteeringComponent(Component* parent_, Ref<SteeringBehaviour> steerBehaviour_, Ref<Actor> actor_) : Component(parent_) {
 	steeringBehaviours.push_back(steerBehaviour_);
 	steering = SteeringOutput();
 	actorComponent = actor_;
+	isActive = true;
 }
 
 SteeringComponent::SteeringComponent(Component* parent_, std::vector<Ref<SteeringBehaviour>> steeringBehaviours_) : Component(parent_) {
 	steeringBehaviours = steeringBehaviours_;
 	steering = SteeringOutput();
 	actorComponent = nullptr;
+	isActive = true;
 }
 
 SteeringComponent::~SteeringComponent() {
@@ -49,26 +52,28 @@ void SteeringComponent::OnDestroy() {
 }
 
 void SteeringComponent::Update(const float deltaTime_) {
-	// using the target, calculate and set values in the overall steering output
-	RunSteering();
+	if (isActive) {
+		// using the target, calculate and set values in the overall steering output
+		RunSteering();
 
-	// apply the steering to the equations of motion
-	//just call the body update - then do all the steering update stuff in the steering component update
-	if (actorComponent->GetComponent<PhysicsBodyComponent>() != nullptr) {
-		//actorComponent->GetComponent<PhysicsBodyComponent>()->Update(deltaTime_);
-		// Adjust velocity and rotation according to steering input
-		actorComponent->GetComponent<PhysicsBodyComponent>()->SetAccel(steering.linear);
-		actorComponent->GetComponent<TransformComponent>()->setOrientation(steering.rotation);
+		// apply the steering to the equations of motion
+		//just call the body update - then do all the steering update stuff in the steering component update
+		if (actorComponent->GetComponent<PhysicsBodyComponent>() != nullptr) {
+			//actorComponent->GetComponent<PhysicsBodyComponent>()->Update(deltaTime_);
+			// Adjust velocity and rotation according to steering input
+			actorComponent->GetComponent<PhysicsBodyComponent>()->SetAccel(steering.linear);
+			actorComponent->GetComponent<TransformComponent>()->setOrientation(steering.rotation);
 
-		//clip accel to max
-		if (VMath::mag(actorComponent->GetComponent<PhysicsBodyComponent>()->GetAccel()) > actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAcceleration()) {
-			actorComponent->GetComponent<PhysicsBodyComponent>()->SetAccel(VMath::normalize(steering.linear) * actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAcceleration());
+			//clip accel to max
+			if (VMath::mag(actorComponent->GetComponent<PhysicsBodyComponent>()->GetAccel()) > actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAcceleration()) {
+				actorComponent->GetComponent<PhysicsBodyComponent>()->SetAccel(VMath::normalize(steering.linear) * actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAcceleration());
+			}
+
+			//clip angular acceleration to max - angular = angular > maxAngular ? maxAngular : angular;
+			/*if (actorComponent->GetComponent<PhysicsBodyComponent>()->GetAngular() > actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAngular()) {
+				actorComponent->GetComponent<PhysicsBodyComponent>()->SetAngular(actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAngular());
+			}*/
 		}
-
-		//clip angular acceleration to max - angular = angular > maxAngular ? maxAngular : angular;
-		/*if (actorComponent->GetComponent<PhysicsBodyComponent>()->GetAngular() > actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAngular()) {
-			actorComponent->GetComponent<PhysicsBodyComponent>()->SetAngular(actorComponent->GetComponent<PhysicsBodyComponent>()->GetMaxAngular());
-		}*/
 	}
 }
 

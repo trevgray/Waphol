@@ -10,7 +10,12 @@ public:
 	void Execute(float deltaTime);
 
 	void SetOwner(Ref<Actor> owner_) { owner = owner_; }
-	std::string GetActiveAction() { return actionQueue.front()->GetValue(); }
+	std::string GetActiveAction() {
+		if (actionQueue.size() > 0) {
+			return actionQueue.front()->GetValue();
+		}
+		return "NULL";
+	}
 private:
 	Ref<Actor> owner;
 	void ExecuteAction(Action* action);

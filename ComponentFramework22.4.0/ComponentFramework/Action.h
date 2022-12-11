@@ -17,7 +17,7 @@ public:
 
 	bool isExecuted;
 
-	virtual DecisionTreeNode* MakeDecision() override;
+	DecisionTreeNode* MakeDecision() override;
 	virtual std::string GetValue() { return actionSet; }
 	//virtual void Execute();
 
