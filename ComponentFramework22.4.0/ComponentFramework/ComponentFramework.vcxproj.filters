@@ -136,9 +136,6 @@
     <Filter Include="Header Files\AI\Decision Making\Decision Trees\Decisions">
       <UniqueIdentifier>{821b82e2-7365-4874-b748-a59a0d8d1a3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\AI\Decision Making\State Machine\Conditions">
-      <UniqueIdentifier>{11fc8d3d-554d-41a4-af8e-324a4f928909}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Main.cpp">

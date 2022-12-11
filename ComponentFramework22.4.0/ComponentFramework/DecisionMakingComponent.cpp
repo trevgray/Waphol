@@ -1,6 +1,8 @@
 #include "DecisionMakingComponent.h"
 #include "EngineManager.h"
 
+#include "AndCondition.h"
+
 DecisionMakingComponent::DecisionMakingComponent(Component* parent_, std::vector<std::string> decisionMakingXMLs_) : Component(parent_) {
 	decisionMakingXMLs = decisionMakingXMLs_;
 }
@@ -91,6 +93,9 @@ StateMachine DecisionMakingComponent::MakeStateMachine(tinyxml2::XMLElement* sta
 			else if (conditionType == "ConditionOutOfRange") { //ConditionOutOfRange
 				conditions[currentElement->Attribute("name")] = std::make_shared<ConditionInRange>(EngineManager::Instance()->GetActorManager()->GetActor<Actor>(currentElement->Attribute("owner")),
 					EngineManager::Instance()->GetActorManager()->GetActor<Actor>(currentElement->Attribute("target")), currentElement->FloatAttribute("thresholdDistance"));
+			}
+			else if (conditionType == "AndCondition") { //AndCondition
+				conditions[currentElement->Attribute("name")] = std::make_shared<AndCondition>(conditions[currentElement->Attribute("conditionA")], conditions[currentElement->Attribute("conditionB")]);
 			}
 			//Exit if we are at the last element
 			if (currentElement == stateMachineElement->LastChildElement("Condition")) {

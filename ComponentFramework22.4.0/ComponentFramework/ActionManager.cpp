@@ -27,7 +27,7 @@ void ActionManager::Execute(float deltaTime) {
 	Action* active = actionQueue.front();
 	timer += deltaTime;
 
-	//Remove expired actions from queue
+	//Remove expired actions from queue - but the one at the front of the queue
 	int actionIterator = 0;
 	for (int x = 1; x < actionQueue.size(); x++) {
 		if (actionQueue[x]->IsExpired(timer) == true) {
