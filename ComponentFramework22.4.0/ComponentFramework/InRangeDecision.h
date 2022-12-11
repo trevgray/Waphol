@@ -20,8 +20,14 @@ public:
 
 		thresholdDistance = thresholdDistance_;
 	}
-	bool TestValue() override;
-	~InRangeDecision();
+	bool TestValue() override {
+		//distance to player is less than some value
+		if (VMath::distance(target->GetComponent<TransformComponent>()->GetPosition(), owner->GetComponent<TransformComponent>()->GetPosition()) < thresholdDistance) {
+			return true;
+		}
+		return false;
+	}
+	~InRangeDecision() {}
 private:
 	Ref<Actor> target;
 

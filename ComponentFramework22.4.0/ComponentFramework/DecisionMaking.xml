@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Root>
 	<DecisionTree>
-		<RootNode type ="InRangeDecision" ownerName ="NPC" thresholdDistance ="23.0" targetName ="Player">
+		<RootNode type ="InRangeDecision" ownerName ="NPC" thresholdDistance ="10.0" targetName ="Player">
 			<!--<True type ="Action" actionSet ="SEEK" priority="2" expiryTime ="5.0" executionTime ="5.0"/>-->
-			<True type ="InRangeDecision" ownerName ="NPC" targetName ="Player" thresholdDistance ="12.0">
+			<True type ="InRangeDecision" ownerName ="NPC" targetName ="Player" thresholdDistance ="2.0">
 				<True type ="Action" actionSet ="ATTACK" priority="3" expiryTime ="1.0" executionTime ="10.0"/>
 				<False type ="Action" actionSet ="SEEK" priority="2" expiryTime ="5.0" executionTime ="5.0"/>
 			</True>
-			<False type ="Action" actionSet ="DO_NOTHING" priority="1" expiryTime ="1.0" executionTime ="0.01"/>
+			<False type ="Action" actionSet ="DO_NOTHING" priority="1" expiryTime ="10.0" executionTime ="1.00"/>
 		</RootNode>
 	</DecisionTree>
 

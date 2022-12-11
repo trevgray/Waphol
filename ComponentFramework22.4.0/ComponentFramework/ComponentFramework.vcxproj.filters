@@ -136,9 +136,6 @@
     <Filter Include="Header Files\AI\Decision Making\Decision Trees\Decisions">
       <UniqueIdentifier>{821b82e2-7365-4874-b748-a59a0d8d1a3b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Source Files\AI\Decision Making\Decision Trees\Decisions">
-      <UniqueIdentifier>{66e87b6d-0b82-46a8-ad7a-8a5b1ee59446}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Source Files\AI\Decision Making\State Machine\Conditions">
       <UniqueIdentifier>{11fc8d3d-554d-41a4-af8e-324a4f928909}</UniqueIdentifier>
     </Filter>
@@ -347,15 +344,6 @@
     </ClCompile>
     <ClCompile Include="ActionManager.cpp">
       <Filter>Source Files\AI\Decision Making\Actions</Filter>
-    </ClCompile>
-    <ClCompile Include="ConditionInRange.cpp">
-      <Filter>Source Files\AI\Decision Making\State Machine\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="ConditionOutOfRange.cpp">
-      <Filter>Source Files\AI\Decision Making\State Machine\Conditions</Filter>
-    </ClCompile>
-    <ClCompile Include="InRangeDecision.cpp">
-      <Filter>Source Files\AI\Decision Making\Decision Trees\Decisions</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -628,6 +616,15 @@
     </ClInclude>
     <ClInclude Include="InRangeDecision.h">
       <Filter>Header Files\AI\Decision Making\Decision Trees\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatDecision.h">
+      <Filter>Header Files\AI\Decision Making\Decision Trees\Decisions</Filter>
+    </ClInclude>
+    <ClInclude Include="FloatCondition.h">
+      <Filter>Header Files\AI\Decision Making\State Machine\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="AndCondition.h">
+      <Filter>Header Files\AI\Decision Making\State Machine\Conditions</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

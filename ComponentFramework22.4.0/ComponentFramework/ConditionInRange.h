@@ -16,7 +16,13 @@ public:
 		SetOwner(EngineManager::Instance()->GetActorManager()->GetActor<Actor>(owner_));
 		target = EngineManager::Instance()->GetActorManager()->GetActor<Actor>(target_);
 	}
-	~ConditionInRange() {};
-	bool Test();
+	~ConditionInRange() {}
+
+	bool Test() {
+		if (MATH::VMath::distance(target->GetComponent<TransformComponent>()->GetPosition(), owner->GetComponent<TransformComponent>()->GetPosition()) < thresholdDistance) {
+			return true;
+		}
+		return false;
+	}
 };
 

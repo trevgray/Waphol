@@ -156,8 +156,6 @@
     <ClCompile Include="Box.cpp" />
     <ClCompile Include="CameraActor.cpp" />
     <ClCompile Include="Capsule.cpp" />
-    <ClCompile Include="ConditionInRange.cpp" />
-    <ClCompile Include="ConditionOutOfRange.cpp" />
     <ClCompile Include="ControllerComponent.cpp" />
     <ClCompile Include="Cylinder.cpp" />
     <ClCompile Include="Debug.cpp" />
@@ -177,7 +175,6 @@
     <ClCompile Include="imgui_tables.cpp" />
     <ClCompile Include="imgui_widgets.cpp" />
     <ClCompile Include="InputManager.cpp" />
-    <ClCompile Include="InRangeDecision.cpp" />
     <ClCompile Include="LightActor.cpp" />
     <ClCompile Include="MaterialComponent.cpp" />
     <ClCompile Include="MeshComponent.cpp" />
@@ -224,6 +221,7 @@
     <ClInclude Include="Actor.h" />
     <ClInclude Include="ActorManager.h" />
     <ClInclude Include="Align.h" />
+    <ClInclude Include="AndCondition.h" />
     <ClInclude Include="Arrive.h" />
     <ClInclude Include="AssetManager.h" />
     <ClInclude Include="AxisAngle.h" />
@@ -245,6 +243,8 @@
     <ClInclude Include="Euler.h" />
     <ClInclude Include="FaceVelocity.h" />
     <ClInclude Include="Flee.h" />
+    <ClInclude Include="FloatCondition.h" />
+    <ClInclude Include="FloatDecision.h" />
     <ClInclude Include="FollowPath.h" />
     <ClInclude Include="Graph.h" />
     <ClInclude Include="imconfig.h" />

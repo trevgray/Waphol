@@ -19,6 +19,7 @@ void ActionManager::ScheduleAction(Action* action) {
 	}
 	if (actionInQueue == false) {
 		actionQueue.push_back(action);
+		action->isExecuted = false;
 	}
 }
 
@@ -28,8 +29,8 @@ void ActionManager::Execute(float deltaTime) {
 
 	//Remove expired actions from queue
 	int actionIterator = 0;
-	for (Action* action : actionQueue) {
-		if (action->IsExpired(timer) == true) {
+	for (int x = 1; x < actionQueue.size(); x++) {
+		if (actionQueue[x]->IsExpired(timer) == true) {
 			actionQueue.erase(actionQueue.begin() + actionIterator);
 			break;
 		}
@@ -54,8 +55,7 @@ void ActionManager::Execute(float deltaTime) {
 		timer = 0.0f;
 	}
 	//Start the action if it has not started
-	if (active->isExecuted == false) {
-
+	else if (active->isExecuted == false) {
 		ExecuteAction(active);
 	}
 }
@@ -75,6 +75,5 @@ void ActionManager::ExecuteAction(Action* action) {
 		owner->GetComponent<SteeringComponent>()->SetIsActive(false);
 		owner->GetComponent<PhysicsBodyComponent>()->SetVel(Vec3());
 		owner->GetComponent<PhysicsBodyComponent>()->SetAccel(Vec3());
-
 	}
 }

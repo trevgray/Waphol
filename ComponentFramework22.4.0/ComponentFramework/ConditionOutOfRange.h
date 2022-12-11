@@ -17,6 +17,13 @@ public:
 		target = EngineManager::Instance()->GetActorManager()->GetActor<Actor>(target_);
 	}
 	~ConditionOutOfRange() {}
-	bool Test();
+
+	bool Test() {
+		float thresholdDistance = 3.5f;
+		if (MATH::VMath::distance(target->GetComponent<TransformComponent>()->GetPosition(), owner->GetComponent<TransformComponent>()->GetPosition()) > thresholdDistance) {
+			return true;
+		}
+		return false;
+	}
 };
 
