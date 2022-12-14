@@ -41,7 +41,7 @@ bool SceneManager::Initialize(std::string name_, int width_, int height_) {
 	}*/
 
 	/********************************   Default first scene   ***********************/
-	BuildNewScene(SCENE_NUMBER::SCENE3);
+	BuildNewScene(SCENE_NUMBER::SCENE5);
 
 	//Setup ImGui context
 	IMGUI_CHECKVERSION();
@@ -94,6 +94,15 @@ void SceneManager::HandleEvents() {
 		}
 		else if (sdlEvent.type == SDL_KEYDOWN) {
 			switch (sdlEvent.key.keysym.scancode) {
+			case SDL_SCANCODE_F1:
+				BuildNewScene(SCENE_NUMBER::SCENE5);
+				break;
+			case SDL_SCANCODE_F2:
+				BuildNewScene(SCENE_NUMBER::SCENE6);
+				break;
+			case SDL_SCANCODE_F3:
+				BuildNewScene(SCENE_NUMBER::SCENE7);
+				break;
 			//case SDL_SCANCODE_ESCAPE:
 			/*case SDL_SCANCODE_Q:
 				isRunning = false;

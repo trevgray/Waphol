@@ -82,6 +82,7 @@ template<typename ActorTemplate> Ref<ActorTemplate> ActorManager::GetActor(std::
 }
 
 void ActorManager::LoadNonPrehabActors() {
+	actorGraph.clear(); //clear the graph first
 	for (auto& component : EngineManager::Instance()->GetAssetManager()->GetComponentGraph()) {
 		Actor* actor = dynamic_cast<Actor*>(component.second.get());
 		if (actor != nullptr && actor->GetPrehab() == false) {

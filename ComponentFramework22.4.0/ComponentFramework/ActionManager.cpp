@@ -62,7 +62,7 @@ void ActionManager::Execute(float deltaTime) {
 
 void ActionManager::ExecuteAction(Action* action) {
 	action->isExecuted = true;
-	//std::cout << action->GetValue() << std::endl;
+	std::cout << action->GetValue() << std::endl;
 	if (action->GetValue() == "SEEK") {
 		owner->GetComponent<SteeringComponent>()->SetIsActive(true);
 	}

@@ -22,6 +22,7 @@ AssetManager::~AssetManager() {
 }
 
 void AssetManager::LoadAssets(std::string XMLFile_, std::string SceneName_) {
+	RemoveAllComponents();
 	BuildSceneAssets(XMLFile_, SceneName_);
 	OnCreate();
 }
