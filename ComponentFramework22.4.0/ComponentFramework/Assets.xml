@@ -331,7 +331,7 @@
 			<Material name = "MarioMaterial"/>
 			<Shape name ="MarioCapsuleShape"/>
 			<Transform posx="-4.0" posy="1.0" posz="-15.0"
-					   angleDeg="180.0" axisx="0.0" axisy="1.0" axisz="0.0"
+					   angleDeg="0.0" axisx="0.0" axisy="1.0" axisz="0.0"
 					   scalex="1.0" scaley="1.0" scalez="1.0"/>
 		</Actor>
 

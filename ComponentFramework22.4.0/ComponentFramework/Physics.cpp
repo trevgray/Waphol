@@ -28,7 +28,7 @@ void Physics::RigidBodyRotation(Ref<Actor> object, const float deltaTime) { //I 
 	Ref<TransformComponent> actorTransform = object->GetComponent<TransformComponent>();
 	Ref<PhysicsBodyComponent> actorBody = object->GetComponent<PhysicsBodyComponent>();
 
-	float angularVelMag = VMath::mag(actorBody->GetAngularVel());
+	/*float angularVelMag = VMath::mag(actorBody->GetAngularVel());
 	if (angularVelMag < VERY_SMALL && angularVelMag > -VERY_SMALL) {
 		return;
 	}
@@ -37,7 +37,15 @@ void Physics::RigidBodyRotation(Ref<Actor> object, const float deltaTime) { //I 
 	expOfHalfDeltaTimesOmega.w = cos(angleRadians);
 	Vec3 angVelAxis = VMath::normalize(actorBody->GetAngularVel());
 	expOfHalfDeltaTimesOmega.ijk = angVelAxis * sin(angleRadians);
-	actorTransform->setOrientation(expOfHalfDeltaTimesOmega * actorTransform->GetQuaternion());
+	actorTransform->setOrientation(expOfHalfDeltaTimesOmega * actorTransform->GetQuaternion());*/
+
+	actorBody->SetAngularVel(actorBody->GetAngularVel() + actorBody->GetAngularAccel() * deltaTime);
+	//update orientation too
+	Quaternion angularVelQuaternion(0.0f, actorBody->GetAngularVel());
+	//Rotate using q = q + 0.5twq
+	actorTransform->setOrientation(actorTransform->GetQuaternion() + angularVelQuaternion * actorTransform->GetQuaternion() * 0.5f * deltaTime);
+	//don't forget to normalize after too - Only unit quaternions please - Otherwise the model stretches
+	actorTransform->setOrientation(QMath::normalize(actorTransform->GetQuaternion()));
 }
 
 void Physics::ApplyTorque(Ref<Actor> object, Vec3 torque) {

@@ -503,9 +503,6 @@
     <ClInclude Include="Node.h">
       <Filter>Header Files\AI\Pathfinding</Filter>
     </ClInclude>
-    <ClInclude Include="NodeAndPriority.h">
-      <Filter>Header Files\AI\Pathfinding</Filter>
-    </ClInclude>
     <ClInclude Include="QuadraticSolution.h">
       <Filter>Header Files\Math</Filter>
     </ClInclude>
@@ -622,6 +619,9 @@
     </ClInclude>
     <ClInclude Include="AndCondition.h">
       <Filter>Header Files\AI\Decision Making\State Machine\Conditions</Filter>
+    </ClInclude>
+    <ClInclude Include="NodeAndPriority.h">
+      <Filter>Header Files\AI\Decision Making\State Machine</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
