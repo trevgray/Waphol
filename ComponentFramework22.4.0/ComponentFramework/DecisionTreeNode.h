@@ -7,5 +7,5 @@ protected:
 public:
 	DecisionTreeNode() {};
 	virtual DecisionTreeNode* MakeDecision() { return nullptr; }
-	~DecisionTreeNode() {}
+	virtual ~DecisionTreeNode() {}
 };

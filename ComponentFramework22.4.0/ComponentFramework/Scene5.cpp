@@ -27,11 +27,11 @@ void Scene5::HandleEvents(const SDL_Event &sdlEvent) {
 }
 
 void Scene5::UpdateGUI() {
-	EngineManager::Instance()->GetProfilerManager()->RenderProfiler();
+	//EngineManager::Instance()->GetProfilerManager()->RenderProfiler();
 }
 
 void Scene5::Update(const float deltaTime) {
-	EngineManager::Instance()->GetProfilerManager()->ProfileScope("Update");
+	//EngineManager::Instance()->GetProfilerManager()->ProfileScope("Update");
 	EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
 
 	//std::cout << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().x << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().y << " " << EngineManager::Instance()->GetActorManager()->GetActor<Actor>("NPC")->GetComponent<PhysicsBodyComponent>()->GetAccel().z << std::endl;

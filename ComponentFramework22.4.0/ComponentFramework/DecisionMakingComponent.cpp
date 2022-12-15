@@ -8,7 +8,9 @@ DecisionMakingComponent::DecisionMakingComponent(Component* parent_, std::vector
 }
 
 DecisionMakingComponent::~DecisionMakingComponent() {
-	//delete decider;
+	for (DecisionTreeNode* decisionTree : decisionTrees) {
+		if (decisionTree) { delete decisionTree; }
+	}
 }
 
 DecisionTreeNode* DecisionMakingComponent::MakeDecisionTreeNode(tinyxml2::XMLElement* nodeElement) { //
