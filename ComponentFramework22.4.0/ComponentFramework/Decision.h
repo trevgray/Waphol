@@ -9,6 +9,6 @@ public:
 	virtual DecisionTreeNode* MakeDecision() override;
 	virtual bool TestValue();
 	virtual DecisionTreeNode* GetBranch();
-	~Decision();
+	virtual ~Decision();
 };
 

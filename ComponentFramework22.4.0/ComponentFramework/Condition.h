@@ -7,7 +7,7 @@ protected:
 public:
 	Condition() { owner = nullptr; }
 	Condition(Ref<Actor> owner_) { owner = owner_; }
-	~Condition() {}
+	virtual ~Condition() {}
 	virtual bool Test() { return false; }
 	void SetOwner(Ref<Actor> owner_) { owner = owner_; }
 };
