@@ -1,2 +1,5 @@
-﻿  Scene1.cpp
-  ComponentFramework.vcxproj -> D:\GitHub\WalfolEngine\ComponentFramework22.4.0\Debug\ComponentFramework.exe
+﻿  PhysicsBodyComponent.cpp
+  SceneManager.cpp
+  TransformComponent.cpp
+  Generating Code...
+  ComponentFramework.vcxproj -> E:\GitHub\PikePi\ComponentFramework22.4.0\Debug\ComponentFramework.exe

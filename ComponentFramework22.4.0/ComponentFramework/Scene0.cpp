@@ -86,7 +86,23 @@ void Scene0::HandleEvents(const SDL_Event& sdlEvent)
 		
 	case SDL_MOUSEBUTTONDOWN:
 		if (sdlEvent.button.button == SDL_BUTTON_LEFT) {
-			
+			GEOMETRY::Ray rayWorldSpace = EngineManager::Instance()->GetActorManager()->GetActor<CameraActor>()->WorldSpaceRayFromMouseCoords(static_cast<float>(sdlEvent.button.x), static_cast<float>(sdlEvent.button.y));
+
+			/*std::cout << "START: " << rayWorldStart.x << " " << rayWorldStart.y << " " << rayWorldStart.z << std::endl;
+			std::cout << "DIR: " << rayWorldDirection.x << " " << rayWorldDirection.y << " " << rayWorldDirection.z << std::endl;*/
+
+			Hit hitResult = Physics::LineTrace(rayWorldSpace);
+
+			if (hitResult.isIntersected) {
+				std::cout << "You picked: " << hitResult.hitActorName << '\n';
+
+				Vec3 actorPos = hitResult.hitActor->GetModelMatrix() * hitResult.intersectionPoint;
+				intersectionPoint = hitResult.hitActor->GetModelMatrix() * hitResult.intersectionPoint;
+
+				//std::cout << rayInfo.intersectionPoint.x << " " << rayInfo.intersectionPoint.y << " " << rayInfo.intersectionPoint.z << std::endl;
+
+				EngineManager::Instance()->GetActorManager()->GetActor<Actor>("Obstacle")->GetComponent<TransformComponent>()->SetPosition(actorPos);
+			}
 		}
 		break;
 
@@ -140,27 +156,27 @@ void Scene0::UpdateGUI() {
 
 void Scene0::Update(const float deltaTime) {
 	//EngineManager::Instance()->GetActorManager()->UpdateActors(deltaTime);
-	if (haveClickedOnSomething) {
-		Ref<PhysicsBodyComponent> physicsBody = pickedActor->GetComponent<PhysicsBodyComponent>();
-		Ref<TransformComponent> transform = pickedActor->GetComponent<TransformComponent>();
-		float dragCoeff = 0.2f;
-		Vec3 dragForce = physicsBody->GetVel() * (-dragCoeff);
-		Vec3 gravityForce(0.0f, -9.81f * physicsBody->GetMass(), 0.0f);
-		Vec3 netForce = gravityForce + dragForce;
-		Physics::ApplyForce(pickedActor, netForce);
-		//calculate a fist approximation of velocity based on acceleration
-		physicsBody->SetVel(physicsBody->GetVel() + physicsBody->GetAccel() * deltaTime);
-		//use constraint to correct velocity errors
-		Physics::MouseConstraint(pickedActor, deltaTime, intersectionPoint);
-		//update position using corrected velocities
-		transform->SetPosition(transform->GetPosition() + physicsBody->GetVel() * deltaTime);
-		//we can rotate too with the mouse constraint - so update orientation too
-		Quaternion angularVelQuaternion(0.0f, physicsBody->GetAngularVel());
-		//Rotate using q = q + 0.5twq
-		transform->setOrientation(transform->GetQuaternion() + angularVelQuaternion * transform->GetQuaternion() * 0.5f * deltaTime);
-		//don't forget to normalize after too - Only unit quaternions please - Otherwise the model stretches
-		transform->setOrientation(QMath::normalize(transform->GetQuaternion()));
-	}
+	//if (haveClickedOnSomething) {
+	//	Ref<PhysicsBodyComponent> physicsBody = pickedActor->GetComponent<PhysicsBodyComponent>();
+	//	Ref<TransformComponent> transform = pickedActor->GetComponent<TransformComponent>();
+	//	float dragCoeff = 0.2f;
+	//	Vec3 dragForce = physicsBody->GetVel() * (-dragCoeff);
+	//	Vec3 gravityForce(0.0f, -9.81f * physicsBody->GetMass(), 0.0f);
+	//	Vec3 netForce = gravityForce + dragForce;
+	//	Physics::ApplyForce(pickedActor, netForce);
+	//	//calculate a fist approximation of velocity based on acceleration
+	//	physicsBody->SetVel(physicsBody->GetVel() + physicsBody->GetAccel() * deltaTime);
+	//	//use constraint to correct velocity errors
+	//	Physics::MouseConstraint(pickedActor, deltaTime, intersectionPoint);
+	//	//update position using corrected velocities
+	//	transform->SetPosition(transform->GetPosition() + physicsBody->GetVel() * deltaTime);
+	//	//we can rotate too with the mouse constraint - so update orientation too
+	//	Quaternion angularVelQuaternion(0.0f, physicsBody->GetAngularVel());
+	//	//Rotate using q = q + 0.5twq
+	//	transform->setOrientation(transform->GetQuaternion() + angularVelQuaternion * transform->GetQuaternion() * 0.5f * deltaTime);
+	//	//don't forget to normalize after too - Only unit quaternions please - Otherwise the model stretches
+	//	transform->setOrientation(QMath::normalize(transform->GetQuaternion()));
+	//}
 }
 
 void Scene0::Render() const

@@ -105,7 +105,7 @@
 	  <Actor name = "CheckerBoardActor" parent="null">
 		  <Mesh name = "PlaneMesh"/>
 		  <Material name = "CheckerBoardTexture"/>
-		  <Shape name ="CheckerBoardShape"/>
+		  <!--<Shape name ="CheckerBoardShape"/>-->
 		  <Transform posx="0.0" posy="0.0" posz="-17.0"
 				   angleDeg="-20.0" axisx="1.0" axisy="0.0" axisz="0.0"
 				   scalex="1.0" scaley="1.0" scalez="1.0"/>

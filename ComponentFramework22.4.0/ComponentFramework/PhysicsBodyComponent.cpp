@@ -112,15 +112,14 @@ bool PhysicsBodyComponent::OnCreate() {
         if (actor.second->GetComponent<PhysicsBodyComponent>() != nullptr && actor.second->GetComponent<PhysicsBodyComponent>().get() == this) {
             transform = actor.second->GetComponent<TransformComponent>();
 
-            //isCreated = true;
+            isCreated = true;
             break;
         }
     }
-    isCreated = true;
-    /*if (transform == nullptr) {
-        throw std::invalid_argument("Transform component must be defined first before the PhysicsBodyComponent");
+    if (transform == nullptr) {
+        //throw std::invalid_argument("Transform component must be defined first before the PhysicsBodyComponent");
         isCreated = false;
-    }*/
+    }
     return isCreated;
 }
 

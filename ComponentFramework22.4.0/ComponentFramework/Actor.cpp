@@ -19,11 +19,15 @@ void Actor::OnDestroy() {
 bool Actor::OnCreate() {
 	if (isCreated) return isCreated;
 	for (auto component : components) {
-		if (component->OnCreate() == false) {
+		if (component->GetCreated() == false) {
+			component->OnCreate();
+		}
+		//OLD SYSTEM WHERE IT WAS NOT NORMAL FOR COMPONENTS TO RETURN FALSE
+		/*if (component->OnCreate() == false) {
 			Debug::Error("Loading assets for Actor/Components: ", __FILE__, __LINE__);
 			isCreated = false;
 			return isCreated;
-		}
+		}*/
 	}
 	isCreated = true;
 	return isCreated;

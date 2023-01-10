@@ -9,6 +9,8 @@ class Component {
 		virtual void OnDestroy() = 0;
 		virtual void Update(const float deltaTime_) = 0;
 		virtual void Render()const = 0;
+
+		bool GetCreated() { return isCreated; }
 	protected:
 		Component* parent;
 		bool isCreated;

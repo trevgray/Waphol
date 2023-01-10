@@ -133,9 +133,14 @@ bool DecisionMakingComponent::OnCreate() {
 	for (auto actor : EngineManager::Instance()->GetActorManager()->GetActorGraph()) {
 		if (actor.second->GetComponent<DecisionMakingComponent>() != nullptr && actor.second->GetComponent<DecisionMakingComponent>().get() == this) {
 			actionManager.SetOwner(actor.second); //Set owner in the action Manager
+			isCreated = true;
 			break;
 		}
 	}
+	if (isCreated == false) {
+		return false;
+	}
+
 	//Build the decision making structures
 	tinyxml2::XMLDocument XMLFile;
 	//for each decisionMakingXML, we make each StateMachine or DecisionTree
@@ -184,7 +189,7 @@ bool DecisionMakingComponent::OnCreate() {
 		}
 		//stateMachines.push_back(MakeStateMachine(currentElement));
 	}
-	return true;
+	return isCreated;
 }
 
 void DecisionMakingComponent::OnDestroy() {}

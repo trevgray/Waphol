@@ -29,13 +29,15 @@ void AssetManager::LoadAssets(std::string XMLFile_, std::string SceneName_) {
 
 bool AssetManager::OnCreate() {
 	for (std::pair<std::string, Ref<Component>> c : componentGraph) {
-		if (c.second->OnCreate() == false) {
+		c.second->OnCreate();
+	}
+		/*if (c.second->OnCreate() == false) {
 #ifdef _DEBUG
 			Debug::Error("Component failed to create", __FILE__, __LINE__);
 #endif
 			return false;
 		}
-	}
+	}*/
 	return true;
 }
 

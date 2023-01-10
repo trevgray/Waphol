@@ -34,7 +34,7 @@ bool SteeringComponent::OnCreate() {
 		if (actor.second->GetComponent<SteeringComponent>() != nullptr && actor.second->GetComponent<SteeringComponent>().get() == this) {
 			actorComponent = actor.second;
 
-			//isCreated = true;
+			isCreated = true;
 			break;
 		}
 	}
@@ -42,7 +42,8 @@ bool SteeringComponent::OnCreate() {
 	for (unsigned i = 0; i < steeringBehaviours.size(); i++) {
 		steeringBehaviours[i]->OnCreate();
 	}
-	isCreated = true;
+
+	//isCreated = true;
 	return isCreated;
 }
 
