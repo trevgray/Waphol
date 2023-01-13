@@ -79,7 +79,7 @@ void SoundManager::FadeOutSound(std::string soundName, float newVolume, float ra
 	auto id = FindSound(soundName);
 	for (float volume = id->second->getVolume(); volume > newVolume; volume -= rateOfChange) {
 		id->second->setVolume(volume);
-		//need to pause some how
+		//i could multi thread this
 	}
 }
 
@@ -87,7 +87,7 @@ void SoundManager::FadeInSound(std::string soundName, float newVolume, float rat
 	auto id = FindSound(soundName);
 	for (float volume = id->second->getVolume(); volume < newVolume; volume += rateOfChange) {
 		id->second->setVolume(volume);
-		//need to pause some how
+		//i could multi thread this
 	}
 }
 
